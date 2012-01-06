@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Deck extends java.lang.Object {
-    private String name;
     private ArrayList<Card> cards;
 
-    public Deck(String name) {
-        this.name = name;
+    public Deck() {
         cards = new ArrayList<Card>(52);
         for (int suit = 1; suit <= 4; ++suit) {
             for (int face = 1; face <= 13; ++face) {
