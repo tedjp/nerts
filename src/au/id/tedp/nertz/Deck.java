@@ -3,14 +3,15 @@ package au.id.tedp.nertz;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.util.Random;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Iterator;
 
 public class Deck extends java.lang.Object {
-    private ArrayList<Card> cards;
+    private List<Card> cards;
 
     public Deck() {
-        cards = new ArrayList<Card>(52);
+        cards = new LinkedList<Card>();
         for (int suit = 1; suit <= 4; ++suit) {
             for (int face = 1; face <= 13; ++face) {
                 cards.add(new Card(suit, face));
@@ -21,7 +22,7 @@ public class Deck extends java.lang.Object {
     public void shuffle() {
         Random r = new Random();
 
-        ArrayList<Card> newDeck = new ArrayList<Card>(cards.size());
+        List<Card> newDeck = new LinkedList<Card>();
 
         while (!cards.isEmpty()) {
             int cardnum = r.nextInt(cards.size());
