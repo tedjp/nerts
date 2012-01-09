@@ -24,6 +24,10 @@ public class Card {
         }
     };
 
+    public enum Color {
+        BLACK, RED
+    };
+
     public enum Face {
         ACE(1) {
             public String toString() {
@@ -111,6 +115,24 @@ public class Card {
 
     public java.lang.String toString() {
         return face + " of " + suit;
+    }
+
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public Color getColor() {
+        if (suit == Suit.HEARTS || suit == Suit.DIAMONDS)
+            return Color.RED;
+        return Color.BLACK;
+    }
+
+    public Face getFace() {
+        return face;
+    }
+
+    public int getValue() {
+        return face.getValue();
     }
 
     //public boolean equals

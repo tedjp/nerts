@@ -1,21 +1,17 @@
 package au.id.tedp.nertz;
 
-import java.util.Stack;
-import java.util.EmptyStackException;
+import java.util.LinkedList;
+import java.util.Deque;
 
 public class Pile {
-    private Stack<Card> facedown, faceup;
+    protected Deque<Card> facedown, faceup;
 
     public Pile() {
-        facedown = new Stack<Card>();
-        faceup = new Stack<Card>();
+        facedown = new LinkedList<Card>();
+        faceup = new LinkedList<Card>();
     }
 
-    public boolean empty() {
-        return (facedown.empty() && faceup.empty());
-    }
-
-    public void flipTopCard() throws EmptyStackException {
-        faceup.push(facedown.pop());
+    public boolean isEmpty() {
+        return (facedown.isEmpty() && faceup.isEmpty());
     }
 }
