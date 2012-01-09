@@ -1,6 +1,6 @@
 package au.id.tedp.nertz;
 
-public class Card extends Object {
+public class Card {
     /* Suits:
      * 1: Hearts
      * 2: Diamonds

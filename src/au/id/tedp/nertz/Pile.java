@@ -3,7 +3,7 @@ package au.id.tedp.nertz;
 import java.util.Stack;
 import java.util.EmptyStackException;
 
-public class Pile extends java.lang.Object {
+public class Pile {
     private Stack<Card> facedown, faceup;
 
     public Pile() {

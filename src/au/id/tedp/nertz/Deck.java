@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Iterator;
 
-public class Deck extends java.lang.Object {
+public class Deck {
     private List<Card> cards;
 
     public Deck() {
