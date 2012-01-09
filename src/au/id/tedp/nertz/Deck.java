@@ -12,8 +12,8 @@ public class Deck {
 
     public Deck() {
         cards = new LinkedList<Card>();
-        for (int suit = 1; suit <= 4; ++suit) {
-            for (int face = 1; face <= 13; ++face) {
+        for (Card.Suit suit: Card.Suit.values()) {
+            for (Card.Face face: Card.Face.values()) {
                 cards.add(new Card(suit, face));
             }
         }
