@@ -1,17 +1,8 @@
 package au.id.tedp.nertz;
 
-import java.util.Stack;
-
-public class SolitairePile {
-    private Stack<Card> facedown, faceup;
-
+public class SolitairePile extends Pile {
     public SolitairePile() {
-        facedown = new Stack<Card>();
-        faceup = new Stack<Card>();
-    }
-
-    public boolean empty() {
-        return (facedown.empty() && faceup.empty());
+        super(0, 13);
     }
 
     public void addFaceDown(Card c) {
@@ -19,7 +10,7 @@ public class SolitairePile {
     }
 
     public void addFaceUp(Card c) throws CardSequenceException {
-        if (faceup.empty()) {
+        if (faceup.isEmpty()) {
             faceup.push(c);
         } else {
             Card top = faceup.peek();

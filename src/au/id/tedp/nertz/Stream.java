@@ -1,13 +1,12 @@
 package au.id.tedp.nertz;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Deque;
 
 public class Stream extends Pile {
     public void flipThree() throws EmptyPileException {
         for (int i = 0; i < 3; ++i) {
             if (!facedown.isEmpty()) {
-                faceup.addFirst(facedown.getFirst());
+                faceup.push(facedown.pop());
             }
             else {
                 if (i == 0)

@@ -1,38 +1,35 @@
 package au.id.tedp.nertz;
 
-import java.util.Stack;
-
 /**
  * Class that represents a pile of cards of a single suit that must be
  * sequential, starting from Ace through King.
  */
 
-public class SequentialSuitPile {
-    private Stack<Card> cards;
+public class SequentialSuitPile extends Pile {
     private Card.Suit suit;
 
     public SequentialSuitPile() {
-        cards = new Stack<Card>();
+        super(0, 13);
         suit = null;
     }
 
     public boolean isComplete() {
-        if (cards.empty())
+        if (faceup.isEmpty())
             return false;
-        return (cards.peek().getFace() == Card.Face.KING);
+        return (faceup.peek().getFace() == Card.Face.KING);
     }
 
     public void push(Card card) throws CardSequenceException {
-        if (cards.empty()) {
+        if (faceup.isEmpty()) {
             suit = card.getSuit();
-            cards.push(card);
+            faceup.push(card);
         } else {
             if (card.getSuit() != suit ||
-                    card.getValue() != cards.peek().getValue() + 1)
+                    card.getValue() != faceup.peek().getValue() + 1)
             {
-                throw new CardSequenceException(card, cards.peek());
+                throw new CardSequenceException(card, faceup.peek());
             }
-            cards.push(card);
+            faceup.push(card);
         }
     }
 }
