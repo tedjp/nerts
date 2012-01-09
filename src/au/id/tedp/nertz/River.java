@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class River {
-    private List<SolitairePile> piles;
+    private List<TableauPile> piles;
 
     public River() {
-        piles = new ArrayList<SolitairePile>(4);
+        piles = new ArrayList<TableauPile>(4);
     }
 }

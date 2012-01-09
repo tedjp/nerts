@@ -1,7 +1,7 @@
 package au.id.tedp.nertz;
 
-public class SolitairePile extends Pile {
-    public SolitairePile() {
+public class TableauPile extends Pile {
+    public TableauPile() {
         super(0, 13);
     }
 
