@@ -25,71 +25,80 @@ public class Card {
     };
 
     public enum Face {
-        ACE {
+        ACE(1) {
             public String toString() {
                 return "Ace";
             }
         },
-        TWO {
+        TWO(2) {
             public String toString() {
                 return "2";
             }
         },
-        THREE {
+        THREE(3) {
             public String toString() {
                 return "3";
             }
         },
-        FOUR {
+        FOUR(4) {
             public String toString() {
                 return "4";
             }
         },
-        FIVE {
+        FIVE(5) {
             public String toString() {
                 return "5";
             }
         },
-        SIX {
+        SIX(6) {
             public String toString() {
                 return "6";
             }
         },
-        SEVEN {
+        SEVEN(7) {
             public String toString() {
                 return "7";
             }
         },
-        EIGHT {
+        EIGHT(8) {
             public String toString() {
                 return "8";
             }
         },
-        NINE {
+        NINE(9) {
             public String toString() {
                 return "9";
             }
         },
-        TEN {
+        TEN(10) {
             public String toString() {
                 return "10";
             }
         },
-        JACK {
+        JACK(11) {
             public String toString() {
                 return "Jack";
             }
         },
-        QUEEN {
+        QUEEN(12) {
             public String toString() {
                 return "Queen";
             }
         },
-        KING {
+        KING(13) {
             public String toString() {
                 return "King";
             }
-        },
+        };
+
+        private int value;
+        private Face(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     };
 
     private Suit suit;
