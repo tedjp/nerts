@@ -19,4 +19,24 @@ public class Pile {
     public boolean isEmpty() {
         return (facedown.isEmpty() && faceup.isEmpty());
     }
+
+    public void addFaceDown(Card c) {
+        facedown.push(c);
+    }
+
+    public void addFaceUp(Card c) {
+        faceup.push(c);
+    }
+
+    /**
+     * Take the top face-down card and put it face-up.
+     * Throws an exception if there is already a card face-up on top of
+     * the pile.
+     */
+    public void flipTopCard() throws EmptyPileException {
+        if (!faceup.isEmpty())
+            throw new EmptyPileException("Cannot flip top card: top card is already face-up");
+
+        faceup.push(facedown.pop());
+    }
 }

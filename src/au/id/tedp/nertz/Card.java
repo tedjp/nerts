@@ -105,10 +105,12 @@ public class Card {
         }
     };
 
+    private Deck deck;
     private Suit suit;
     private Face face;
 
-    public Card(Suit suit, Face face) {
+    public Card(Deck deck, Suit suit, Face face) {
+        this.deck = deck;
         this.suit = suit;
         this.face = face;
     }
@@ -133,6 +135,10 @@ public class Card {
 
     public int getValue() {
         return face.getValue();
+    }
+
+    public Deck getDeck() {
+        return deck;
     }
 
     //public boolean equals

@@ -5,11 +5,7 @@ public class TableauPile extends Pile {
         super(0, 13);
     }
 
-    public void addFaceDown(Card c) {
-        facedown.push(c);
-    }
-
-    public void addFaceUp(Card c) throws CardSequenceException {
+    public void play(Card c) throws CardSequenceException {
         if (faceup.isEmpty()) {
             faceup.push(c);
         } else {

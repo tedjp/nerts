@@ -9,14 +9,19 @@ import java.util.Iterator;
 
 public class Deck {
     private List<Card> cards;
+    private Iterator<Card> iterator;
+    private Player owner;
 
-    public Deck() {
+    public Deck(Player owner) {
+        this.owner = owner;
         cards = new LinkedList<Card>();
         for (Card.Suit suit: Card.Suit.values()) {
             for (Card.Face face: Card.Face.values()) {
-                cards.add(new Card(suit, face));
+                cards.add(new Card(this, suit, face));
             }
         }
+
+        iterator = cards.iterator();
     }
 
     public void shuffle() {
@@ -29,6 +34,8 @@ public class Deck {
             newDeck.add(cards.remove(cardnum));
         }
         this.cards = newDeck;
+
+        iterator = cards.iterator();
     }
 
     public String toString() {
@@ -41,5 +48,17 @@ public class Deck {
                 str.append("\n");
         }
         return str.toString();
+    }
+
+    public Card nextCard() {
+        return iterator.next();
+    }
+
+    public boolean hasNextCard() {
+        return iterator.hasNext();
+    }
+
+    public Player getOwner() {
+        return owner;
     }
 }
