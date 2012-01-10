@@ -1,3 +1,5 @@
 local.properties
 *.class
 tags
+bin
+gen
