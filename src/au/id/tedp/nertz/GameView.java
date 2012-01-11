@@ -10,6 +10,6 @@ class GameView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawARGB(255, 255, 0, 255);
+        canvas.drawARGB(255, 0, 128, 0);
     }
 }
