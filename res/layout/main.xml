@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainTable"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:shrinkColumns="*"
+    android:stretchColumns="*"
     >
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="Hello World, Main"
-    />
-</LinearLayout>
-
+    <TableRow
+        android:id="@+id/topRow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/emptyImage"
+            android:src="@color/dark_green"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <ImageView
+            android:id="@+id/lakeImage"
+            android:scaleType="centerInside"
+            android:src="@color/dark_green"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <ImageView
+            android:id="@+id/streamImage"
+            android:scaleType="centerInside"
+            android:src="@color/dark_green"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </TableRow>
+    <TableRow
+        android:id="@+id/bottomRow"
+        >
+        <ImageView
+            android:id="@+id/nertzPileImage"
+            android:scaleType="centerInside"
+            android:src="@color/dark_green"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <ImageView
+            android:id="@+id/tableauImage"
+            android:scaleType="centerInside"
+            android:src="@color/dark_green"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <ImageView
+            android:id="@+id/wasteImage"
+            android:scaleType="centerInside"
+            android:src="@color/dark_green"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </TableRow>
+</TableLayout>

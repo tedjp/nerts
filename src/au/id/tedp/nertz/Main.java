@@ -1,6 +1,9 @@
 package au.id.tedp.nertz;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 import android.os.Bundle;
 
 public class Main extends Activity
@@ -10,8 +13,16 @@ public class Main extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.main);
+        setContentView(R.layout.main);
         GameView gv = new GameView(this);
         setContentView(gv);
+        /*
+        ImageView emptyImage = (ImageView) findViewById(R.id.emptyImage);
+        ImageView streamImage = (ImageView) findViewById(R.id.streamImage);
+
+        Resources res = getResources();
+        Drawable blueBack = res.getDrawable(R.drawable.b1fv);
+        streamImage.setImageDrawable(blueBack);
+        */
     }
 }
