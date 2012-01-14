@@ -99,6 +99,16 @@ class GameView extends View {
         }
     }
 
+    protected void drawLake(Canvas canvas) {
+        Lake lake = player.getLake();
+
+        int pilenum = 0;
+        for (Pile pile : lake.getPiles()) {
+            drawPile(canvas, pile, 1 + pilenum, 0);
+            ++pilenum;
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawARGB(255, 0, 128, 0);
@@ -109,5 +119,6 @@ class GameView extends View {
         drawNertzPile(canvas);
         drawRiver(canvas);
         drawStream(canvas, player.getStream());
+        drawLake(canvas);
     }
 }

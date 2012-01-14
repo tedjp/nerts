@@ -62,4 +62,8 @@ class Player {
     public ArrayList<TableauPile> getRiver() {
         return river;
     }
+
+    public Lake getLake() {
+        return lake;
+    }
 }

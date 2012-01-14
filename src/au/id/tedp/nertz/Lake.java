@@ -9,4 +9,8 @@ public class Lake {
     public Lake() {
         piles = new LinkedList<SequentialSuitPile>();
     }
+
+    public List<SequentialSuitPile> getPiles() {
+        return piles;
+    }
 }
