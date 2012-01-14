@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
@@ -109,12 +110,41 @@ class GameView extends View {
         }
     }
 
+    protected Rect nertzPileArea, riverArea, streamArea, lakeArea, oppArea;
+
+    private void calculateAreas() {
+        int height = getHeight(), width = getWidth();
+        int hs = height / 2;
+        // XXX: Might want to cache these.
+        nertzPileArea = new Rect(0, hs, width / 6, height);
+        riverArea = new Rect(nertzPileArea.right, hs, width / 4 * 3, height);
+        streamArea = new Rect(riverArea.right, hs, width, height);
+        lakeArea = new Rect(0, height / 6, width, hs);
+        oppArea = new Rect(0, 0, width, lakeArea.top);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawARGB(255, 0, 128, 0);
+        calculateAreas();
 
-        cardWidth = getWidth() / 10;
-        cardHeight = (int)((double)getHeight() / (double)3.5);
+        //canvas.drawARGB(255, 0, 128, 0);
+        canvas.drawColor(0xff008000);
+
+        Paint paint = new Paint();
+
+        paint.setColor(0xff800000);
+        canvas.drawRect(nertzPileArea, paint);
+        paint.setColor(0xff0000ff);
+        canvas.drawRect(riverArea, paint);
+        paint.setColor(0xff000080);
+        canvas.drawRect(streamArea, paint);
+        paint.setColor(0xffff0000);
+        canvas.drawRect(lakeArea, paint);
+        paint.setColor(0xff00ff00);
+        canvas.drawRect(oppArea, paint);
+
+        cardWidth = getWidth() / 11;
+        cardHeight = getHeight() / 4;
 
         drawNertzPile(canvas);
         drawRiver(canvas);
