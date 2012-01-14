@@ -141,5 +141,24 @@ public class Card {
         return deck;
     }
 
-    //public boolean equals
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + suit.ordinal();
+        result = 31 * result + face.ordinal();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Card))
+            return false;
+
+        Card c = (Card) o;
+
+        return face == c.face && suit == c.suit;
+    }
 }
