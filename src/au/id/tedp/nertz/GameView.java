@@ -66,6 +66,20 @@ class GameView extends View {
         canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
     }
 
+    protected void drawStream(Canvas canvas, Stream stream) {
+        if (!stream.isFaceDownEmpty()) {
+            BitmapDrawable cardBack = DeckGraphics.getCardBack(res);
+            Rect dest = cardPosition(canvas, 5, 0);
+            canvas.drawBitmap(cardBack.getBitmap(), null, dest, null);
+        }
+
+        if (!stream.isFaceUpEmpty()) {
+            BitmapDrawable drawable = stream.topCardImage(res);
+            Rect dest = cardPosition(canvas, 5, 1);
+            canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
+        }
+    }
+
     protected void drawNertzPile(Canvas canvas) {
         NertzPile nertzPile = player.getNertzPile();
         if (nertzPile.isEmpty())
@@ -85,15 +99,6 @@ class GameView extends View {
         }
     }
 
-    protected void drawStream(Canvas canvas) {
-        Stream stream = player.getStream();
-
-        if (stream.isEmpty())
-            return;
-
-        drawPile(canvas, stream, 5, 0);
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawARGB(255, 0, 128, 0);
@@ -103,6 +108,6 @@ class GameView extends View {
 
         drawNertzPile(canvas);
         drawRiver(canvas);
-        drawStream(canvas);
+        drawStream(canvas, player.getStream());
     }
 }

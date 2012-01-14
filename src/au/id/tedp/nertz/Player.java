@@ -45,6 +45,7 @@ class Player {
         try {
             for (TableauPile pile : river)
                 pile.flipTopCard();
+            stream.flipThree();
         } catch (EmptyPileException e) {
             // XXX: What to do?
         }
