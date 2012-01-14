@@ -68,15 +68,26 @@ class GameView extends View {
     }
 
     protected void drawStream(Canvas canvas, Stream stream) {
+        int areaWidth = streamArea.right - streamArea.left;
+        int areaHeight = streamArea.bottom - streamArea.top;
+
         if (!stream.isFaceDownEmpty()) {
             BitmapDrawable cardBack = DeckGraphics.getCardBack(res);
-            Rect dest = cardPosition(canvas, 5, 0);
+            Rect dest = new Rect();
+            dest.left = streamArea.left + (areaWidth - cardWidth * 2) / 3;
+            dest.top = streamArea.top + (areaHeight - cardHeight) / 2;
+            dest.right = dest.left + cardWidth;
+            dest.bottom = dest.top + cardHeight;
             canvas.drawBitmap(cardBack.getBitmap(), null, dest, null);
         }
 
         if (!stream.isFaceUpEmpty()) {
             BitmapDrawable drawable = stream.topCardImage(res);
-            Rect dest = cardPosition(canvas, 5, 1);
+            Rect dest = new Rect();
+            dest.left = streamArea.left + (areaWidth - cardWidth * 2) * 2 / 3 + cardWidth;
+            dest.top = streamArea.top + (areaHeight - cardHeight) / 2;
+            dest.right = dest.left + cardWidth;
+            dest.bottom = dest.top + cardHeight;
             canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
         }
     }
