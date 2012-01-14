@@ -31,11 +31,13 @@ class GameView extends View {
 
     private Resources res;
 
+    private int cardHeight, cardWidth;
+
     /**
      * Return a Rect for the destination card's location on the given Canvas,
      * x &amp; y position, and card dimensions.
      */
-    private Rect cardPosition(Canvas canvas, int x, int y, int cardWidth, int cardHeight) {
+    private Rect cardPosition(Canvas canvas, int x, int y) {
         Rect bounds = canvas.getClipBounds();
         int xsep = -1, ysep = -1;
 
@@ -60,10 +62,7 @@ class GameView extends View {
     protected void drawPile(Canvas canvas, Pile pile, int x, int y) {
         BitmapDrawable drawable = pile.topCardImage(res);
 
-        int cardHeight, cardWidth;
-        cardHeight = drawable.getIntrinsicHeight();
-        cardWidth = drawable.getIntrinsicWidth();
-        Rect dest = cardPosition(canvas, x, y, cardWidth, cardHeight);
+        Rect dest = cardPosition(canvas, x, y);
         canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
     }
 
@@ -98,6 +97,9 @@ class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawARGB(255, 0, 128, 0);
+
+        cardWidth = getWidth() / 10;
+        cardHeight = (int)((double)getHeight() / (double)3.5);
 
         drawNertzPile(canvas);
         drawRiver(canvas);
