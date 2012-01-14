@@ -6,6 +6,10 @@ import android.graphics.drawable.BitmapDrawable;
 import java.util.Map;
 
 public class DeckGraphics {
+    public static BitmapDrawable getCardBack(Resources res) {
+        return (BitmapDrawable) res.getDrawable(R.drawable.b1fv);
+    }
+
     public static BitmapDrawable getBitmapDrawable(Resources res, Card c) {
         int v = c.getFace().getValue();
         Card.Suit s = c.getSuit();

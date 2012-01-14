@@ -14,7 +14,8 @@ public class Main extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        GameView gv = new GameView(this);
+        Game game = new Game();
+        GameView gv = new GameView(this, game.getFirstPlayer());
         setContentView(gv);
         /*
         ImageView emptyImage = (ImageView) findViewById(R.id.emptyImage);

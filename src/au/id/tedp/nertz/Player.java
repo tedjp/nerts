@@ -39,4 +39,26 @@ class Player {
         Dealer.dealRemaining(deck, stream);
         this.lake = lake;
     }
+
+    public void start() {
+        // XXX: Check game state
+        try {
+            for (TableauPile pile : river)
+                pile.flipTopCard();
+        } catch (EmptyPileException e) {
+            // XXX: What to do?
+        }
+    }
+
+    public Stream getStream() {
+        return stream;
+    }
+
+    public NertzPile getNertzPile() {
+        return nertzpile;
+    }
+
+    public ArrayList<TableauPile> getRiver() {
+        return river;
+    }
 }

@@ -1,5 +1,7 @@
 package au.id.tedp.nertz;
 
+import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -38,5 +40,16 @@ public class Pile {
             throw new EmptyPileException("Cannot flip top card: top card is already face-up");
 
         faceup.push(facedown.pop());
+    }
+
+    public BitmapDrawable topCardImage(Resources res) throws EmptyPileException {
+        if (!faceup.isEmpty()) {
+            Card topCard = faceup.peek();
+            return DeckGraphics.getBitmapDrawable(res, topCard);
+        }
+        if (!facedown.isEmpty()) {
+            return DeckGraphics.getCardBack(res);
+        }
+        throw new EmptyPileException("Pile is empty");
     }
 }
