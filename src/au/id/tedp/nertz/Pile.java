@@ -42,7 +42,7 @@ public class Pile {
         faceup.push(facedown.pop());
     }
 
-    public BitmapDrawable topCardImage(Resources res) throws EmptyPileException {
+    public BitmapDrawable topCardImage(Resources res) {
         if (!faceup.isEmpty()) {
             Card topCard = faceup.peek();
             return DeckGraphics.getBitmapDrawable(res, topCard);
@@ -50,6 +50,6 @@ public class Pile {
         if (!facedown.isEmpty()) {
             return DeckGraphics.getCardBack(res);
         }
-        throw new EmptyPileException("Pile is empty");
+        return null;
     }
 }

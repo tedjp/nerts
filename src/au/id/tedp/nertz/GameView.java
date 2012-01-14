@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
 import android.widget.ImageView;
+import java.util.ArrayList;
 
 import android.util.Log;
 
@@ -57,19 +58,33 @@ class GameView extends View {
     }
 
     protected void drawNertzPile(Canvas canvas) {
-        try {
-            NertzPile nertzPile = player.getNertzPile();
-            BitmapDrawable nertzPileDrawable = nertzPile.topCardImage(res);
-            Bitmap bmp = nertzPileDrawable.getBitmap();
+        NertzPile nertzPile = player.getNertzPile();
+        if (nertzPile.isEmpty())
+            return;
 
-            int cardHeight, cardWidth;
-            cardHeight = nertzPileDrawable.getIntrinsicHeight();
-            cardWidth = nertzPileDrawable.getIntrinsicWidth();
-            Rect dest = cardPosition(canvas, 0, 1, cardWidth, cardHeight);
-            canvas.drawBitmap(bmp, null, dest, null);
-        }
-        catch (EmptyPileException e) {
-            // don't care.
+        BitmapDrawable nertzPileDrawable = nertzPile.topCardImage(res);
+
+        int cardHeight, cardWidth;
+        cardHeight = nertzPileDrawable.getIntrinsicHeight();
+        cardWidth = nertzPileDrawable.getIntrinsicWidth();
+        Rect dest = cardPosition(canvas, 0, 1, cardWidth, cardHeight);
+        canvas.drawBitmap(nertzPileDrawable.getBitmap(), null, dest, null);
+    }
+
+    protected void drawRiver(Canvas canvas) {
+        ArrayList<TableauPile> river = player.getRiver();
+
+        int pilenum = 0;
+        for (TableauPile pile : river) {
+            if (!pile.isEmpty()) {
+                BitmapDrawable topCard = pile.topCardImage(res);
+                int cardHeight = topCard.getIntrinsicHeight();
+                int cardWidth = topCard.getIntrinsicWidth();
+                Rect dest = cardPosition(canvas, 1 + pilenum, 1,
+                        cardWidth, cardHeight);
+                canvas.drawBitmap(topCard.getBitmap(), null, dest, null);
+            }
+            ++pilenum;
         }
     }
 
@@ -78,5 +93,6 @@ class GameView extends View {
         canvas.drawARGB(255, 0, 128, 0);
 
         drawNertzPile(canvas);
+        drawRiver(canvas);
     }
 }
