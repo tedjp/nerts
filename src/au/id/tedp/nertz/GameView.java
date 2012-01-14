@@ -57,18 +57,22 @@ class GameView extends View {
         return position;
     }
 
+    protected void drawPile(Canvas canvas, Pile pile, int x, int y) {
+        BitmapDrawable drawable = pile.topCardImage(res);
+
+        int cardHeight, cardWidth;
+        cardHeight = drawable.getIntrinsicHeight();
+        cardWidth = drawable.getIntrinsicWidth();
+        Rect dest = cardPosition(canvas, x, y, cardWidth, cardHeight);
+        canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
+    }
+
     protected void drawNertzPile(Canvas canvas) {
         NertzPile nertzPile = player.getNertzPile();
         if (nertzPile.isEmpty())
             return;
 
-        BitmapDrawable nertzPileDrawable = nertzPile.topCardImage(res);
-
-        int cardHeight, cardWidth;
-        cardHeight = nertzPileDrawable.getIntrinsicHeight();
-        cardWidth = nertzPileDrawable.getIntrinsicWidth();
-        Rect dest = cardPosition(canvas, 0, 1, cardWidth, cardHeight);
-        canvas.drawBitmap(nertzPileDrawable.getBitmap(), null, dest, null);
+        drawPile(canvas, nertzPile, 0, 1);
     }
 
     protected void drawRiver(Canvas canvas) {
@@ -76,16 +80,19 @@ class GameView extends View {
 
         int pilenum = 0;
         for (TableauPile pile : river) {
-            if (!pile.isEmpty()) {
-                BitmapDrawable topCard = pile.topCardImage(res);
-                int cardHeight = topCard.getIntrinsicHeight();
-                int cardWidth = topCard.getIntrinsicWidth();
-                Rect dest = cardPosition(canvas, 1 + pilenum, 1,
-                        cardWidth, cardHeight);
-                canvas.drawBitmap(topCard.getBitmap(), null, dest, null);
-            }
+            if (!pile.isEmpty())
+                drawPile(canvas, pile, 1 + pilenum, 1);
             ++pilenum;
         }
+    }
+
+    protected void drawStream(Canvas canvas) {
+        Stream stream = player.getStream();
+
+        if (stream.isEmpty())
+            return;
+
+        drawPile(canvas, stream, 5, 0);
     }
 
     @Override
@@ -94,5 +101,6 @@ class GameView extends View {
 
         drawNertzPile(canvas);
         drawRiver(canvas);
+        drawStream(canvas);
     }
 }
