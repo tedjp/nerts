@@ -162,20 +162,16 @@ class GameView extends View {
     protected void onDraw(Canvas canvas) {
         calculateAreas();
 
-        //canvas.drawARGB(255, 0, 128, 0);
-        canvas.drawColor(0xff008000);
+        canvas.drawColor(0xff669900);
 
         Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(0xff99cc00);
 
-        paint.setColor(0xff800000);
         canvas.drawRect(nertzPileArea, paint);
-        paint.setColor(0xff0000ff);
         canvas.drawRect(riverArea, paint);
-        paint.setColor(0xff000080);
         canvas.drawRect(streamArea, paint);
-        paint.setColor(0xffff0000);
         canvas.drawRect(lakeArea, paint);
-        paint.setColor(0xff00ff00);
         canvas.drawRect(oppArea, paint);
 
         cardWidth = getWidth() / 11;
