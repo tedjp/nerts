@@ -8,13 +8,14 @@ import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import java.util.ArrayList;
 
 import android.util.Log;
 
-class GameView extends View {
+class GameView extends View implements View.OnTouchListener {
     public GameView(android.content.Context context, Player player) {
         super(context);
         cachedCanvasX = -1;
@@ -23,6 +24,7 @@ class GameView extends View {
         cachedYSep = -1;
         this.player = player;
         this.res = getResources();
+        setOnTouchListener(this);
     }
 
     private int cachedCanvasX, cachedCanvasY;
@@ -181,5 +183,25 @@ class GameView extends View {
         drawRiver(canvas);
         drawStream(canvas, player.getStream());
         drawLake(canvas);
+    }
+
+    // Not sure if this should be part of some other class
+    public boolean onTouch(View v, MotionEvent ev) {
+        float x = ev.getX();
+        float y = ev.getY();
+
+        String p = new String("Nertz");
+
+        if (streamArea.contains((int) x, (int) y)) {
+            Log.d(p, "Touched stream");
+        } else if (nertzPileArea.contains((int) x, (int) y)) {
+            Log.d(p, "Touched nertz pile");
+        } else if (riverArea.contains((int) x, (int) y)) {
+            Log.d(p, "Touched river");
+        } else if (lakeArea.contains((int) x, (int) y)) {
+            Log.d(p, "Touched lake");
+        }
+
+        return true;
     }
 }
