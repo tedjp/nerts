@@ -60,13 +60,6 @@ class GameView extends View {
         return position;
     }
 
-    protected void drawPile(Canvas canvas, Pile pile, int x, int y) {
-        BitmapDrawable drawable = pile.topCardImage(res);
-
-        Rect dest = cardPosition(canvas, x, y);
-        canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
-    }
-
     protected void drawStream(Canvas canvas, Stream stream) {
         int areaWidth = streamArea.right - streamArea.left;
         int areaHeight = streamArea.bottom - streamArea.top;
@@ -131,12 +124,23 @@ class GameView extends View {
         }
     }
 
+    protected void drawLakePile(Canvas canvas, Pile pile, int pilenum) {
+        BitmapDrawable bmp = pile.topCardImage(res);
+        int top = lakeArea.centerY() - cardHeight / 2;
+        int bottom = lakeArea.centerY() + cardHeight / 2;
+        int sep = ((lakeArea.right - lakeArea.left) - cardWidth * 8) / 10;
+        Rect dest = new Rect(0, top, 0, bottom);
+        dest.left = lakeArea.left + cardWidth * pilenum + sep * pilenum;
+        dest.left = dest.right + cardWidth;
+        canvas.drawBitmap(bmp.getBitmap(), null, dest, null);
+    }
+
     protected void drawLake(Canvas canvas) {
         Lake lake = player.getLake();
 
         int pilenum = 0;
         for (Pile pile : lake.getPiles()) {
-            drawPile(canvas, pile, 1 + pilenum, 0);
+            drawLakePile(canvas, pile, pilenum);
             ++pilenum;
         }
     }
