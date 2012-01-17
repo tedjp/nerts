@@ -100,13 +100,25 @@ class GameView extends View {
         drawPile(canvas, nertzPile, 0, 1);
     }
 
+    protected void drawRiverPile(Canvas canvas, TableauPile pile, int pilenum) {
+        int top = riverArea.top + (riverArea.bottom - riverArea.top) / 15;
+        int sep = ((riverArea.right - riverArea.left) - cardWidth * 4) / 5;
+        Rect dest = new Rect();
+        dest.left = riverArea.left + (1 + pilenum) * sep + pilenum * cardWidth;
+        dest.top = top;
+        dest.right = dest.left + cardWidth;
+        dest.bottom = dest.top + cardHeight;
+        BitmapDrawable drawable = pile.topCardImage(res);
+        canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
+    }
+
     protected void drawRiver(Canvas canvas) {
         ArrayList<TableauPile> river = player.getRiver();
 
         int pilenum = 0;
         for (TableauPile pile : river) {
             if (!pile.isEmpty())
-                drawPile(canvas, pile, 1 + pilenum, 1);
+                drawRiverPile(canvas, pile, pilenum);
             ++pilenum;
         }
     }
