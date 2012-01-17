@@ -97,7 +97,15 @@ class GameView extends View {
         if (nertzPile.isEmpty())
             return;
 
-        drawPile(canvas, nertzPile, 0, 1);
+        BitmapDrawable drawable = nertzPile.topCardImage(res);
+        int centerX = nertzPileArea.centerX();
+        int centerY = nertzPileArea.centerY();
+        Rect dest = new Rect(
+                centerX - cardWidth / 2,
+                centerY - cardHeight / 2,
+                centerX + cardWidth / 2,
+                centerY + cardHeight / 2);
+        canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
     }
 
     protected void drawRiverPile(Canvas canvas, TableauPile pile, int pilenum) {
