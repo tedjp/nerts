@@ -256,15 +256,13 @@ class GameView extends View implements View.OnTouchListener {
 
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
-        Area area = detectArea(ev);
-
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 fromPile = null;
                 liveCardX = ev.getX();
                 liveCardY = ev.getY();
 
-                switch (area) {
+                switch (detectArea(ev)) {
                     case NERTZ_PILE:
                         fromPile = player.getNertzPile();
                         break;
