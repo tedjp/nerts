@@ -298,7 +298,7 @@ class GameView extends View implements View.OnTouchListener {
                 returnLiveCard();
                 break;
         }
-        // XXX: Pretty sure we need to trigger the redraw
+
         invalidate();
 
         return true;
