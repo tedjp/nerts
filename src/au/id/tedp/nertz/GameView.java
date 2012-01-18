@@ -276,9 +276,10 @@ class GameView extends View implements View.OnTouchListener {
 
                 if (fromPile != null) {
                     try {
-                        liveCard = fromPile.pop();
+                        if (!fromPile.isEmpty())
+                            liveCard = fromPile.pop();
                     } catch (EmptyPileException e) {
-                        Log.d("Nertz", "Ignoring ACTION_DOWN on empty pile");
+                        Log.d("Nertz", "Tried to pop from empty pile!");
                     }
                 }
                 break;
