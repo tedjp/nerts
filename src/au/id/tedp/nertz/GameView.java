@@ -25,6 +25,7 @@ class GameView extends View implements View.OnTouchListener {
         this.player = player;
         this.res = getResources();
         setOnTouchListener(this);
+        state = TouchState.NONE;
     }
 
     private int cachedCanvasX, cachedCanvasY;
@@ -160,6 +161,15 @@ class GameView extends View implements View.OnTouchListener {
         oppArea = new Rect(0, 0, width, lakeArea.top);
     }
 
+    private void drawLiveCard(Canvas canvas) {
+         BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, liveCard);
+         RectF dest = new RectF(liveCardX - cardWidth / 2,
+                 liveCardY - cardHeight / 2,
+                 liveCardX + cardWidth / 2,
+                 liveCardY + cardHeight / 2);
+         canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         calculateAreas();
@@ -183,24 +193,92 @@ class GameView extends View implements View.OnTouchListener {
         drawRiver(canvas);
         drawStream(canvas, player.getStream());
         drawLake(canvas);
+
+        if (liveCard != null)
+            drawLiveCard(canvas);
     }
+
+    protected enum TouchState {
+        NONE,
+        DRAG,
+        DROP
+    }
+
+    protected enum Area {
+        VOID,
+        LAKE,
+        RIVER,
+        STREAM,
+        NERTZ_PILE
+    }
+
+    private TouchState state;
+
+    private Area detectArea(MotionEvent ev) {
+        int x, y;
+
+        x = (int) ev.getX();
+        y = (int) ev.getY();
+
+        if (streamArea.contains(x, y)) {
+            return Area.STREAM;
+        } else if (nertzPileArea.contains(x, y)) {
+            return Area.NERTZ_PILE;
+        } else if (riverArea.contains(x, y)) {
+            return Area.RIVER;
+        } else if (lakeArea.contains(x, y)) {
+            return Area.LAKE;
+        }
+        return Area.VOID;
+    }
+
+    private Card liveCard;
+    private Pile fromPile;
+    private float liveCardX, liveCardY;
 
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
-        float x = ev.getX();
-        float y = ev.getY();
+        Area area = detectArea(ev);
 
-        String p = new String("Nertz");
+        switch (ev.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                fromPile = null;
 
-        if (streamArea.contains((int) x, (int) y)) {
-            Log.d(p, "Touched stream");
-        } else if (nertzPileArea.contains((int) x, (int) y)) {
-            Log.d(p, "Touched nertz pile");
-        } else if (riverArea.contains((int) x, (int) y)) {
-            Log.d(p, "Touched river");
-        } else if (lakeArea.contains((int) x, (int) y)) {
-            Log.d(p, "Touched lake");
+                switch (area) {
+                    case NERTZ_PILE:
+                        fromPile = player.getNertzPile();
+                        break;
+                }
+
+                if (fromPile != null) {
+                    try {
+                        liveCard = fromPile.pop();
+                    } catch (EmptyPileException e) {
+                        Log.d("Nertz", "Ignoring ACTION_DOWN on empty pile");
+                    }
+                }
+                break;
+
+            case MotionEvent.ACTION_UP:
+                // TODO
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                liveCardX = ev.getX();
+                liveCardY = ev.getY();
+                break;
+
+            case MotionEvent.ACTION_CANCEL:
+                try {
+                    fromPile.push(liveCard);
+                } catch (CardSequenceException e) {
+                    Log.e("Nertz", "Cannot put card " + liveCard.toString() + " back on its original pile!");
+                }
+                liveCard = null;
+                break;
         }
+        // XXX: Pretty sure we need to trigger the redraw
+        invalidate();
 
         return true;
     }

@@ -52,4 +52,15 @@ public class Pile {
         }
         return null;
     }
+
+    public Card pop() throws EmptyPileException {
+        if (!faceup.isEmpty())
+            return faceup.pop();
+
+        throw new EmptyPileException("Pile is empty");
+    }
+
+    public void push(Card c) throws CardSequenceException {
+        faceup.push(c);
+    }
 }
