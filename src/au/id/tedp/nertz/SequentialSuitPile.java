@@ -19,17 +19,27 @@ public class SequentialSuitPile extends Pile {
         return (faceup.peek().getFace() == Card.Face.KING);
     }
 
-    public void push(Card card) throws CardSequenceException {
+    public synchronized void push(Card card) throws CardSequenceException {
         if (faceup.isEmpty()) {
+            // Only accept Aces
+            if (!isValidPush(card)) {
+                throw new CardSequenceException(card);
+            }
             suit = card.getSuit();
             faceup.push(card);
         } else {
-            if (card.getSuit() != suit ||
-                    card.getValue() != faceup.peek().getValue() + 1)
-            {
+            if (!isValidPush(card)) {
                 throw new CardSequenceException(card, faceup.peek());
             }
             faceup.push(card);
         }
+    }
+
+    public boolean isValidPush(Card c) {
+        if (isEmpty())
+            return (c.getFace() == Card.Face.ACE);
+
+        return (c.getSuit() == this.suit
+                && c.getValue() == faceup.peek().getValue() + 1);
     }
 }

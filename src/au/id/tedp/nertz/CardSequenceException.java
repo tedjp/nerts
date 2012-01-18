@@ -10,4 +10,8 @@ public class CardSequenceException extends Exception {
     public CardSequenceException(Card top, Card newCard) {
         super("Cannot play " + newCard + " on " + top);
     }
+
+    public CardSequenceException(Card firstCard) {
+        super("Cannot play " + firstCard + " as first card");
+    }
 }

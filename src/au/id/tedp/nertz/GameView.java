@@ -289,6 +289,31 @@ class GameView extends View implements View.OnTouchListener {
         }
     }
 
+    private Pile getLakePile(float x, float y) {
+        Lake lake = player.getLake();
+        int width = lakeArea.right - lakeArea.left;
+        x -= (float) lakeArea.left;
+        int pileNum = (int) (x / (float) width * (float) LAKE_PILES);
+        return lake.getPiles().get(pileNum);
+    }
+
+    /** Given a particular card, return the appropriate pile for it.
+     * Returns null if there is no appropriate pile.
+     * If an Ace is passed, a new pile will be created.
+     */
+    private Pile getLakePile(Card c) {
+        Lake lake = player.getLake();
+        for (SequentialSuitPile p : lake.getPiles()) {
+            if (p.isValidPush(c))
+                return p;
+        }
+
+        if (c.getFace() == Card.Face.ACE)
+            return lake.createEmptyPile();
+
+        return null;
+    }
+
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
         switch (ev.getActionMasked()) {
@@ -328,13 +353,29 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
+                Pile toPile = null;
                 switch (detectArea(ev)) {
                     case STREAM:
                         handleStreamUp(ev.getX(), ev.getY());
                         break;
+                    case LAKE:
+                        toPile = getLakePile(liveCard);
+                        break;
                 }
-                // Just put the card back where it was for now
-                returnLiveCard();
+
+                if (toPile != null) {
+                    try {
+                        toPile.push(liveCard);
+                        liveCard = null;
+                        fromPile = null;
+                    }
+                    catch (CardSequenceException e) {
+                        Log.e("Nertz", "Failed to push live card onto destination pile");
+                        returnLiveCard();
+                    }
+                } else {
+                    returnLiveCard();
+                }
                 // Ensure that if the touch event began on the stream
                 // pile that it is no longer considered the start of the
                 // touch.
