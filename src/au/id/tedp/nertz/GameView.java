@@ -251,6 +251,8 @@ class GameView extends View implements View.OnTouchListener {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 fromPile = null;
+                liveCardX = ev.getX();
+                liveCardY = ev.getY();
 
                 switch (area) {
                     case NERTZ_PILE:
