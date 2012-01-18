@@ -187,33 +187,40 @@ class GameView extends View implements View.OnTouchListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        calculateAreas();
+        if (staticTableBitmap == null) {
+            staticTableBitmap = Bitmap.createBitmap(getWidth(),
+                    getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(staticTableBitmap);
+            calculateAreas();
 
-        canvas.drawColor(0xff669900);
+            c.drawColor(0xff669900);
 
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(0xff99cc00);
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(0xff99cc00);
 
-        canvas.drawRect(nertzPileArea, paint);
-        canvas.drawRect(riverArea, paint);
-        canvas.drawRect(streamArea, paint);
-        canvas.drawRect(lakeArea, paint);
-        canvas.drawRect(oppArea, paint);
+            c.drawRect(nertzPileArea, paint);
+            c.drawRect(riverArea, paint);
+            c.drawRect(streamArea, paint);
+            c.drawRect(lakeArea, paint);
+            c.drawRect(oppArea, paint);
 
-        /*
-        cardWidth = getWidth() / 11;
-        cardHeight = getHeight() / 4;
-        */
+            /*
+            cardWidth = getWidth() / 11;
+            cardHeight = getHeight() / 4;
+            */
 
-        Bitmap cardBmp = DeckGraphics.getCardBack(res).getBitmap();
-        cardWidth = cardBmp.getWidth();
-        cardHeight = cardBmp.getHeight();
+            Bitmap cardBmp = DeckGraphics.getCardBack(res).getBitmap();
+            cardWidth = cardBmp.getWidth();
+            cardHeight = cardBmp.getHeight();
 
-        drawNertzPile(canvas);
-        drawRiver(canvas);
-        drawStream(canvas, player.getStream());
-        drawLake(canvas);
+            drawNertzPile(c);
+            drawRiver(c);
+            drawStream(c, player.getStream());
+            drawLake(c);
+        }
+        Rect fullDest = new Rect(0, 0, getWidth(), getHeight());
+        canvas.drawBitmap(staticTableBitmap, null, fullDest, null);
         drawLiveCard(canvas);
     }
 
@@ -256,6 +263,7 @@ class GameView extends View implements View.OnTouchListener {
     private float liveCardX, liveCardY;
     //! The touch event began on the stream pile
     private boolean streamPileTouched;
+    private Bitmap staticTableBitmap;
 
     private TableauPile getRiverPile(float x, float y) {
         River river = player.getRiver();
@@ -334,6 +342,7 @@ class GameView extends View implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent ev) {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                staticTableBitmap = null;
                 fromPile = null;
                 liveCard = null;
                 streamPileTouched = false;
@@ -369,6 +378,7 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
+                staticTableBitmap = null;
                 TargetPile toPile = null;
                 switch (detectArea(ev)) {
                     case STREAM:
@@ -426,6 +436,7 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_CANCEL:
+                staticTableBitmap = null;
                 returnLiveCard();
                 streamPileTouched = false;
                 break;
