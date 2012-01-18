@@ -261,15 +261,8 @@ class GameView extends View implements View.OnTouchListener {
 
         if (x < (float)streamArea.centerX()) {
             // Waste pile
-            if (!stream.isFaceUpEmpty()) {
-                try {
-                    liveCard = stream.pop();
-                    fromPile = stream;
-                }
-                catch (EmptyPileException e) {
-                    Log.e("Nertz", "Tried to pop stream but it was empty");
-                }
-            }
+            if (!stream.isFaceUpEmpty())
+                fromPile = stream;
         } else {
             // Stream pile (face down)
             streamPileTouched = true;
@@ -321,7 +314,8 @@ class GameView extends View implements View.OnTouchListener {
 
                 // Only pop a card if the pile was selected but nothing
                 // has been popped from it yet.
-                if (fromPile != null && liveCard == null) {
+                if (fromPile != null) {
+                    junit.framework.Assert.assertNull(liveCard);
                     try {
                         if (!fromPile.isEmpty())
                             liveCard = fromPile.pop();
