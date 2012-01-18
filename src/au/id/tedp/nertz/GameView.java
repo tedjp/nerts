@@ -67,23 +67,20 @@ class GameView extends View implements View.OnTouchListener {
         int areaWidth = streamArea.right - streamArea.left;
         int areaHeight = streamArea.bottom - streamArea.top;
 
+        Rect dest = new Rect(0, streamArea.centerY() - cardHeight / 2, 0,
+                streamArea.centerY() + cardHeight / 2);
+
         if (!stream.isFaceDownEmpty()) {
             BitmapDrawable cardBack = DeckGraphics.getCardBack(res);
-            Rect dest = new Rect();
             dest.left = streamArea.left + (areaWidth - cardWidth * 2) * 2 / 3 + cardWidth;
-            dest.top = streamArea.top + (areaHeight - cardHeight) / 2;
             dest.right = dest.left + cardWidth;
-            dest.bottom = dest.top + cardHeight;
             canvas.drawBitmap(cardBack.getBitmap(), null, dest, null);
         }
 
         if (!stream.isFaceUpEmpty()) {
             BitmapDrawable drawable = stream.topCardImage(res);
-            Rect dest = new Rect();
             dest.left = streamArea.left + (areaWidth - cardWidth * 2) / 3;
-            dest.top = streamArea.top + (areaHeight - cardHeight) / 2;
             dest.right = dest.left + cardWidth;
-            dest.bottom = dest.top + cardHeight;
             canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
         }
     }
