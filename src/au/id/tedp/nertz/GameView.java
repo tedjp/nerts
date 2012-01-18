@@ -236,6 +236,14 @@ class GameView extends View implements View.OnTouchListener {
     private Pile fromPile;
     private float liveCardX, liveCardY;
 
+    private Pile getRiverPile(float x, float y) {
+        ArrayList<TableauPile> river = player.getRiver();
+        float cardAreaWidth = riverArea.right - riverArea.left;
+        int cardNum = (int) ((x - (float) riverArea.left) / (cardAreaWidth) * (float) river.size());
+        Log.d("Nertz", "getRiverPile returning card " + cardNum);
+        return river.get(cardNum);
+    }
+
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
         Area area = detectArea(ev);
@@ -247,6 +255,10 @@ class GameView extends View implements View.OnTouchListener {
                 switch (area) {
                     case NERTZ_PILE:
                         fromPile = player.getNertzPile();
+                        break;
+
+                    case RIVER:
+                        fromPile = getRiverPile(ev.getX(), ev.getY());
                         break;
                 }
 
