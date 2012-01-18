@@ -233,6 +233,8 @@ class GameView extends View implements View.OnTouchListener {
     private Card liveCard;
     private Pile fromPile;
     private float liveCardX, liveCardY;
+    //! The touch event began on the stream pile
+    private boolean streamPileTouched;
 
     private Pile getRiverPile(float x, float y) {
         ArrayList<TableauPile> river = player.getRiver();
@@ -243,7 +245,7 @@ class GameView extends View implements View.OnTouchListener {
     }
 
     private void returnLiveCard() {
-        if (liveCard == null)
+        if (liveCard == null || fromPile == null)
             return;
 
         try {
@@ -254,11 +256,52 @@ class GameView extends View implements View.OnTouchListener {
         }
     }
 
+    private void handleStreamTouch(float x, float y) {
+        Stream stream = player.getStream();
+
+        if (x < (float)streamArea.centerX()) {
+            // Waste pile
+            if (!stream.isFaceUpEmpty()) {
+                try {
+                    liveCard = stream.pop();
+                    fromPile = stream;
+                }
+                catch (EmptyPileException e) {
+                    Log.e("Nertz", "Tried to pop stream but it was empty");
+                }
+            }
+        } else {
+            // Stream pile (face down)
+            streamPileTouched = true;
+        }
+    }
+
+    private void handleStreamUp(float x, float y) {
+        if (streamPileTouched &&
+                x > (float)streamArea.centerX())
+        {
+            // Stream pile (face down)
+            Stream stream = player.getStream();
+            try {
+                if (!stream.isFaceDownEmpty())
+                    stream.flipThree();
+                else
+                    stream.restartPile();
+            }
+            catch (EmptyPileException e) {
+                Log.e("Nertz", "Tried to handle stream touch, but stream was empty");
+            }
+        }
+    }
+
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 fromPile = null;
+                liveCard = null;
+                streamPileTouched = false;
+
                 liveCardX = ev.getX();
                 liveCardY = ev.getY();
 
@@ -270,9 +313,15 @@ class GameView extends View implements View.OnTouchListener {
                     case RIVER:
                         fromPile = getRiverPile(ev.getX(), ev.getY());
                         break;
+
+                    case STREAM:
+                        handleStreamTouch(ev.getX(), ev.getY());
+                        break;
                 }
 
-                if (fromPile != null) {
+                // Only pop a card if the pile was selected but nothing
+                // has been popped from it yet.
+                if (fromPile != null && liveCard == null) {
                     try {
                         if (!fromPile.isEmpty())
                             liveCard = fromPile.pop();
@@ -283,8 +332,19 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
+                switch (detectArea(ev)) {
+                    case STREAM:
+                        handleStreamUp(ev.getX(), ev.getY());
+                        break;
+                }
                 // Just put the card back where it was for now
                 returnLiveCard();
+                // Ensure that if the touch event began on the stream
+                // pile that it is no longer considered the start of the
+                // touch.
+                // Probably better to just track the down & up locations
+                // then figure out what to do.
+                streamPileTouched = false;
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -294,6 +354,7 @@ class GameView extends View implements View.OnTouchListener {
 
             case MotionEvent.ACTION_CANCEL:
                 returnLiveCard();
+                streamPileTouched = false;
                 break;
         }
 
