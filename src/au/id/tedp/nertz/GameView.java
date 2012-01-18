@@ -162,6 +162,9 @@ class GameView extends View implements View.OnTouchListener {
     }
 
     private void drawLiveCard(Canvas canvas) {
+         if (liveCard == null)
+             return;
+
          BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, liveCard);
          RectF dest = new RectF(liveCardX - cardWidth / 2,
                  liveCardY - cardHeight / 2,
@@ -193,9 +196,7 @@ class GameView extends View implements View.OnTouchListener {
         drawRiver(canvas);
         drawStream(canvas, player.getStream());
         drawLake(canvas);
-
-        if (liveCard != null)
-            drawLiveCard(canvas);
+        drawLiveCard(canvas);
     }
 
     protected enum TouchState {
@@ -244,6 +245,18 @@ class GameView extends View implements View.OnTouchListener {
         return river.get(cardNum);
     }
 
+    private void returnLiveCard() {
+        if (liveCard == null)
+            return;
+
+        try {
+            fromPile.push(liveCard);
+            liveCard = null;
+        } catch (CardSequenceException e) {
+            Log.e("Nertz", "Cannot put card " + liveCard.toString() + " back on its original pile!");
+        }
+    }
+
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
         Area area = detectArea(ev);
@@ -274,7 +287,8 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                // TODO
+                // Just put the card back where it was for now
+                returnLiveCard();
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -283,12 +297,7 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_CANCEL:
-                try {
-                    fromPile.push(liveCard);
-                } catch (CardSequenceException e) {
-                    Log.e("Nertz", "Cannot put card " + liveCard.toString() + " back on its original pile!");
-                }
-                liveCard = null;
+                returnLiveCard();
                 break;
         }
         // XXX: Pretty sure we need to trigger the redraw
