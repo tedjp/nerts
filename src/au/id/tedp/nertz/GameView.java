@@ -371,10 +371,12 @@ class GameView extends View implements View.OnTouchListener {
                         handleStreamUp(ev.getX(), ev.getY());
                         break;
                     case LAKE:
-                        toPile = getLakePile(liveCard);
+                        if (liveCard != null)
+                            toPile = getLakePile(liveCard);
                         break;
                     case RIVER:
-                        toPile = getRiverPile(ev.getX(), ev.getY(), liveCard);
+                        if (liveCard != null)
+                            toPile = getRiverPile(ev.getX(), ev.getY(), liveCard);
                         break;
                 }
 
