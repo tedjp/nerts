@@ -25,6 +25,8 @@ public class TableauPile extends Pile {
     public boolean isValidMove(Card nextCard) {
         if (!faceup.isEmpty())
             return isValidMove(faceup.peek(), nextCard);
-        return (nextCard.getFace() == Card.Face.KING);
+        // Any card from the Nertz pile, waste pile, or another pile
+        // is valid.
+        return true;
     }
 }
