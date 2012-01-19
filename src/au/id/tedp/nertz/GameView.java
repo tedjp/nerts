@@ -297,7 +297,7 @@ class GameView extends View implements View.OnTouchListener {
         return lake.getPiles().get(pileNum);
     }
 
-    /** Given a particular card, return the appropriate pile for it.
+    /** Given a particular card, return the appropriate Lake Pile for it.
      * Returns null if there is no appropriate pile.
      * If an Ace is passed, a new pile will be created.
      */
