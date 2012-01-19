@@ -166,9 +166,9 @@ class GameView extends View implements View.OnTouchListener {
 
         BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, liveCard);
         RectF dest = new RectF(liveCardX - cardWidth / 2,
-                liveCardY - cardHeight / 2,
+                liveCardY - cardHeight / 8 * 7,
                 liveCardX + cardWidth / 2,
-                liveCardY + cardHeight / 2);
+                liveCardY + cardHeight / 8);
         canvas.drawBitmap(bd.getBitmap(), null, dest, null);
     }
 
