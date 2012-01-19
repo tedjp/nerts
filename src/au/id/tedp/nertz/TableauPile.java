@@ -21,4 +21,10 @@ public class TableauPile extends Pile {
         return (top.getColor() != newCard.getColor()
                 && newCard.getValue() + 1 == top.getValue());
     }
+
+    public boolean isValidMove(Card nextCard) {
+        if (!faceup.isEmpty())
+            return isValidMove(faceup.peek(), nextCard);
+        return (nextCard.getFace() == Card.Face.KING);
+    }
 }

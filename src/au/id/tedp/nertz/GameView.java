@@ -314,6 +314,18 @@ class GameView extends View implements View.OnTouchListener {
         return null;
     }
 
+    // XXX: This duplicates code from another implementation of getRiverPile().
+    private Pile getRiverPile(float x, float y, Card card) {
+        ArrayList<TableauPile> river = player.getRiver();
+        int num = (int) ((x - ((float) riverArea.left)) / (float) (riverArea.right - riverArea.left) * river.size());
+        TableauPile target = river.get(num);
+        if (target.isValidMove(card))
+            return target;
+        return null;
+    }
+
+    // XXX: Provide getRiverPile(Card c) to allow flicking to the river?
+
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
         switch (ev.getActionMasked()) {
@@ -360,6 +372,9 @@ class GameView extends View implements View.OnTouchListener {
                         break;
                     case LAKE:
                         toPile = getLakePile(liveCard);
+                        break;
+                    case RIVER:
+                        toPile = getRiverPile(ev.getX(), ev.getY(), liveCard);
                         break;
                 }
 
