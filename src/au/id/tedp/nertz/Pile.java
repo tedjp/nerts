@@ -63,4 +63,12 @@ public class Pile {
     public void push(Card c) throws CardSequenceException {
         faceup.push(c);
     }
+
+    public boolean isFaceDownEmpty() {
+        return facedown.isEmpty();
+    }
+
+    public boolean isFaceUpEmpty() {
+        return faceup.isEmpty();
+    }
 }

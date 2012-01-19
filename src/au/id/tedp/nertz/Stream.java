@@ -35,12 +35,4 @@ public class Stream extends Pile {
         while (!faceup.isEmpty())
             facedown.push(faceup.pop());
     }
-
-    public boolean isFaceDownEmpty() {
-        return facedown.isEmpty();
-    }
-
-    public boolean isFaceUpEmpty() {
-        return faceup.isEmpty();
-    }
 }

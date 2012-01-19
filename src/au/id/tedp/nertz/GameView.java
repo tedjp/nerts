@@ -383,6 +383,19 @@ class GameView extends View implements View.OnTouchListener {
                 if (toPile != null) {
                     try {
                         toPile.push(liveCard);
+
+                        try {
+                            // Nertz Pile needs the top card flipped
+                            // after successfully moving the live card
+                            // from it.
+                            if (fromPile == player.getNertzPile()
+                                    && fromPile.isFaceUpEmpty() == true
+                                    && fromPile.isFaceDownEmpty() == false)
+                                fromPile.flipTopCard();
+                        }
+                        catch (EmptyPileException e) {
+                            Log.e("Nertz", "Tried to flip top nertz pile card but pile was empty");
+                        }
                         liveCard = null;
                         fromPile = null;
                     }
