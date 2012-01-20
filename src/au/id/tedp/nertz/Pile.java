@@ -84,4 +84,8 @@ public class Pile {
     public void push(Card c) throws CardSequenceException {
         faceup.push(c);
     }
+
+    public Deque<Card> getFaceUpCards() {
+        return faceup;
+    }
 }

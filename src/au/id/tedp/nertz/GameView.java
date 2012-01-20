@@ -11,6 +11,8 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import java.util.Deque;
+import java.util.Iterator;
 
 import android.util.Log;
 
@@ -102,14 +104,25 @@ class GameView extends View implements View.OnTouchListener {
 
     protected void drawRiverPile(Canvas canvas, TableauPile pile, int pilenum) {
         int top = riverArea.top + (riverArea.bottom - riverArea.top) / 15;
-        int sep = ((riverArea.right - riverArea.left) - cardWidth * 4) / 5;
+        int hsep = ((riverArea.right - riverArea.left) - cardWidth * 4) / 5;
+        int voffset = cardHeight / 4;
+        Deque<Card> faceup = pile.getFaceUpCards();
+        // Figure out the max vsep allowed by the number of cards
+        int max_voffset = (riverArea.bottom - riverArea.top) / faceup.size();
+        if (voffset > max_voffset)
+            voffset = max_voffset;
         Rect dest = new Rect();
-        dest.left = riverArea.left + (1 + pilenum) * sep + pilenum * cardWidth;
+        dest.left = riverArea.left + (1 + pilenum) * hsep + pilenum * cardWidth;
         dest.top = top;
         dest.right = dest.left + cardWidth;
         dest.bottom = dest.top + cardHeight;
-        BitmapDrawable drawable = pile.topCardImage(res);
-        canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
+        for (Iterator<Card> it = faceup.descendingIterator(); it.hasNext(); ) {
+            Card card = it.next();
+            BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, card);
+            canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+            dest.top += voffset;
+            dest.bottom += voffset;
+        }
     }
 
     protected void drawRiver(Canvas canvas) {
