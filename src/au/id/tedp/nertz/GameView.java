@@ -11,7 +11,6 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import java.util.ArrayList;
 
 import android.util.Log;
 
@@ -114,10 +113,10 @@ class GameView extends View implements View.OnTouchListener {
     }
 
     protected void drawRiver(Canvas canvas) {
-        ArrayList<TableauPile> river = player.getRiver();
+        River river = player.getRiver();
 
         int pilenum = 0;
-        for (TableauPile pile : river) {
+        for (TableauPile pile : river.getPiles()) {
             if (!pile.isEmpty())
                 drawRiverPile(canvas, pile, pilenum);
             ++pilenum;
@@ -239,7 +238,7 @@ class GameView extends View implements View.OnTouchListener {
     private boolean streamPileTouched;
 
     private Pile getRiverPile(float x, float y) {
-        ArrayList<TableauPile> river = player.getRiver();
+        River river = player.getRiver();
         float cardAreaWidth = riverArea.right - riverArea.left;
         int pileNum = (int) ((x - (float) riverArea.left) / (cardAreaWidth) * (float) river.size());
         Log.d("Nertz", "getRiverPile returning pile " + pileNum);
@@ -299,7 +298,7 @@ class GameView extends View implements View.OnTouchListener {
 
     // XXX: This duplicates code from another implementation of getRiverPile().
     private Pile getRiverPile(float x, float y, Card card) {
-        ArrayList<TableauPile> river = player.getRiver();
+        River river = player.getRiver();
         int num = (int) ((x - ((float) riverArea.left)) / (float) (riverArea.right - riverArea.left) * river.size());
         TableauPile target = river.get(num);
         if (target.isValidMove(card))

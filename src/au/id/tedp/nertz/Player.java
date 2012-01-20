@@ -7,7 +7,7 @@ class Player {
     private String name;
     private Deck deck;
     private Stream stream;
-    private ArrayList<TableauPile> river;
+    private River river;
     private NertzPile nertzpile;
     private Lake lake;
 
@@ -27,12 +27,11 @@ class Player {
         Dealer.dealFaceDown(deck, nertzpile, 13);
         nertzpile.flipTopCard();
 
-        river = new ArrayList<TableauPile>(4);
-        for (int i = 0; i < 4; ++i) {
-            TableauPile tp = new TableauPile();
+        river = new River();
+
+        for (Pile p: river.getPiles()) {
             // Card will be flipped when game starts
-            tp.addFaceDown(deck.nextCard());
-            river.add(tp);
+            p.addFaceDown(deck.nextCard());
         }
 
         stream = new Stream();
@@ -43,7 +42,7 @@ class Player {
     public void start() {
         // XXX: Check game state
         try {
-            for (TableauPile pile : river)
+            for (Pile pile: river.getPiles())
                 pile.flipTopCard();
             stream.flipThree();
         } catch (EmptyPileException e) {
@@ -59,7 +58,7 @@ class Player {
         return nertzpile;
     }
 
-    public ArrayList<TableauPile> getRiver() {
+    public River getRiver() {
         return river;
     }
 
