@@ -241,9 +241,9 @@ class GameView extends View implements View.OnTouchListener {
     private Pile getRiverPile(float x, float y) {
         ArrayList<TableauPile> river = player.getRiver();
         float cardAreaWidth = riverArea.right - riverArea.left;
-        int cardNum = (int) ((x - (float) riverArea.left) / (cardAreaWidth) * (float) river.size());
-        Log.d("Nertz", "getRiverPile returning card " + cardNum);
-        return river.get(cardNum);
+        int pileNum = (int) ((x - (float) riverArea.left) / (cardAreaWidth) * (float) river.size());
+        Log.d("Nertz", "getRiverPile returning pile " + pileNum);
+        return river.get(pileNum);
     }
 
     private void returnLiveCard() {
