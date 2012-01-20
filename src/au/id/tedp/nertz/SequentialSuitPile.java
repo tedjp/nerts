@@ -5,7 +5,7 @@ package au.id.tedp.nertz;
  * sequential, starting from Ace through King.
  */
 
-public class SequentialSuitPile extends Pile {
+public class SequentialSuitPile extends Pile implements TargetPile {
     private Card.Suit suit;
 
     public SequentialSuitPile() {
@@ -22,20 +22,20 @@ public class SequentialSuitPile extends Pile {
     public synchronized void push(Card card) throws CardSequenceException {
         if (faceup.isEmpty()) {
             // Only accept Aces
-            if (!isValidPush(card)) {
+            if (!isValidMove(card)) {
                 throw new CardSequenceException(card);
             }
             suit = card.getSuit();
             faceup.push(card);
         } else {
-            if (!isValidPush(card)) {
+            if (!isValidMove(card)) {
                 throw new CardSequenceException(card, faceup.peek());
             }
             faceup.push(card);
         }
     }
 
-    public boolean isValidPush(Card c) {
+    public boolean isValidMove(Card c) {
         if (isEmpty())
             return (c.getFace() == Card.Face.ACE);
 

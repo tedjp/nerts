@@ -1,6 +1,6 @@
 package au.id.tedp.nertz;
 
-public class TableauPile extends Pile {
+public class TableauPile extends Pile implements TargetPile {
     public TableauPile() {
         super(0, 13);
     }

@@ -42,7 +42,7 @@ public class Lake {
      */
     public Pile getSuitablePile(Card c) {
         for (SequentialSuitPile p : piles) {
-            if (p.isValidPush(c))
+            if (p.isValidMove(c))
                 return p;
         }
 
