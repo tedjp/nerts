@@ -3,7 +3,7 @@ package au.id.tedp.nertz;
 import java.util.ArrayList;
 import java.util.List;
 
-class River {
+class River extends TargetArea {
     private ArrayList<TableauPile> piles;
 
     /**
