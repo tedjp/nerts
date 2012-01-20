@@ -200,8 +200,14 @@ class GameView extends View implements View.OnTouchListener {
         canvas.drawRect(lakeArea, paint);
         canvas.drawRect(oppArea, paint);
 
+        /*
         cardWidth = getWidth() / 11;
         cardHeight = getHeight() / 4;
+        */
+
+        Bitmap cardBmp = DeckGraphics.getCardBack(res).getBitmap();
+        cardWidth = cardBmp.getWidth();
+        cardHeight = cardBmp.getHeight();
 
         drawNertzPile(canvas);
         drawRiver(canvas);
