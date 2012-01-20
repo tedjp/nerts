@@ -297,23 +297,6 @@ class GameView extends View implements View.OnTouchListener {
         return lake.getPiles().get(pileNum);
     }
 
-    /** Given a particular card, return the appropriate Lake Pile for it.
-     * Returns null if there is no appropriate pile.
-     * If an Ace is passed, a new pile will be created.
-     */
-    private Pile getLakePile(Card c) {
-        Lake lake = player.getLake();
-        for (SequentialSuitPile p : lake.getPiles()) {
-            if (p.isValidPush(c))
-                return p;
-        }
-
-        if (c.getFace() == Card.Face.ACE)
-            return lake.createEmptyPile();
-
-        return null;
-    }
-
     // XXX: This duplicates code from another implementation of getRiverPile().
     private Pile getRiverPile(float x, float y, Card card) {
         ArrayList<TableauPile> river = player.getRiver();
@@ -372,7 +355,7 @@ class GameView extends View implements View.OnTouchListener {
                         break;
                     case LAKE:
                         if (liveCard != null)
-                            toPile = getLakePile(liveCard);
+                            toPile = player.getLake().getSuitablePile(liveCard);
                         break;
                     case RIVER:
                         if (liveCard != null)

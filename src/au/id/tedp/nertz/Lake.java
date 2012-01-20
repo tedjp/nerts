@@ -35,4 +35,21 @@ public class Lake {
         piles.add(pile);
         return pile;
     }
+
+    /** Given a particular card, return the appropriate Lake Pile for it.
+     * Returns null if there is no appropriate pile.
+     * If an Ace is passed, a new pile will be created.
+     */
+    public Pile getSuitablePile(Card c) {
+        for (SequentialSuitPile p : piles) {
+            if (p.isValidPush(c))
+                return p;
+        }
+
+        if (c.getFace() == Card.Face.ACE)
+            return createEmptyPile();
+
+        return null;
+    }
+
 }
