@@ -42,10 +42,9 @@ public class Lake extends TargetArea {
      */
     @Override
     public TargetPile findTargetPile(Card c) {
-        for (SequentialSuitPile p : piles) {
-            if (p.isValidMove(c))
-                return p;
-        }
+        TargetPile pile = super.findTargetPile(c);
+        if (pile != null)
+            return pile;
 
         if (c.getFace() == Card.Face.ACE)
             return createEmptyPile();
