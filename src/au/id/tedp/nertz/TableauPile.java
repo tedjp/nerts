@@ -1,8 +1,8 @@
 package au.id.tedp.nertz;
 
-public class TableauPile extends Pile implements TargetPile {
-    public TableauPile() {
-        super(0, 13);
+public class TableauPile extends TargetPile {
+    public TableauPile(Card firstCard) {
+        super(firstCard);
     }
 
     public void play(Card c) throws CardSequenceException {

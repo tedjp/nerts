@@ -2,6 +2,7 @@ package au.id.tedp.nertz;
 
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.Collection;
 import java.util.Random;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Iterator;
 
 public class Deck {
     private List<Card> cards;
-    private Iterator<Card> iterator;
+    private int cardnum;
     private Player owner;
 
     public Deck(Player owner) {
@@ -21,7 +22,7 @@ public class Deck {
             }
         }
 
-        iterator = cards.iterator();
+        cardnum = 0;
     }
 
     public void shuffle() {
@@ -35,27 +36,32 @@ public class Deck {
         }
         this.cards = newDeck;
 
-        iterator = cards.iterator();
+        cardnum = 0;
     }
 
     public String toString() {
         StringBuilder str = new StringBuilder();
-        Iterator<Card> it = cards.iterator();
-        while (it.hasNext()) {
-            Card card = it.next();
-            str.append(card.toString());
-            if (it.hasNext())
+        for (int i = 0; i < cards.size(); ++i) {
+            str.append(cards.get(i).toString());
+            if (i < cards.size() - 1)
                 str.append("\n");
         }
         return str.toString();
     }
 
-    public Card nextCard() {
-        return iterator.next();
+    public Card dealCard() {
+        return cards.get(cardnum++);
     }
 
-    public boolean hasNextCard() {
-        return iterator.hasNext();
+    public Collection<Card> dealCards(int num) {
+        Collection<Card> deal = cards.subList(cardnum, cardnum + num);
+        cardnum += num;
+        return deal;
+    }
+
+    public Collection<Card> dealRemaining() {
+        Collection<Card> deal = cards.subList(cardnum, cards.size());
+        return deal;
     }
 
     public Player getOwner() {

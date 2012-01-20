@@ -23,19 +23,12 @@ class Player {
     public void setup(Lake lake) throws EmptyPileException {
         deck.shuffle();
 
-        nertzpile = new NertzPile();
-        Dealer.dealFaceDown(deck, nertzpile, 13);
+        nertzpile = new NertzPile(deck.dealCards(13));
         nertzpile.flipTopCard();
 
-        river = new River();
+        river = new River(deck.dealCards(River.NUM_PILES));
 
-        for (Pile p: river.getPiles()) {
-            // Card will be flipped when game starts
-            p.addFaceDown(deck.nextCard());
-        }
-
-        stream = new Stream();
-        Dealer.dealRemaining(deck, stream);
+        stream = new Stream(deck.dealRemaining());
         this.lake = lake;
     }
 

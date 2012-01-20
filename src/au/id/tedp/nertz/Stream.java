@@ -1,12 +1,13 @@
 package au.id.tedp.nertz;
 
+import java.util.Collection;
 import java.util.Deque;
 
 public class Stream extends Pile {
-    public Stream() {
+    public Stream(Collection<Card> cards) {
         /* Since the stream can have all its cards either face down or
          * face up, provide enough storage for both cases. */
-        super(35, 35);
+        super(cards, 35);
     }
 
     public void flipThree() throws EmptyPileException {

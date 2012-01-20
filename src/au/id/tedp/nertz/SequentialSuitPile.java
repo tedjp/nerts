@@ -5,7 +5,7 @@ package au.id.tedp.nertz;
  * sequential, starting from Ace through King.
  */
 
-public class SequentialSuitPile extends Pile implements TargetPile {
+public class SequentialSuitPile extends TargetPile {
     private Card.Suit suit;
 
     public SequentialSuitPile() {

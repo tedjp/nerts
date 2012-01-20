@@ -30,7 +30,7 @@ public class Lake extends TargetArea {
      * for forCard to be the first card in it.
      * @return The new Pile.
      */
-    public Pile createEmptyPile() {
+    public SequentialSuitPile createEmptyPile() {
         SequentialSuitPile pile = new SequentialSuitPile();
         piles.add(pile);
         return pile;
@@ -40,7 +40,7 @@ public class Lake extends TargetArea {
      * Returns null if there is no appropriate pile.
      * If an Ace is passed, a new pile will be created.
      */
-    public Pile getSuitablePile(Card c) {
+    public TargetPile getSuitablePile(Card c) {
         for (SequentialSuitPile p : piles) {
             if (p.isValidMove(c))
                 return p;

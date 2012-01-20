@@ -237,7 +237,7 @@ class GameView extends View implements View.OnTouchListener {
     //! The touch event began on the stream pile
     private boolean streamPileTouched;
 
-    private Pile getRiverPile(float x, float y) {
+    private TableauPile getRiverPile(float x, float y) {
         River river = player.getRiver();
         float cardAreaWidth = riverArea.right - riverArea.left;
         int pileNum = (int) ((x - (float) riverArea.left) / (cardAreaWidth) * (float) river.size());
@@ -297,7 +297,7 @@ class GameView extends View implements View.OnTouchListener {
     }
 
     // XXX: This duplicates code from another implementation of getRiverPile().
-    private Pile getRiverPile(float x, float y, Card card) {
+    private TableauPile getRiverPile(float x, float y, Card card) {
         River river = player.getRiver();
         int num = (int) ((x - ((float) riverArea.left)) / (float) (riverArea.right - riverArea.left) * river.size());
         TableauPile target = river.get(num);
@@ -347,7 +347,7 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                Pile toPile = null;
+                TargetPile toPile = null;
                 switch (detectArea(ev)) {
                     case STREAM:
                         handleStreamUp(ev.getX(), ev.getY());
