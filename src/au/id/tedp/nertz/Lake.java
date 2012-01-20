@@ -40,7 +40,8 @@ public class Lake extends TargetArea {
      * Returns null if there is no appropriate pile.
      * If an Ace is passed, a new pile will be created.
      */
-    public TargetPile getSuitablePile(Card c) {
+    @Override
+    public TargetPile findTargetPile(Card c) {
         for (SequentialSuitPile p : piles) {
             if (p.isValidMove(c))
                 return p;
