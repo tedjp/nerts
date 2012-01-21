@@ -2,6 +2,7 @@ package au.id.tedp.nertz;
 
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
+import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.Collection;
 
@@ -89,5 +90,14 @@ public class Pile {
 
     public Stack<Card> getFaceUpCards() {
         return faceup;
+    }
+
+    public Card peek() {
+        try {
+            return faceup.peek();
+        }
+        catch (EmptyStackException e) {
+            return null;
+        }
     }
 }
