@@ -1,7 +1,6 @@
 package au.id.tedp.nertz;
 
 import java.util.Collection;
-import java.util.Deque;
 
 public class Stream extends Pile {
     public Stream(Collection<Card> cards) {

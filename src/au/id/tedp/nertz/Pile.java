@@ -2,41 +2,43 @@ package au.id.tedp.nertz;
 
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
-import java.util.ArrayDeque;
+import java.util.Stack;
 import java.util.Collection;
-import java.util.Deque;
 
 public class Pile {
-    protected Deque<Card> facedown, faceup;
+    protected Stack<Card> facedown, faceup;
 
     private final int DEFAULT_DECKSIZE = 13;
 
     public Pile() {
-        this.facedown = new ArrayDeque<Card>(DEFAULT_DECKSIZE);
-        this.faceup = new ArrayDeque<Card>(DEFAULT_DECKSIZE);
+        this.facedown = new Stack<Card>();
+        this.faceup = new Stack<Card>();
     }
 
     public Pile(Collection<Card> facedown, Collection<Card> faceup) {
-        this.facedown = new ArrayDeque<Card>(facedown);
-        this.faceup = new ArrayDeque<Card>(faceup);
+        this.facedown = new Stack<Card>();
+        this.facedown.addAll(facedown);
+        this.faceup = new Stack<Card>();
+        this.faceup.addAll(faceup);
     }
 
     public Pile(Collection<Card> facedown, int faceUpCapacity) {
-        this.facedown = new ArrayDeque<Card>(facedown);
-        this.faceup = new ArrayDeque<Card>(faceUpCapacity);
+        this.facedown = new Stack<Card>();
+        this.facedown.addAll(facedown);
+        this.faceup = new Stack<Card>();
     }
 
     public Pile(Card faceup) {
         // Starting with a single face-up card means we'll probably never add
         // any face-down cards.
-        this.facedown = new ArrayDeque<Card>(0);
-        this.faceup = new ArrayDeque<Card>(DEFAULT_DECKSIZE);
+        this.facedown = new Stack<Card>();
+        this.faceup = new Stack<Card>();
         this.faceup.push(faceup);
     }
 
     public Pile(int faceDownCapacity, int faceUpCapacity) {
-        facedown = new ArrayDeque<Card>(faceDownCapacity);
-        faceup = new ArrayDeque<Card>(faceUpCapacity);
+        facedown = new Stack<Card>();
+        faceup = new Stack<Card>();
     }
 
     public boolean isEmpty() {
@@ -85,7 +87,7 @@ public class Pile {
         faceup.push(c);
     }
 
-    public Deque<Card> getFaceUpCards() {
+    public Stack<Card> getFaceUpCards() {
         return faceup;
     }
 }

@@ -11,7 +11,7 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import java.util.Deque;
+import java.util.Stack;
 import java.util.Iterator;
 
 import android.util.Log;
@@ -106,7 +106,7 @@ class GameView extends View implements View.OnTouchListener {
         int top = riverArea.top + (riverArea.bottom - riverArea.top) / 15;
         int hsep = ((riverArea.right - riverArea.left) - cardWidth * 4) / 5;
         int voffset = cardHeight / 4;
-        Deque<Card> faceup = pile.getFaceUpCards();
+        Stack<Card> faceup = pile.getFaceUpCards();
         // Figure out the max vsep allowed by the number of cards
         int max_voffset = (riverArea.bottom - riverArea.top) / faceup.size();
         if (voffset > max_voffset)
@@ -116,8 +116,7 @@ class GameView extends View implements View.OnTouchListener {
         dest.top = top;
         dest.right = dest.left + cardWidth;
         dest.bottom = dest.top + cardHeight;
-        for (Iterator<Card> it = faceup.descendingIterator(); it.hasNext(); ) {
-            Card card = it.next();
+        for (Card card: faceup) {
             BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, card);
             canvas.drawBitmap(bd.getBitmap(), null, dest, null);
             dest.top += voffset;
