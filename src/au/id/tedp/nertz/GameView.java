@@ -306,12 +306,12 @@ class GameView extends View implements View.OnTouchListener {
             // Stream pile (face down)
             Stream stream = player.getStream();
             try {
-                if (!stream.isFaceDownEmpty())
+                if (!stream.isFaceDownEmpty()) {
                     stream.flipThree();
-                else
+                    game.notifyOfMove(player, null);
+                } else {
                     stream.restartPile();
-
-                game.notifyOfMove(player, null);
+                }
             }
             catch (EmptyPileException e) {
                 Log.e("Nertz", "Tried to handle stream touch, but stream was empty");
