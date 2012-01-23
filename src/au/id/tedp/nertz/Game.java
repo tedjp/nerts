@@ -6,20 +6,26 @@ import java.util.List;
 
 class Game {
     private HumanPlayer human;
-    private AiPlayer computer;
+    private ArrayList<AiPlayer> cpus;
+
+    public static final int AI_PLAYERS = 3;
 
     public Game(Context ctx) {
         human = new HumanPlayer(ctx, this);
-        computer = new AiPlayer(this);
+        cpus = new ArrayList<AiPlayer>(AI_PLAYERS);
+        for (int i = 0; i < AI_PLAYERS; ++i)
+            cpus.add(new AiPlayer(this));
 
         /* Begin */
         try {
             Lake lake = new Lake();
             human.setup(lake);
-            computer.setup(lake);
+            for (AiPlayer cpu: cpus)
+                cpu.setup(lake);
 
             human.start();
-            computer.start();
+            for (AiPlayer cpu: cpus)
+                cpu.start();
         }
         catch (EmptyPileException e) {
             // TODO: Why would p.setup() ever throw this?
@@ -27,10 +33,13 @@ class Game {
     }
 
     public void notifyOfMove(Player source, Move move) {
-        if (source == human)
-            computer.notifyOfMove(move);
-        else if (source == computer)
+        if (source != human)
             human.notifyOfMove(move);
+
+        for (AiPlayer cpu: cpus) {
+            if (cpu != source)
+                cpu.notifyOfMove(move);
+        }
     }
 
     public HumanPlayer getHumanPlayer() {
