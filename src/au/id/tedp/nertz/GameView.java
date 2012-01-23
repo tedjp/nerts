@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Iterator;
@@ -175,7 +176,9 @@ class GameView extends View implements View.OnTouchListener {
             bmp = DeckGraphics.getBitmapDrawable(res, topCard);
         int top = lakeArea.centerY() - cardHeight / 2;
         int bottom = lakeArea.centerY() + cardHeight / 2;
-        int sep = ((lakeArea.right - lakeArea.left) - cardWidth * LAKE_PILES) / 10;
+        int pile_spots = Math.max(LAKE_PILES, player.getLake().size());
+        int sep = ((lakeArea.right - lakeArea.left) - cardWidth * pile_spots) /
+            (pile_spots + 1);
         Rect dest = new Rect(0, top, 0, bottom);
         dest.left = lakeArea.left + cardWidth * pilenum + sep * (pilenum + 1);
         dest.right = dest.left + cardWidth;

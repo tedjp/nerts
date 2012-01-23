@@ -52,4 +52,7 @@ public class Lake extends TargetArea {
         return null;
     }
 
+    public int size() {
+        return piles.size();
+    }
 }
