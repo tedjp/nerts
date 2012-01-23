@@ -105,12 +105,13 @@ class GameView extends View implements View.OnTouchListener {
     }
 
     protected void drawRiverPile(Canvas canvas, TableauPile pile, int pilenum) {
-        int top = riverArea.top + (riverArea.bottom - riverArea.top) / 15;
+        int top_gap = (riverArea.bottom - riverArea.top) / 15;
+        int top = riverArea.top + top_gap;
         int hsep = ((riverArea.right - riverArea.left) - cardWidth * 4) / 5;
         int voffset = cardHeight / 4;
         Stack<Card> faceup = pile.getFaceUpCards();
         // Figure out the max vsep allowed by the number of cards
-        int max_voffset = (riverArea.bottom - riverArea.top) / faceup.size();
+        int max_voffset = (riverArea.bottom - riverArea.top - top_gap * 2) / faceup.size();
         if (voffset > max_voffset)
             voffset = max_voffset;
         Rect dest = new Rect();
