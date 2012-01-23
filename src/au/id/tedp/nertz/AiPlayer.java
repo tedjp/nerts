@@ -1,8 +1,13 @@
 package au.id.tedp.nertz;
 
+import android.util.Log;
+
 class AiPlayer extends Player {
-    public AiPlayer() {
+    private Game game;
+
+    public AiPlayer(Game game) {
         super("CPU");
+        this.game = game;
     }
 
     private Move findMove() {
@@ -16,12 +21,12 @@ class AiPlayer extends Player {
             // Nertz -> Lake
             target = lake.findTargetPile(nc);
             if (target != null)
-                return new Move(getNertzPile(), target, nc);
+                return new Move(np, target);
 
             // Nertz -> River
             target = river.findTargetPile(nc);
             if (target != null)
-                return new Move(np, target, nc);
+                return new Move(np, target);
         }
 
         // River -> Lake
@@ -30,7 +35,7 @@ class AiPlayer extends Player {
             if (riverCard != null) {
                 target = lake.findTargetPile(riverCard);
                 if (target != null)
-                    return new Move(riverPile, target, riverCard);
+                    return new Move(riverPile, target);
             }
         }
 
@@ -40,12 +45,12 @@ class AiPlayer extends Player {
         if (sc != null) {
             target = lake.findTargetPile(sc);
             if (target != null)
-                return new Move(stream, target, sc);
+                return new Move(stream, target);
 
             // Stream -> River
             target = river.findTargetPile(sc);
             if (target != null)
-                return new Move(stream, target, sc);
+                return new Move(stream, target);
         }
 
         // Try all cards in the river if the cards on top of it
@@ -53,5 +58,19 @@ class AiPlayer extends Player {
         // TODO
 
         return null;
+    }
+
+    public void notifyOfChange() {
+        // TODO: Delay.
+
+        Move move = findMove();
+        if (move != null) {
+            try {
+                playMove(move);
+            }
+            catch (Exception e) {
+                Log.e("Nertz", "Failed to play AI move: " + e.getMessage());
+            }
+        }
     }
 }

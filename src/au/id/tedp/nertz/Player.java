@@ -3,7 +3,7 @@ package au.id.tedp.nertz;
 import java.lang.String;
 import java.util.ArrayList;
 
-class Player {
+abstract class Player {
     private String name;
     private Deck deck;
     private Stream stream;
@@ -57,5 +57,13 @@ class Player {
 
     public Lake getLake() {
         return lake;
+    }
+
+    // XXX: In future the Move could be passed to help optimize handling
+    abstract void notifyOfChange();
+
+    public void playMove(Move move) throws EmptyPileException, CardSequenceException {
+        Card card = move.source.pop();
+        move.dest.push(card);
     }
 }

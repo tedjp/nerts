@@ -1,31 +1,32 @@
 package au.id.tedp.nertz;
 
+import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
 class Game {
-    private List<Player> players;
+    private HumanPlayer human;
+    private AiPlayer computer;
 
-    public Game() {
-        players = new ArrayList<Player>(2);
-
-        players.add(new Player("User"));
-        players.add(new Player("Computer"));
+    public Game(Context ctx) {
+        human = new HumanPlayer(ctx);
+        computer = new AiPlayer(this);
 
         /* Begin */
         try {
             Lake lake = new Lake();
-            for (Player p : players)
-                p.setup(lake);
-            for (Player p : players)
-                p.start();
+            human.setup(lake);
+            computer.setup(lake);
+
+            human.start();
+            computer.start();
         }
         catch (EmptyPileException e) {
             // TODO: Why would p.setup() ever throw this?
         }
     }
 
-    public Player getFirstPlayer() {
-        return players.get(0);
+    public HumanPlayer getHumanPlayer() {
+        return human;
     }
 }
