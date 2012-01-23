@@ -179,6 +179,8 @@ class GameView extends View implements View.OnTouchListener {
         int pile_spots = Math.max(LAKE_PILES, player.getLake().size());
         int sep = ((lakeArea.right - lakeArea.left) - cardWidth * pile_spots) /
             (pile_spots + 1);
+        if (pilenum == 0 && sep < 0)
+            sep = 0;
         Rect dest = new Rect(0, top, 0, bottom);
         dest.left = lakeArea.left + cardWidth * pilenum + sep * (pilenum + 1);
         dest.right = dest.left + cardWidth;
