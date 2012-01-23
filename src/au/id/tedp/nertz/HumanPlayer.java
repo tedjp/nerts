@@ -14,7 +14,7 @@ class HumanPlayer extends Player {
         return gameview;
     }
 
-    public void notifyOfMove(Move move) {
+    public void onAiMove() {
         gameview.invalidate();
     }
 }

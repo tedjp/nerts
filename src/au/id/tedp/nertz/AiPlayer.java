@@ -60,10 +60,7 @@ class AiPlayer extends Player {
         return null;
     }
 
-    @Override
-    public void notifyOfMove(Move move) {
-        // TODO: Delay.
-
+    public void makeMove() {
         try {
             Move ourmove = findMove();
             if (ourmove != null) {

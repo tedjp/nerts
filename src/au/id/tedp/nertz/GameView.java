@@ -373,7 +373,7 @@ class GameView extends View implements View.OnTouchListener {
             try {
                 if (!stream.isFaceDownEmpty()) {
                     stream.flipThree();
-                    game.notifyOfMove(player, null);
+                    game.onPlayerMove();
                 } else {
                     stream.restartPile();
                 }
@@ -518,7 +518,7 @@ class GameView extends View implements View.OnTouchListener {
                         }
                         liveCards.clear();
                         fromPile = null;
-                        game.notifyOfMove(player, livemove);
+                        game.onPlayerMove();
                     }
                     catch (CardSequenceException e) {
                         Log.e("Nertz", "Failed to push live card onto destination pile");

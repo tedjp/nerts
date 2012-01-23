@@ -32,14 +32,14 @@ class Game {
         }
     }
 
-    public void notifyOfMove(Player source, Move move) {
-        if (source != human)
-            human.notifyOfMove(move);
-
+    public void onPlayerMove() {
         for (AiPlayer cpu: cpus) {
-            if (cpu != source)
-                cpu.notifyOfMove(move);
+            cpu.makeMove();
         }
+    }
+
+    public void onAiMove() {
+        human.onAiMove();
     }
 
     public HumanPlayer getHumanPlayer() {
