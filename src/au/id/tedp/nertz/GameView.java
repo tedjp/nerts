@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Iterator;
 
@@ -28,6 +29,7 @@ class GameView extends View implements View.OnTouchListener {
         this.res = getResources();
         setOnTouchListener(this);
         state = TouchState.NONE;
+        liveCards = new ArrayList<Card>(12);
     }
 
     private int cachedCanvasX, cachedCanvasY;
@@ -203,16 +205,21 @@ class GameView extends View implements View.OnTouchListener {
         oppArea = new Rect(0, 0, width, lakeArea.top);
     }
 
-    private void drawLiveCard(Canvas canvas) {
-        if (liveCard == null)
+    private void drawLiveCards(Canvas canvas) {
+        if (liveCards.isEmpty())
             return;
 
-        BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, liveCard);
-        RectF dest = new RectF(liveCardX - cardWidth / 2,
-                liveCardY - cardHeight / 8 * 7,
-                liveCardX + cardWidth / 2,
-                liveCardY + cardHeight / 8);
-        canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+        int offset = cardHeight / 4;
+
+        for (int i = 0; i < liveCards.size(); ++i) {
+            Card card = liveCards.get(i);
+            BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, card);
+            RectF dest = new RectF(liveCardX - cardWidth / 2,
+                    liveCardY - cardHeight / 8 * 7 + (offset * i),
+                    liveCardX + cardWidth / 2,
+                    liveCardY + cardHeight / 8 + (offset * i));
+            canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+        }
     }
 
     private void drawExpandedPile(Canvas canvas, TableauPile pile) {
@@ -270,7 +277,7 @@ class GameView extends View implements View.OnTouchListener {
             canvas.drawARGB(128, 0, 0, 0);
             drawExpandedPile(canvas, expandedPile);
         } else {
-            drawLiveCard(canvas);
+            drawLiveCards(canvas);
         }
     }
 
@@ -308,7 +315,9 @@ class GameView extends View implements View.OnTouchListener {
         return Area.VOID;
     }
 
-    private Card liveCard;
+    // FIXME: liveCards needs to be its own class.
+    private ArrayList<Card> liveCards;
+    private boolean liveCardsFromExpandedPile;
     private Pile fromPile;
     private float liveCardX, liveCardY;
     //! The touch event began on the stream pile
@@ -324,15 +333,18 @@ class GameView extends View implements View.OnTouchListener {
         return river.get(pileNum);
     }
 
-    private void returnLiveCard() {
-        if (liveCard == null || fromPile == null)
+    private void returnLiveCards() {
+        if (liveCards.isEmpty() || fromPile == null)
             return;
 
+        liveCardsFromExpandedPile = false;
+
         try {
-            fromPile.push(liveCard);
-            liveCard = null;
+            for (Card card: liveCards)
+                fromPile.push(card);
+            liveCards.clear();
         } catch (CardSequenceException e) {
-            Log.e("Nertz", "Cannot put card " + liveCard.toString() + " back on its original pile!");
+            Log.e("Nertz", "Cannot put card " + liveCards.toString() + " back on original pile!");
         }
     }
 
@@ -389,16 +401,43 @@ class GameView extends View implements View.OnTouchListener {
 
     // XXX: Provide getRiverPile(Card c) to allow flicking to the river?
 
+    private void handleExpandedTouch(TableauPile pile, float x, float y) {
+        int riverPileLeft = getRiverPileLeft(pile);
+        if (x < (float)riverPileLeft || x > (float)(riverPileLeft + cardWidth)) {
+            returnLiveCards();
+            return; // Outside the expanded pile area.
+        }
+
+        fromPile = pile;
+
+        Stack<Card> cards = pile.getFaceUpCards();
+        int cardnum = (int) ((y / (float) getHeight()) * cards.size());
+
+        Log.d("Nertz", "Expanded Touch: Taking card " + cardnum);
+
+        int end = cards.size();
+        for (int i = cardnum; i < end; ++i)
+            liveCards.add(cards.remove(cardnum));
+
+        liveCardsFromExpandedPile = true;
+
+        // Draw the pile with the live cards removed
+        staticTableBitmap = null;
+    }
+
     // Not sure if this should be part of some other class
     public boolean onTouch(View v, MotionEvent ev) {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                if (expandedPile != null)
+                if (expandedPile != null) {
+                    handleExpandedTouch(expandedPile, ev.getX(), ev.getY());
+                    expandedPile = null;
                     break;
+                }
 
                 staticTableBitmap = null;
                 fromPile = null;
-                liveCard = null;
+                liveCards.clear();
                 streamPileTouched = false;
 
                 liveCardX = ev.getX();
@@ -421,10 +460,10 @@ class GameView extends View implements View.OnTouchListener {
                 // Only pop a card if the pile was selected but nothing
                 // has been popped from it yet.
                 if (fromPile != null) {
-                    junit.framework.Assert.assertNull(liveCard);
+                    junit.framework.Assert.assertTrue(liveCards.isEmpty());
                     try {
                         if (!fromPile.isEmpty())
-                            liveCard = fromPile.pop();
+                            liveCards.add(fromPile.pop());
                     } catch (EmptyPileException e) {
                         Log.d("Nertz", "Tried to pop from empty pile!");
                     }
@@ -432,12 +471,6 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if (expandedPile != null) {
-                    // TODO: do stuff
-                    expandedPile = null;
-                    // Skip the rest of the ACTION_UP processing
-                    break;
-                }
                 staticTableBitmap = null;
                 TargetPile toPile = null;
                 switch (detectArea(ev)) {
@@ -445,15 +478,15 @@ class GameView extends View implements View.OnTouchListener {
                         handleStreamUp(ev.getX(), ev.getY());
                         break;
                     case LAKE:
-                        if (liveCard != null)
-                            toPile = player.getLake().findTargetPile(liveCard);
+                        if (liveCards.size() == 1)
+                            toPile = player.getLake().findTargetPile(liveCards.get(0));
                         break;
                     case RIVER:
-                        if (liveCard != null) {
-                            TableauPile tp = getRiverPile(ev.getX(), ev.getY(), liveCard);
-                            if (tp == fromPile) {
+                        if (!liveCards.isEmpty()) {
+                            TableauPile tp = getRiverPile(ev.getX(), ev.getY(), liveCards.get(0));
+                            if (tp == fromPile && liveCardsFromExpandedPile == false) {
                                 expandedPile = tp;
-                                returnLiveCard();
+                                returnLiveCards();
                                 toPile = null;
                                 fromPile = null;
                             } else {
@@ -465,7 +498,7 @@ class GameView extends View implements View.OnTouchListener {
 
                 if (toPile != null) {
                     try {
-                        LiveMove livemove = new LiveMove(fromPile, toPile, liveCard);
+                        LiveMove livemove = new LiveMove(fromPile, toPile, liveCards);
                         livemove.execute();
 
                         try {
@@ -480,16 +513,16 @@ class GameView extends View implements View.OnTouchListener {
                         catch (EmptyPileException e) {
                             Log.e("Nertz", "Tried to flip top nertz pile card but pile was empty");
                         }
-                        liveCard = null;
+                        liveCards.clear();
                         fromPile = null;
                         game.notifyOfMove(player, livemove);
                     }
                     catch (CardSequenceException e) {
                         Log.e("Nertz", "Failed to push live card onto destination pile");
-                        returnLiveCard();
+                        returnLiveCards();
                     }
                 } else {
-                    returnLiveCard();
+                    returnLiveCards();
                 }
                 // Ensure that if the touch event began on the stream
                 // pile that it is no longer considered the start of the
@@ -497,6 +530,7 @@ class GameView extends View implements View.OnTouchListener {
                 // Probably better to just track the down & up locations
                 // then figure out what to do.
                 streamPileTouched = false;
+                liveCardsFromExpandedPile = false;
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -506,7 +540,7 @@ class GameView extends View implements View.OnTouchListener {
 
             case MotionEvent.ACTION_CANCEL:
                 staticTableBitmap = null;
-                returnLiveCard();
+                returnLiveCards();
                 streamPileTouched = false;
                 break;
         }
