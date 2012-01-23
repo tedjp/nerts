@@ -9,7 +9,7 @@ class Game {
     private AiPlayer computer;
 
     public Game(Context ctx) {
-        human = new HumanPlayer(ctx);
+        human = new HumanPlayer(ctx, this);
         computer = new AiPlayer(this);
 
         /* Begin */
@@ -24,6 +24,13 @@ class Game {
         catch (EmptyPileException e) {
             // TODO: Why would p.setup() ever throw this?
         }
+    }
+
+    public void notifyOfMove(Player source, Move move) {
+        if (source == human)
+            computer.notifyOfMove(move);
+        else if (source == computer)
+            human.notifyOfMove(move);
     }
 
     public HumanPlayer getHumanPlayer() {

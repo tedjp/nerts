@@ -60,17 +60,29 @@ class AiPlayer extends Player {
         return null;
     }
 
-    public void notifyOfChange() {
+    @Override
+    public void notifyOfMove(Move move) {
         // TODO: Delay.
 
-        Move move = findMove();
-        if (move != null) {
-            try {
-                playMove(move);
+        try {
+            Move ourmove = findMove();
+            if (ourmove != null) {
+                Log.d("Nertz", "Found move: " + ourmove.getCard().toString()
+                        + " from " + ourmove.source.toString() + " to " +
+                        ourmove.dest.toString());
+                playMove(ourmove);
+            } else {
+                // No Move-compatible move available, so draw some cards from the stream
+                Log.d("Nertz", "No move, just draw cards");
+                Stream stream = getStream();
+                if (!stream.isFaceDownEmpty())
+                    stream.flipThree();
+                else
+                    stream.restartPile();
             }
-            catch (Exception e) {
-                Log.e("Nertz", "Failed to play AI move: " + e.getMessage());
-            }
+        }
+        catch (Exception e) {
+            Log.e("Nertz", "Failed to play AI move: " + e.getMessage());
         }
     }
 }

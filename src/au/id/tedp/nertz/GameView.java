@@ -17,13 +17,14 @@ import java.util.Iterator;
 import android.util.Log;
 
 class GameView extends View implements View.OnTouchListener {
-    public GameView(android.content.Context context, Player player) {
+    public GameView(android.content.Context context, HumanPlayer player, Game game) {
         super(context);
         cachedCanvasX = -1;
         cachedCanvasY = -1;
         cachedXSep = -1;
         cachedYSep = -1;
         this.player = player;
+        this.game = game;
         this.res = getResources();
         setOnTouchListener(this);
         state = TouchState.NONE;
@@ -32,7 +33,8 @@ class GameView extends View implements View.OnTouchListener {
     private int cachedCanvasX, cachedCanvasY;
     private int cachedXSep, cachedYSep;
 
-    private Player player;
+    private HumanPlayer player;
+    private Game game;
 
     private Resources res;
 
@@ -299,6 +301,8 @@ class GameView extends View implements View.OnTouchListener {
                     stream.flipThree();
                 else
                     stream.restartPile();
+
+                game.notifyOfMove(player, null);
             }
             catch (EmptyPileException e) {
                 Log.e("Nertz", "Tried to handle stream touch, but stream was empty");
@@ -382,7 +386,8 @@ class GameView extends View implements View.OnTouchListener {
 
                 if (toPile != null) {
                     try {
-                        toPile.push(liveCard);
+                        LiveMove livemove = new LiveMove(fromPile, toPile, liveCard);
+                        livemove.execute();
 
                         try {
                             // Nertz Pile needs the top card flipped
@@ -398,6 +403,7 @@ class GameView extends View implements View.OnTouchListener {
                         }
                         liveCard = null;
                         fromPile = null;
+                        game.notifyOfMove(player, livemove);
                     }
                     catch (CardSequenceException e) {
                         Log.e("Nertz", "Failed to push live card onto destination pile");

@@ -33,7 +33,6 @@ abstract class Player {
     }
 
     public void start() {
-        // XXX: Check game state
         try {
             for (Pile pile: river.getPiles())
                 pile.flipTopCard();
@@ -59,8 +58,7 @@ abstract class Player {
         return lake;
     }
 
-    // XXX: In future the Move could be passed to help optimize handling
-    abstract void notifyOfChange();
+    abstract void notifyOfMove(Move move);
 
     public void playMove(Move move) throws EmptyPileException, CardSequenceException {
         Card card = move.source.pop();

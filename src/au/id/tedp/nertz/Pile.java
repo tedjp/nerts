@@ -8,6 +8,7 @@ import java.util.Collection;
 
 public class Pile {
     protected Stack<Card> facedown, faceup;
+    protected String name;
 
     private final int DEFAULT_DECKSIZE = 13;
 
