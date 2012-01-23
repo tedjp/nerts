@@ -104,10 +104,34 @@ class GameView extends View implements View.OnTouchListener {
         canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
     }
 
+    private int getRiverPileLeft(int pilenum) {
+        int hsep = ((riverArea.right - riverArea.left) - cardWidth * 4) / 5;
+        return riverArea.left + (1 + pilenum) * hsep + pilenum * cardWidth;
+    }
+
+    private int getRiverPileLeft(TableauPile pile) {
+        int pilenum = 0;
+        boolean foundPile = false;
+
+        for (TableauPile rp: player.getRiver().getPiles()) {
+            if (rp == pile) {
+                foundPile = true;
+                break;
+            }
+            ++pilenum;
+        }
+
+        if (!foundPile) {
+            // FIXME: Throw exception
+            return 0;
+        }
+
+        return getRiverPileLeft(pilenum);
+    }
+
     protected void drawRiverPile(Canvas canvas, TableauPile pile, int pilenum) {
         int top_gap = (riverArea.bottom - riverArea.top) / 15;
         int top = riverArea.top + top_gap;
-        int hsep = ((riverArea.right - riverArea.left) - cardWidth * 4) / 5;
         int voffset = cardHeight / 4;
         Stack<Card> faceup = pile.getFaceUpCards();
         // Figure out the max vsep allowed by the number of cards
@@ -115,7 +139,7 @@ class GameView extends View implements View.OnTouchListener {
         if (voffset > max_voffset)
             voffset = max_voffset;
         Rect dest = new Rect();
-        dest.left = riverArea.left + (1 + pilenum) * hsep + pilenum * cardWidth;
+        dest.left = getRiverPileLeft(pilenum);
         dest.top = top;
         dest.right = dest.left + cardWidth;
         dest.bottom = dest.top + cardHeight;
@@ -191,6 +215,21 @@ class GameView extends View implements View.OnTouchListener {
         canvas.drawBitmap(bd.getBitmap(), null, dest, null);
     }
 
+    private void drawExpandedPile(Canvas canvas, TableauPile pile) {
+        int vsep = getHeight() / pile.getFaceUpCards().size();
+        Rect dest = new Rect(getRiverPileLeft(pile), 0, 0, 0);
+        dest.right = dest.left + cardWidth;
+
+        int cardnum = 0;
+        for (Card card: pile.getFaceUpCards()) {
+            dest.top = vsep * cardnum;
+            dest.bottom = dest.top + cardHeight;
+            BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, card);
+            canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+            ++cardnum;
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         if (staticTableBitmap == null) {
@@ -227,7 +266,12 @@ class GameView extends View implements View.OnTouchListener {
         }
         Rect fullDest = new Rect(0, 0, getWidth(), getHeight());
         canvas.drawBitmap(staticTableBitmap, null, fullDest, null);
-        drawLiveCard(canvas);
+        if (expandedPile != null) {
+            canvas.drawARGB(128, 0, 0, 0);
+            drawExpandedPile(canvas, expandedPile);
+        } else {
+            drawLiveCard(canvas);
+        }
     }
 
     protected enum TouchState {
@@ -270,6 +314,7 @@ class GameView extends View implements View.OnTouchListener {
     //! The touch event began on the stream pile
     private boolean streamPileTouched;
     private Bitmap staticTableBitmap;
+    private TableauPile expandedPile;
 
     private TableauPile getRiverPile(float x, float y) {
         River river = player.getRiver();
@@ -348,6 +393,9 @@ class GameView extends View implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent ev) {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                if (expandedPile != null)
+                    break;
+
                 staticTableBitmap = null;
                 fromPile = null;
                 liveCard = null;
@@ -384,6 +432,12 @@ class GameView extends View implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
+                if (expandedPile != null) {
+                    // TODO: do stuff
+                    expandedPile = null;
+                    // Skip the rest of the ACTION_UP processing
+                    break;
+                }
                 staticTableBitmap = null;
                 TargetPile toPile = null;
                 switch (detectArea(ev)) {
@@ -395,8 +449,17 @@ class GameView extends View implements View.OnTouchListener {
                             toPile = player.getLake().findTargetPile(liveCard);
                         break;
                     case RIVER:
-                        if (liveCard != null)
-                            toPile = getRiverPile(ev.getX(), ev.getY(), liveCard);
+                        if (liveCard != null) {
+                            TableauPile tp = getRiverPile(ev.getX(), ev.getY(), liveCard);
+                            if (tp == fromPile) {
+                                expandedPile = tp;
+                                returnLiveCard();
+                                toPile = null;
+                                fromPile = null;
+                            } else {
+                                toPile = tp;
+                            }
+                        }
                         break;
                 }
 
