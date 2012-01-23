@@ -141,7 +141,12 @@ class GameView extends View implements View.OnTouchListener {
     public final int LAKE_PILES = 8;
 
     protected void drawLakePile(Canvas canvas, Pile pile, int pilenum) {
-        BitmapDrawable bmp = pile.topCardImage(res);
+        Card topCard = pile.peek();
+        BitmapDrawable bmp;
+        if (topCard.getFace() == Card.Face.KING)
+            bmp = DeckGraphics.getCardBack(res);
+        else
+            bmp = DeckGraphics.getBitmapDrawable(res, topCard);
         int top = lakeArea.centerY() - cardHeight / 2;
         int bottom = lakeArea.centerY() + cardHeight / 2;
         int sep = ((lakeArea.right - lakeArea.left) - cardWidth * LAKE_PILES) / 10;
