@@ -228,13 +228,14 @@ class GameView extends View implements View.OnTouchListener {
     }
 
     private void drawExpandedPile(Canvas canvas, TableauPile pile) {
-        int vsep = getHeight() / pile.getFaceUpCards().size();
+        int ypad = cardHeight / 4;
+        int vsep = (getHeight() - ypad * 2) / pile.getFaceUpCards().size();
         Rect dest = new Rect(getRiverPileLeft(pile), 0, 0, 0);
         dest.right = dest.left + cardWidth;
 
         int cardnum = 0;
         for (Card card: pile.getFaceUpCards()) {
-            dest.top = vsep * cardnum;
+            dest.top = ypad + vsep * cardnum;
             dest.bottom = dest.top + cardHeight;
             BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, card);
             canvas.drawBitmap(bd.getBitmap(), null, dest, null);
