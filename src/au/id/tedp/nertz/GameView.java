@@ -154,12 +154,12 @@ class GameView extends View implements View.OnTouchListener {
         }
     }
 
-    protected void drawRiver(Canvas canvas) {
+    protected void drawRiver(Canvas canvas, TableauPile skipPile) {
         River river = player.getRiver();
 
         int pilenum = 0;
         for (TableauPile pile : river.getPiles()) {
-            if (!pile.isEmpty())
+            if (!pile.isEmpty() && pile != skipPile)
                 drawRiverPile(canvas, pile, pilenum);
             ++pilenum;
         }
@@ -245,7 +245,7 @@ class GameView extends View implements View.OnTouchListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (staticTableBitmap == null) {
+        if (staticTableBitmap == null || expandedPile != null) {
             staticTableBitmap = Bitmap.createBitmap(getWidth(),
                     getHeight(), Bitmap.Config.ARGB_8888);
             Canvas c = new Canvas(staticTableBitmap);
@@ -273,7 +273,7 @@ class GameView extends View implements View.OnTouchListener {
             cardHeight = cardBmp.getHeight();
 
             drawNertzPile(c);
-            drawRiver(c);
+            drawRiver(c, expandedPile);
             drawStream(c, player.getStream());
             drawLake(c);
         }
