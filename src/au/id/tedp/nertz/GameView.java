@@ -490,8 +490,11 @@ class GameView extends View implements View.OnTouchListener {
                     case RIVER:
                         if (!liveCards.isEmpty()) {
                             TableauPile tp = getRiverPile(ev.getX(), ev.getY(), liveCards.get(0));
-                            if (tp == fromPile && liveCardsFromExpandedPile == false) {
-                                expandedPile = tp;
+                            if (tp == fromPile) {
+                                // Don't redraw the expansion if cards went nowhere
+                                if (!liveCardsFromExpandedPile)
+                                    expandedPile = tp;
+                                // Return cards, don't count this as a move
                                 returnLiveCards();
                                 toPile = null;
                                 fromPile = null;
