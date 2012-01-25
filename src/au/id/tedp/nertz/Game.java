@@ -8,7 +8,7 @@ class Game {
     private HumanPlayer human;
     private ArrayList<AiPlayer> cpus;
 
-    public static final int AI_PLAYERS = 3;
+    public static final int AI_PLAYERS = 2;
 
     public Game(Context ctx) {
         human = new HumanPlayer(ctx, this);
