@@ -77,6 +77,12 @@ class AiPlayer extends Player {
                 else
                     stream.restartPile();
             }
+
+            // This should really be in the (ourmove != null) condition,
+            // but putting it here makes it more visible by logging it
+            // on every turn.
+            if (getNertzPile().isEmpty())
+                Log.d("Nertz", "AI Player " + this + " calls Nertz!");
         }
         catch (Exception e) {
             Log.e("Nertz", "Failed to play AI move: " + e.getMessage());
