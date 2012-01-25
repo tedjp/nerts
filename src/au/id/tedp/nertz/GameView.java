@@ -228,8 +228,20 @@ class GameView extends View implements View.OnTouchListener {
     }
 
     private void drawExpandedPile(Canvas canvas, TableauPile pile) {
-        int ypad = cardHeight / 4;
-        int vsep = (getHeight() - ypad * 2) / pile.getFaceUpCards().size();
+        int ypad, vsep;
+        int numcards = pile.getFaceUpCards().size();
+
+        if (numcards * cardHeight < getHeight()) {
+            // Not enough cards to fill the vertical space without gaps.
+            // Put them edge-to-edge along the center of the screen.
+            ypad = (getHeight() - numcards * cardHeight) / 2;
+            vsep = cardHeight;
+        } else {
+            // Overlap cards.
+            ypad = cardHeight / 4;
+            vsep = (getHeight() - ypad * 2) / numcards;
+        }
+
         Rect dest = new Rect(getRiverPileLeft(pile), 0, 0, 0);
         dest.right = dest.left + cardWidth;
 
