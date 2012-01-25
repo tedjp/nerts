@@ -1,6 +1,7 @@
 package au.id.tedp.nertz;
 
 import java.util.Collection;
+import java.util.EmptyStackException;
 
 public class Stream extends Pile {
     public Stream(Collection<Card> cards) {
@@ -34,5 +35,20 @@ public class Stream extends Pile {
 
         while (!faceup.isEmpty())
             facedown.push(faceup.pop());
+    }
+
+    public void putTopUnder() throws EmptyPileException, CardSequenceException {
+        if (!faceup.isEmpty())
+            throw new CardSequenceException("Tried to put top card under but there are face-up cards");
+
+        try {
+            facedown.insertElementAt(facedown.pop(), 0);
+        }
+        catch (EmptyStackException e) {
+            throw new EmptyPileException("No face-down cards to take from");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            throw new EmptyPileException("Failed to insert card at position 0");
+        }
     }
 }
