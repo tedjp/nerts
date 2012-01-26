@@ -101,4 +101,8 @@ public class Pile {
             return null;
         }
     }
+
+    public int size() {
+        return facedown.size() + faceup.size();
+    }
 }

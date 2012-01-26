@@ -8,7 +8,7 @@ Initial release requirements:
 [ ] Show other players' cards
 [ ] "How to play" guide
 [ ] App Icon
-[ ] Display number of cards left in Nertz pile
+[x] Display number of cards left in Nertz pile
 [ ] Display score (make first deal free or start above zero?)
 
 Future features:
