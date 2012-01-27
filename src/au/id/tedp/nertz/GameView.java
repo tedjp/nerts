@@ -186,20 +186,41 @@ class GameView extends View implements View.OnTouchListener {
     protected void drawLakePile(Canvas canvas, Pile pile, int pilenum) {
         Card topCard = pile.peek();
         BitmapDrawable bmp;
+        int pile_spots = Math.max(LAKE_PILES, player.getLake().size());
         if (topCard.getFace() == Card.Face.KING)
             bmp = DeckGraphics.getCardBack(res);
         else
             bmp = DeckGraphics.getBitmapDrawable(res, topCard);
-        int top = lakeArea.centerY() - cardHeight / 2;
-        int bottom = lakeArea.centerY() + cardHeight / 2;
-        int pile_spots = Math.max(LAKE_PILES, player.getLake().size());
-        int sep = ((lakeArea.right - lakeArea.left) - cardWidth * pile_spots) /
-            (pile_spots + 1);
-        if (pilenum == 0 && sep < 0)
-            sep = 0;
-        Rect dest = new Rect(0, top, 0, bottom);
-        dest.left = lakeArea.left + cardWidth * pilenum + sep * (pilenum + 1);
+
+        Rect dest = new Rect();
+
+        if (getWidth() < getHeight()) {
+            // Portrait layout
+            int columns = Math.round((float)pile_spots / 2.0f);
+            int column = pilenum % columns;
+            int row = pilenum / columns;
+            int vsep = (lakeArea.bottom - lakeArea.top - cardHeight * 2) / 3;
+            int hsep = ((lakeArea.right - lakeArea.left) - cardWidth * columns)
+                    / (columns + 1);
+
+            // Don't draw the leftmost card off the left of the screen
+            if (row == 0 && hsep < 0)
+                hsep = 0;
+
+            dest.left = lakeArea.left + hsep / 2 + hsep * column + column * cardWidth;
+            dest.top = lakeArea.top + vsep * (row + 1) + row * cardHeight;
+        } else {
+            // Landscape layout
+            int sep = ((lakeArea.right - lakeArea.left) - cardWidth * pile_spots) /
+                (pile_spots + 1);
+            if (pilenum == 0 && sep < 0)
+                sep = 0;
+            dest.left = lakeArea.left + cardWidth * pilenum + sep * (pilenum + 1);
+            dest.top = lakeArea.centerY() - cardHeight / 2;
+        }
+
         dest.right = dest.left + cardWidth;
+        dest.bottom = dest.top + cardHeight;
         canvas.drawBitmap(bmp.getBitmap(), null, dest, null);
     }
 
@@ -217,13 +238,24 @@ class GameView extends View implements View.OnTouchListener {
 
     private void calculateAreas() {
         int height = getHeight(), width = getWidth();
-        int hs = height / 2;
         // XXX: Might want to cache these.
-        nertzPileArea = new Rect(0, hs, width / 6, height);
-        riverArea = new Rect(nertzPileArea.right, hs, width / 4 * 3, height);
-        streamArea = new Rect(riverArea.right, hs, width, height);
-        lakeArea = new Rect(0, height / 6, width, hs);
-        oppArea = new Rect(0, 0, width, lakeArea.top);
+
+        if (width < height) {
+            // Portrait
+            nertzPileArea = new Rect(0, height / 4 * 3, width / 2, height);
+            streamArea = new Rect(width / 2, height / 4 * 3, width, height);
+            riverArea = new Rect(0, height / 2, width, height / 4 * 3);
+            lakeArea = new Rect(0, height / 6, width, height / 2);
+            oppArea = new Rect(0, 0, width, lakeArea.top);
+        } else {
+            // Landscape
+            int hs = height / 2;
+            nertzPileArea = new Rect(0, hs, width / 6, height);
+            riverArea = new Rect(nertzPileArea.right, hs, width / 4 * 3, height);
+            streamArea = new Rect(riverArea.right, hs, width, height);
+            lakeArea = new Rect(0, height / 6, width, hs);
+            oppArea = new Rect(0, 0, width, lakeArea.top);
+        }
     }
 
     private void drawLiveCards(Canvas canvas) {
