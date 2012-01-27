@@ -20,6 +20,6 @@
         />
     <uses-feature
         android:name="android.hardware.screen.landscape"
-        android:required="false"
+        android:required="true"
         />
 </manifest>
