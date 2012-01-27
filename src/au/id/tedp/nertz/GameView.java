@@ -279,11 +279,11 @@ class GameView extends View implements View.OnTouchListener {
             Canvas c = new Canvas(staticTableBitmap);
             calculateAreas();
 
-            c.drawColor(0xff669900);
+            c.drawColor(0x80000000);
 
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(0xff99cc00);
+            paint.setColor(0xff000000);
 
             c.drawRect(nertzPileArea, paint);
             c.drawRect(riverArea, paint);
