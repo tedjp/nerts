@@ -13,6 +13,7 @@ Initial release requirements:
 
 Future features:
 
+[ ] Visibly deal three cards at a time
 [ ] Highlight recent moves
 [ ] Highlight potential moves (easy mode)
 [ ] Animate moves, especially opponent moves
