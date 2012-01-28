@@ -101,7 +101,7 @@ class GameView extends View implements View.OnTouchListener {
         canvas.drawText(String.valueOf(pile.size()),
                 nertzPileArea.centerX(),
                 nertzPileArea.centerY() + cardHeight / 2 +
-                (nertzPileArea.bottom - nertzPileArea.top - cardHeight) / 4,
+                (nertzPileArea.bottom - nertzPileArea.top - cardHeight) / 3,
                 paint);
     }
 
