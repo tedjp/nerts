@@ -155,9 +155,16 @@ class GameView extends View implements View.OnTouchListener {
         int voffset = cardHeight / 4;
         Stack<Card> faceup = pile.getFaceUpCards();
         // Figure out the max vsep allowed by the number of cards
-        int max_voffset = (riverArea.bottom - riverArea.top - top_gap * 2) / faceup.size();
-        if (voffset > max_voffset)
-            voffset = max_voffset;
+        if (faceup.size() > 1) {
+            // Only do this when there are multiple cards, partly to avoide divide-by-zero
+            int max_voffset;
+            if (getWidth() > getHeight())
+                max_voffset = (riverArea.bottom - riverArea.top - top_gap * 2) / faceup.size();
+            else
+                max_voffset = (riverArea.bottom - riverArea.top - top_gap * 2 - cardHeight) / (faceup.size() - 1);
+            if (voffset > max_voffset)
+                voffset = max_voffset;
+        }
         Rect dest = new Rect();
         dest.left = getRiverPileLeft(pilenum);
         dest.top = top;
@@ -245,8 +252,8 @@ class GameView extends View implements View.OnTouchListener {
             // Portrait
             nertzPileArea = new Rect(0, height / 4 * 3, width / 2, height);
             streamArea = new Rect(width / 2, height / 4 * 3, width, height);
-            riverArea = new Rect(0, height / 2, width, height / 4 * 3);
-            lakeArea = new Rect(0, height / 6, width, height / 2);
+            riverArea = new Rect(0, height / 5 * 2, width, height / 4 * 3);
+            lakeArea = new Rect(0, height / 10, width, riverArea.top);
             oppArea = new Rect(0, 0, width, lakeArea.top);
         } else {
             // Landscape
