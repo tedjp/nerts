@@ -1,0 +1,6 @@
+<resources>
+    <style name="Inherit" parent="@android:style/Theme.NoTitleBar">
+        <!-- Inherit the default theme for pre-3.0 (Honeycomb), ie.
+             no action bar. -->
+    </style>
+</resources>

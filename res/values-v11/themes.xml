@@ -1,0 +1,5 @@
+<resources>
+    <style name="Inherit" parent="@android:style/Theme.Holo.Wallpaper">
+        <!-- Inherit the default Holo theme. -->
+    </style>
+</resources>
