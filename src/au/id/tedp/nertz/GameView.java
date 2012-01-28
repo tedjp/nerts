@@ -311,20 +311,12 @@ class GameView extends View implements View.OnTouchListener {
                     getHeight(), Bitmap.Config.ARGB_8888);
             Canvas c = new Canvas(staticTableBitmap);
             calculateAreas();
-            boolean honeycomb = Build.VERSION.SDK_INT >=
-                Build.VERSION_CODES.HONEYCOMB;
 
-            if (honeycomb)
-                c.drawColor(0x80000000);
-            else
-                c.drawColor(0xff669900);
+            c.drawColor(0xff669900);
 
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.STROKE);
-            if (honeycomb)
-                paint.setColor(0xff000000);
-            else
-                paint.setColor(0xff99cc00);
+            paint.setColor(0xff99cc00);
 
             c.drawRect(nertzPileArea, paint);
             c.drawRect(riverArea, paint);
