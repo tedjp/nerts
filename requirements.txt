@@ -1,6 +1,6 @@
 Initial release requirements:
 
-[ ] Option to resume game on startup
+[x] Option to resume game on startup
 [ ] Legally distributable card images
 [ ] Top-card-under when no cards played
 [ ] Delayed opponent moves
