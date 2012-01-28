@@ -1,6 +1,9 @@
 package au.id.tedp.nertz;
 
-public class TableauPile extends TargetPile {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TableauPile extends TargetPile implements Parcelable {
     public TableauPile(Card firstCard) {
         super(firstCard);
     }
@@ -29,4 +32,26 @@ public class TableauPile extends TargetPile {
         // is valid.
         return true;
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        super.writeToParcel(p, flags);
+    }
+
+    protected TableauPile(Parcel p) {
+        super(p);
+    }
+
+    public static final Parcelable.Creator<TableauPile> CREATOR = new Parcelable.Creator<TableauPile>() {
+        public TableauPile createFromParcel(Parcel in) {
+            return new TableauPile(in);
+        }
+
+        public TableauPile[] newArray(int size) {
+            return new TableauPile[size];
+        }
+    };
 }

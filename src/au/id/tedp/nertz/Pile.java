@@ -2,11 +2,13 @@ package au.id.tedp.nertz;
 
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.Collection;
 
-public class Pile {
+public class Pile implements Parcelable {
     protected Stack<Card> facedown, faceup;
     protected String name;
 
@@ -105,4 +107,30 @@ public class Pile {
     public int size() {
         return facedown.size() + faceup.size();
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        p.writeTypedList(facedown);
+        p.writeTypedList(faceup);
+        p.writeString(name);
+    }
+
+    protected Pile(Parcel p) {
+        p.readTypedList(facedown, Card.CREATOR);
+        p.readTypedList(faceup, Card.CREATOR);
+        name = p.readString();
+    }
+
+    public static final Parcelable.Creator<Pile> CREATOR = new Parcelable.Creator<Pile>() {
+        public Pile createFromParcel(Parcel in) {
+            return new Pile(in);
+        }
+
+        public Pile[] newArray(int size) {
+            return new Pile[size];
+        }
+    };
 }

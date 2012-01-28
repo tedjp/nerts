@@ -1,5 +1,6 @@
 package au.id.tedp.nertz;
 
+import android.os.Bundle;
 import java.lang.String;
 import java.util.ArrayList;
 
@@ -11,25 +12,29 @@ class Player {
     private NertzPile nertzpile;
     private Lake lake;
 
-    public Player(String name) {
+    public Player(String name, Lake lake, Bundle state) throws EmptyPileException {
         this.name = name;
-        deck = new Deck(this);
+        this.lake = lake;
+
+        android.util.Log.d("Nertz", "Player saved bundle " + (state == null ? "is null" : "is not null"));
+
+        if (state != null) {
+            readFromBundle(state);
+        } else {
+            deck = new Deck(this);
+            deck.shuffle();
+
+            nertzpile = new NertzPile(deck.dealCards(13));
+            nertzpile.flipTopCard();
+
+            river = new River(deck.dealCards(River.NUM_PILES));
+
+            stream = new Stream(deck.dealRemaining());
+        }
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setup(Lake lake) throws EmptyPileException {
-        deck.shuffle();
-
-        nertzpile = new NertzPile(deck.dealCards(13));
-        nertzpile.flipTopCard();
-
-        river = new River(deck.dealCards(River.NUM_PILES));
-
-        stream = new Stream(deck.dealRemaining());
-        this.lake = lake;
     }
 
     public void start() {
@@ -61,5 +66,21 @@ class Player {
     public void playMove(Move move) throws EmptyPileException, CardSequenceException {
         Card card = move.source.pop();
         move.dest.push(card);
+    }
+
+    public void writeToBundle(Bundle b) {
+        b.putString("name", name);
+        b.putParcelable("deck", deck);
+        b.putParcelable("stream", stream);
+        b.putParcelable("river", river);
+        b.putParcelable("nertzpile", nertzpile);
+    }
+
+    protected void readFromBundle(Bundle b) {
+        name = b.getString("name");
+        deck = b.getParcelable("deck");
+        stream = b.getParcelable("stream");
+        river = b.getParcelable("river");
+        nertzpile = b.getParcelable("nertzpile");
     }
 }

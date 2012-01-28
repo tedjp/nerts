@@ -1,6 +1,9 @@
 package au.id.tedp.nertz;
 
-public class Card {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Card implements Parcelable {
     public enum Suit {
         HEARTS {
             public String toString() {
@@ -20,6 +23,20 @@ public class Card {
         SPADES {
             public String toString() {
                 return "Spades";
+            }
+        };
+
+        public static Suit fromString(String suit) {
+            switch (suit.charAt(0)) {
+                case 'H':
+                    return HEARTS;
+                case 'D':
+                    return DIAMONDS;
+                case 'C':
+                    return CLUBS;
+                case 'S':
+                default:
+                    return SPADES;
             }
         }
     };
@@ -103,6 +120,38 @@ public class Card {
         public int getValue() {
             return value;
         }
+
+        public static Face fromString(String s) {
+            switch (s.charAt(0)) {
+                default:
+                case 'A':
+                    return ACE;
+                case '2':
+                    return TWO;
+                case '3':
+                    return THREE;
+                case '4':
+                    return FOUR;
+                case '5':
+                    return FIVE;
+                case '6':
+                    return SIX;
+                case '7':
+                    return SEVEN;
+                case '8':
+                    return EIGHT;
+                case '9':
+                    return NINE;
+                case '1':
+                    return TEN;
+                case 'J':
+                    return JACK;
+                case 'Q':
+                    return QUEEN;
+                case 'K':
+                    return KING;
+            }
+        }
     };
 
     private Deck deck;
@@ -161,4 +210,30 @@ public class Card {
 
         return face == c.face && suit == c.suit;
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        p.writeInt(face.getValue());
+        p.writeString(suit.toString());
+        p.writeString(deck.getOwner().getName());
+    }
+
+    private Card(Parcel p) {
+        this.face = Card.Face.fromString(p.readString());
+        this.suit = Card.Suit.fromString(p.readString());
+        // Ignoring the player name for now
+    }
+
+    public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
+        public Card createFromParcel(Parcel in) {
+            return new Card(in);
+        }
+
+        public Card[] newArray(int size) {
+            return new Card[size];
+        }
+    };
 }

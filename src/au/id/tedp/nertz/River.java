@@ -1,10 +1,12 @@
 package au.id.tedp.nertz;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-class River extends TargetArea {
+class River extends TargetArea implements Parcelable {
     private ArrayList<TableauPile> piles;
 
     public static final int NUM_PILES = 4;
@@ -29,4 +31,26 @@ class River extends TargetArea {
     public int size() {
         return piles.size();
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        p.writeTypedList(piles);
+    }
+
+    protected River(Parcel p) {
+        p.readTypedList(piles, TableauPile.CREATOR);
+    }
+
+    public static final Parcelable.Creator<River> CREATOR = new Parcelable.Creator<River>() {
+        public River createFromParcel(Parcel in) {
+            return new River(in);
+        }
+
+        public River[] newArray(int size) {
+            return new River[size];
+        }
+    };
 }

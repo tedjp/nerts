@@ -1,12 +1,13 @@
 package au.id.tedp.nertz;
 
+import android.os.Bundle;
 import android.util.Log;
 
 class AiPlayer extends Player {
     private Game game;
 
-    public AiPlayer(Game game) {
-        super("CPU");
+    public AiPlayer(Game game, Lake lake, Bundle state) throws EmptyPileException {
+        super("CPU", lake, state);
         this.game = game;
     }
 

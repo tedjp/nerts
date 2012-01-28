@@ -1,5 +1,7 @@
 package au.id.tedp.nertz;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.util.Collection;
@@ -8,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Iterator;
 
-public class Deck {
+public class Deck implements Parcelable {
     private List<Card> cards;
     private int cardnum;
     private Player owner;
@@ -67,4 +69,30 @@ public class Deck {
     public Player getOwner() {
         return owner;
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        p.writeTypedList(cards);
+        p.writeInt(cardnum);
+        p.writeString(owner.getName());
+    }
+
+    protected Deck(Parcel p) {
+        p.readTypedList(cards, Card.CREATOR);
+        cardnum = p.readInt();
+        // XXX: Leaving the owner null
+    }
+
+    public static final Parcelable.Creator<Deck> CREATOR = new Parcelable.Creator<Deck>() {
+        public Deck createFromParcel(Parcel in) {
+            return new Deck(in);
+        }
+
+        public Deck[] newArray(int size) {
+            return new Deck[size];
+        }
+    };
 }

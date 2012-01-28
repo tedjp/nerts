@@ -1,11 +1,14 @@
 package au.id.tedp.nertz;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Class that represents a pile of cards of a single suit that must be
  * sequential, starting from Ace through King.
  */
 
-public class SequentialSuitPile extends TargetPile {
+public class SequentialSuitPile extends TargetPile implements Parcelable {
     private Card.Suit suit;
 
     public SequentialSuitPile() {
@@ -42,4 +45,28 @@ public class SequentialSuitPile extends TargetPile {
         return (c.getSuit() == this.suit
                 && c.getValue() == faceup.peek().getValue() + 1);
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        super.writeToParcel(p, flags);
+        p.writeString(suit.toString());
+    }
+
+    protected SequentialSuitPile(Parcel p) {
+        super(p);
+        suit = Card.Suit.fromString(p.readString());
+    }
+
+    public static final Parcelable.Creator<SequentialSuitPile> CREATOR = new Parcelable.Creator<SequentialSuitPile>() {
+        public SequentialSuitPile createFromParcel(Parcel in) {
+            return new SequentialSuitPile(in);
+        }
+
+        public SequentialSuitPile[] newArray(int size) {
+            return new SequentialSuitPile[size];
+        }
+    };
 }

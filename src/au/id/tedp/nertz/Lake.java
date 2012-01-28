@@ -1,9 +1,11 @@
 package au.id.tedp.nertz;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Lake extends TargetArea {
+public class Lake extends TargetArea implements Parcelable {
     private List<SequentialSuitPile> piles;
 
     public Lake() {
@@ -55,4 +57,26 @@ public class Lake extends TargetArea {
     public int size() {
         return piles.size();
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        p.writeTypedList(piles);
+    }
+
+    protected Lake(Parcel p) {
+        p.readTypedList(piles, SequentialSuitPile.CREATOR);
+    }
+
+    public static final Parcelable.Creator<Lake> CREATOR = new Parcelable.Creator<Lake>() {
+        public Lake createFromParcel(Parcel in) {
+            return new Lake(in);
+        }
+
+        public Lake[] newArray(int size) {
+            return new Lake[size];
+        }
+    };
 }

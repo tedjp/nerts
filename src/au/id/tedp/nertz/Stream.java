@@ -1,9 +1,11 @@
 package au.id.tedp.nertz;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.Collection;
 import java.util.EmptyStackException;
 
-public class Stream extends Pile {
+public class Stream extends Pile implements Parcelable {
     public Stream(Collection<Card> cards) {
         /* Since the stream can have all its cards either face down or
          * face up, provide enough storage for both cases. */
@@ -51,4 +53,26 @@ public class Stream extends Pile {
             throw new EmptyPileException("Failed to insert card at position 0");
         }
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel p, int flags) {
+        super.writeToParcel(p, flags);
+    }
+
+    private Stream(Parcel p) {
+        super(p);
+    }
+
+    public static final Parcelable.Creator<Stream> CREATOR = new Parcelable.Creator<Stream>() {
+        public Stream createFromParcel(Parcel in) {
+            return new Stream(in);
+        }
+
+        public Stream[] newArray(int size) {
+            return new Stream[size];
+        }
+    };
 }
