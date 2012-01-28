@@ -15,5 +15,9 @@ public abstract class TargetPile extends Pile {
         super(p);
     }
 
+    public void writeToParcel(Parcel p, int flags) {
+        super.writeToParcel(p, flags);
+    }
+
     public abstract boolean isValidMove(Card card);
 }
