@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class DeckGraphics {
     public static BitmapDrawable getCardBack(Resources res) {
-        return (BitmapDrawable) res.getDrawable(R.drawable.b1fv);
+        return (BitmapDrawable) res.getDrawable(R.drawable.bb);
     }
 
     public static BitmapDrawable getBitmapDrawable(Resources res, Card c) {
