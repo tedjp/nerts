@@ -67,6 +67,7 @@ public class Lake extends TargetArea implements Parcelable {
     }
 
     protected Lake(Parcel p) {
+        this();
         p.readTypedList(piles, SequentialSuitPile.CREATOR);
     }
 
