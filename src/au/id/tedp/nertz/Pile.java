@@ -119,6 +119,7 @@ public class Pile implements Parcelable {
     }
 
     protected Pile(Parcel p) {
+        this();
         p.readTypedList(facedown, Card.CREATOR);
         p.readTypedList(faceup, Card.CREATOR);
         name = p.readString();

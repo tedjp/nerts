@@ -81,6 +81,7 @@ public class Deck implements Parcelable {
     }
 
     protected Deck(Parcel p) {
+        cards = new LinkedList<Card>();
         p.readTypedList(cards, Card.CREATOR);
         cardnum = p.readInt();
         // XXX: Leaving the owner null

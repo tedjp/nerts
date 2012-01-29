@@ -41,6 +41,7 @@ class River extends TargetArea implements Parcelable {
     }
 
     protected River(Parcel p) {
+        piles = new ArrayList<TableauPile>(NUM_PILES);
         p.readTypedList(piles, TableauPile.CREATOR);
     }
 
