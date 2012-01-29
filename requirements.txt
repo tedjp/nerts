@@ -10,6 +10,7 @@ Initial release requirements:
 [ ] App Icon
 [x] Display number of cards left in Nertz pile
 [ ] Display score (make first deal free or start above zero?)
+[ ] Fix touch detection on expanded cards, especially in portrait
 
 Future features:
 
