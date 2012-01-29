@@ -13,6 +13,8 @@ Initial release requirements:
 
 Future features:
 
+[ ] Better scaling of Nertz Pile counter, especially on standard &
+    small screens
 [ ] Show other players' cards
 [ ] Visibly deal three cards at a time
 [ ] Highlight recent moves
