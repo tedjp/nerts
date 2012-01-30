@@ -96,14 +96,12 @@ class GameView extends View implements View.OnTouchListener {
         }
 
         if (stream.isFaceUpEmpty() && stream.cardsTakenThisTimeThrough() == false) {
-            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
-            paint.setTextAlign(Paint.Align.RIGHT);
-            paint.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
-            paint.setTextSize(24.0f);
-
-            canvas.drawText("Shift", streamArea.centerX(),
-                    streamArea.centerY(),
-                    paint);
+            BitmapDrawable topUnder = (BitmapDrawable) res.getDrawable(R.drawable.top_under);
+            dest.left = streamArea.left + areaWidth / 8;
+            dest.top = streamArea.top + areaHeight / 4;
+            dest.right = dest.left + topUnder.getIntrinsicWidth();
+            dest.bottom = dest.top + topUnder.getIntrinsicHeight();
+            canvas.drawBitmap(topUnder.getBitmap(), null, dest, null);
         }
 
         if (!stream.isFaceUpEmpty()) {

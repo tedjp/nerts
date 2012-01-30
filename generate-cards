@@ -8,6 +8,7 @@ rsvg --width=$(($HDPI_WIDTH * 13)) --height=$(($HDPI_HEIGHT * 5)) paris.svg pari
 convert -crop ${HDPI_WIDTH}x${HDPI_HEIGHT} paris.png card%d.png
 
 mkdir -p res/drawable-hdpi
+rsvg --width=72 top-under.svg res/drawable-hdpi/top_under.png
 
 echo "0 c1
 1 c2
