@@ -9,10 +9,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import java.lang.Math;
+import java.lang.Runnable;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Iterator;
@@ -32,6 +34,7 @@ class GameView extends View implements View.OnTouchListener {
         setOnTouchListener(this);
         state = TouchState.NONE;
         liveCards = new ArrayList<Card>(12);
+        animate_top_under = false;
     }
 
     private int cachedCanvasX, cachedCanvasY;
@@ -70,6 +73,15 @@ class GameView extends View implements View.OnTouchListener {
         return position;
     }
 
+    private Rect getFaceDownStreamLocation() {
+        Rect rect = new Rect(streamArea.left + ((streamArea.right - streamArea.left) - cardWidth * 2) * 2 / 3 + cardWidth,
+                streamArea.centerY() - cardHeight / 2,
+                0, 0);
+        rect.right = rect.left + cardWidth;
+        rect.bottom = rect.top + cardHeight;
+        return rect;
+    }
+
     protected void drawStream(Canvas canvas, Stream stream) {
         int areaWidth = streamArea.right - streamArea.left;
         int areaHeight = streamArea.bottom - streamArea.top;
@@ -79,9 +91,19 @@ class GameView extends View implements View.OnTouchListener {
 
         if (!stream.isFaceDownEmpty()) {
             BitmapDrawable cardBack = DeckGraphics.getCardBack(res);
-            dest.left = streamArea.left + (areaWidth - cardWidth * 2) * 2 / 3 + cardWidth;
-            dest.right = dest.left + cardWidth;
+            dest = getFaceDownStreamLocation();
             canvas.drawBitmap(cardBack.getBitmap(), null, dest, null);
+        }
+
+        if (stream.isFaceUpEmpty() && stream.cardsTakenThisTimeThrough() == false) {
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
+            paint.setTextAlign(Paint.Align.RIGHT);
+            paint.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+            paint.setTextSize(24.0f);
+
+            canvas.drawText("Shift", streamArea.centerX(),
+                    streamArea.centerY(),
+                    paint);
         }
 
         if (!stream.isFaceUpEmpty()) {
@@ -347,6 +369,7 @@ class GameView extends View implements View.OnTouchListener {
         }
         Rect fullDest = new Rect(0, 0, getWidth(), getHeight());
         canvas.drawBitmap(staticTableBitmap, null, fullDest, null);
+        drawTopUnderAnimation(canvas);
         if (expandedPile != null) {
             canvas.drawARGB(128, 0, 0, 0);
             drawExpandedPile(canvas, expandedPile);
@@ -451,6 +474,22 @@ class GameView extends View implements View.OnTouchListener {
             }
             catch (EmptyPileException e) {
                 Log.e("Nertz", "Tried to handle stream touch, but stream was empty");
+            }
+        }
+        else {
+            Stream stream = player.getStream();
+            // FIXME: Only do this if the touch *started* on the waste area too
+            if (stream.isFaceUpEmpty() && stream.cardsTakenThisTimeThrough() == false) {
+                try {
+                    stream.putTopUnder();
+                    startTopUnderAnimation();
+                }
+                catch (EmptyPileException e) {
+                    Log.e("Nertz", "Tried to put top card on bottom, but stream was empty");
+                }
+                catch (CardSequenceException e) {
+                    Log.e("Nertz", "Tried to put top card on bottom, but sequence was bad");
+                }
             }
         }
     }
@@ -625,5 +664,68 @@ class GameView extends View implements View.OnTouchListener {
         invalidate();
 
         return true;
+    }
+
+    boolean animate_top_under;
+    private Handler topUnderHandler;
+    private TopUnderAnimator topUnderAnimator;
+    private static final int ANIM_DELAY = 50;
+
+    public void startTopUnderAnimation() {
+        animate_top_under = true;
+        topUnderHandler = new Handler();
+        topUnderAnimator = new TopUnderAnimator();
+        topUnderHandler.postDelayed(topUnderAnimator, ANIM_DELAY);
+        // invalidate() will be called at the end of the onTouch() caller
+    }
+
+    class TopUnderAnimator implements Runnable {
+        private int top_under_pos;
+
+        public TopUnderAnimator() {
+            top_under_pos = -3;
+        }
+
+        public void run() {
+            if (top_under_pos < 4) {
+                ++top_under_pos;
+                if (top_under_pos == 0)
+                    top_under_pos = 1;
+                topUnderHandler.postDelayed(topUnderAnimator, ANIM_DELAY);
+            } else {
+                topUnderHandler.removeCallbacks(topUnderAnimator);
+            }
+            invalidate();
+        }
+
+        public int getTopUnderPos() {
+            return top_under_pos;
+        }
+    }
+
+    public void drawTopUnderAnimation(Canvas canvas) {
+        if (topUnderAnimator == null || topUnderAnimator.getTopUnderPos() == 4)
+            return;
+
+        int top_under_pos = topUnderAnimator.getTopUnderPos();
+
+        Rect dest = getFaceDownStreamLocation();
+        Rect top_of_pile = new Rect(dest);
+        float pos = 1.0f / ((float)Math.abs(top_under_pos));
+        dest.top -= (int) (pos * (float)cardHeight);
+        dest.bottom = dest.top + cardHeight;
+
+        BitmapDrawable cardBack = DeckGraphics.getCardBack(res);
+        Bitmap bmp = cardBack.getBitmap();
+
+        if (top_under_pos < 0) {
+            // Draw it on top
+            canvas.drawBitmap(bmp, null, top_of_pile, null);
+            canvas.drawBitmap(bmp, null, dest, null);
+        } else {
+            // Draw on bottom
+            canvas.drawBitmap(bmp, null, dest, null);
+            canvas.drawBitmap(bmp, null, top_of_pile, null);
+        }
     }
 }

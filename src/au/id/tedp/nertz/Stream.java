@@ -6,13 +6,25 @@ import java.util.Collection;
 import java.util.EmptyStackException;
 
 public class Stream extends Pile implements Parcelable {
+    private int cardsAtStart;
+
     public Stream(Collection<Card> cards) {
         /* Since the stream can have all its cards either face down or
          * face up, provide enough storage for both cases. */
         super(cards, 35);
+        commonConstructor();
+    }
+
+    private void commonConstructor() {
+        // Pretend there was one more card so we don't show the shift
+        // message at the start of the game.
+        cardsAtStart = size() + 1;
     }
 
     public void flipThree() throws EmptyPileException {
+        if (faceup.isEmpty()) // Reset counter now that the pile has started
+            cardsAtStart = size();
+
         for (int i = 0; i < 3; ++i) {
             if (!facedown.isEmpty()) {
                 faceup.push(facedown.pop());
@@ -45,6 +57,9 @@ public class Stream extends Pile implements Parcelable {
 
         try {
             facedown.insertElementAt(facedown.pop(), 0);
+            // Avoid the caller thinking the top card can still be put under
+            // since that would be cheating
+            cardsAtStart = size() + 1;
         }
         catch (EmptyStackException e) {
             throw new EmptyPileException("No face-down cards to take from");
@@ -64,6 +79,7 @@ public class Stream extends Pile implements Parcelable {
 
     private Stream(Parcel p) {
         super(p);
+        commonConstructor();
     }
 
     public static final Parcelable.Creator<Stream> CREATOR = new Parcelable.Creator<Stream>() {
@@ -75,4 +91,8 @@ public class Stream extends Pile implements Parcelable {
             return new Stream[size];
         }
     };
+
+    public boolean cardsTakenThisTimeThrough() {
+        return size() < cardsAtStart;
+    }
 }
