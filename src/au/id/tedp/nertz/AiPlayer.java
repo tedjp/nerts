@@ -70,13 +70,20 @@ class AiPlayer extends Player {
                         ourmove.dest.toString());
                 playMove(ourmove);
             } else {
-                // No Move-compatible move available, so draw some cards from the stream
-                Log.d("Nertz", "No move, just draw cards");
                 Stream stream = getStream();
-                if (!stream.isFaceDownEmpty())
-                    stream.flipThree();
-                else
+                if (stream.isFaceDownEmpty()) {
+                    Log.d("Nertz", "Restarting stream pile");
                     stream.restartPile();
+                } else {
+                    if (stream.isFaceUpEmpty() &&
+                            stream.cardsTakenThisTimeThrough() == false) {
+                        Log.d("Nertz", "Putting top card under");
+                        stream.putTopUnder();
+                    } else {
+                        Log.d("Nertz", "Drawing cards");
+                        stream.flipThree();
+                    }
+                }
             }
 
             // This should really be in the (ourmove != null) condition,
