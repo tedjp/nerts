@@ -6,7 +6,6 @@ Initial release requirements:
 [x] Create top-card-under graphic
 [ ] Delayed opponent moves
 [ ] Win/lose display with new game option
-[ ] "How to play" guide
 [ ] App Icon
 [x] Display number of cards left in Nertz pile
 [ ] Display score (make first deal free or start above zero?)
@@ -14,6 +13,7 @@ Initial release requirements:
 
 Future features:
 
+[ ] "How to play" guide
 [ ] Better scaling of Nertz Pile counter, especially on standard &
     small screens
 [ ] Show other players' cards
