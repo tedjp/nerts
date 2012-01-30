@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-HDPI_WIDTH=68
-HDPI_HEIGHT=96
+HDPI_WIDTH=140
+HDPI_HEIGHT=200
 
 rsvg --width=$(($HDPI_WIDTH * 13)) --height=$(($HDPI_HEIGHT * 5)) paris.svg paris.png
 convert -crop ${HDPI_WIDTH}x${HDPI_HEIGHT} paris.png card%d.png
