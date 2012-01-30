@@ -140,7 +140,7 @@ class GameView extends View implements View.OnTouchListener {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
-        paint.setTextSize(28.0f);
+        paint.setTextSize((nertzPileArea.bottom - nertzPileArea.top - cardHeight) / 3);
 
         canvas.drawText(String.valueOf(pile.size()),
                 nertzPileArea.centerX(),
