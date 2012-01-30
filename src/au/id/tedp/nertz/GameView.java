@@ -35,6 +35,10 @@ class GameView extends View implements View.OnTouchListener {
         state = TouchState.NONE;
         liveCards = new ArrayList<Card>(12);
         animate_top_under = false;
+
+        Bitmap cardBmp = DeckGraphics.getCardBack(res).getBitmap();
+        nativeCardWidth = cardBmp.getWidth();
+        nativeCardHeight = cardBmp.getHeight();
     }
 
     private int cachedCanvasX, cachedCanvasY;
@@ -45,6 +49,7 @@ class GameView extends View implements View.OnTouchListener {
 
     private Resources res;
 
+    private int nativeCardWidth, nativeCardHeight;
     private int cardHeight, cardWidth;
 
     /**
@@ -264,10 +269,37 @@ class GameView extends View implements View.OnTouchListener {
 
     protected Rect nertzPileArea, riverArea, streamArea, lakeArea, oppArea;
 
-    private void calculateAreas() {
-        int height = getHeight(), width = getWidth();
-        // XXX: Might want to cache these.
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        calculateAreas(w, h);
+        calculateCardSize(w, h);
+    }
 
+    protected void calculateCardSize(int w, int h) {
+        int idealWidth, idealHeight;
+
+        if (w > h) {
+            idealWidth = w / 11;
+            idealHeight = h / 4;
+        } else {
+            idealWidth = w / 7;
+            idealHeight = h / 7;
+        }
+
+        if (nativeCardHeight > idealHeight * 0.8f &&
+            nativeCardHeight < idealHeight * 1.2f &&
+            nativeCardWidth > idealWidth * 0.8f &&
+            nativeCardWidth < idealWidth * 1.2f)
+        {
+            cardWidth = nativeCardWidth;
+            cardHeight = nativeCardHeight;
+        } else {
+            cardWidth = idealWidth;
+            cardHeight = idealHeight;
+        }
+    }
+
+    protected void calculateAreas(int width, int height) {
         if (width < height) {
             // Portrait
             nertzPileArea = new Rect(0, height / 4 * 3, width / 2, height);
@@ -337,7 +369,6 @@ class GameView extends View implements View.OnTouchListener {
             staticTableBitmap = Bitmap.createBitmap(getWidth(),
                     getHeight(), Bitmap.Config.ARGB_8888);
             Canvas c = new Canvas(staticTableBitmap);
-            calculateAreas();
 
             c.drawColor(0xff669900);
 
@@ -350,15 +381,6 @@ class GameView extends View implements View.OnTouchListener {
             c.drawRect(streamArea, paint);
             c.drawRect(lakeArea, paint);
             c.drawRect(oppArea, paint);
-
-            /*
-            cardWidth = getWidth() / 11;
-            cardHeight = getHeight() / 4;
-            */
-
-            Bitmap cardBmp = DeckGraphics.getCardBack(res).getBitmap();
-            cardWidth = cardBmp.getWidth();
-            cardHeight = cardBmp.getHeight();
 
             drawNertzPile(c);
             drawRiver(c, expandedPile);
