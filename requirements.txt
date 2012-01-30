@@ -6,7 +6,7 @@ Initial release requirements:
 [x] Create top-card-under graphic
 [ ] Delayed opponent moves
 [ ] Win/lose display with new game option
-[ ] App Icon
+[x] App Icon
 [x] Display number of cards left in Nertz pile
 [ ] Display score (make first deal free or start above zero?)
 [x] Fix touch detection on expanded cards, especially in portrait
