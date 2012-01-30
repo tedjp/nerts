@@ -3,7 +3,7 @@ Initial release requirements:
 [x] Option to resume game on startup
 [x] Legally distributable card images
 [x] Top-card-under when no cards played
-[ ] Create top-card-under graphic
+[x] Create top-card-under graphic
 [ ] Delayed opponent moves
 [ ] Win/lose display with new game option
 [ ] "How to play" guide
