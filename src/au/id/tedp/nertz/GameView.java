@@ -524,7 +524,14 @@ class GameView extends View implements View.OnTouchListener {
         fromPile = pile;
 
         Stack<Card> cards = pile.getFaceUpCards();
-        int cardnum = (int) ((y / (float) getHeight()) * cards.size());
+        int cardnum;
+        if (cards.size() * cardHeight > getHeight())
+            cardnum = (int) ((y / (float) getHeight()) * cards.size());
+        else {
+            float gap = (getHeight() - ((float)cardHeight * (float)cards.size())) / 2.0f;
+            y -= gap;
+            cardnum = (int) (y / (float) (getHeight() - gap * 2) * cards.size());
+        }
 
         Log.d("Nertz", "Expanded Touch: Taking card " + cardnum);
 
