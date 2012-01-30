@@ -35,10 +35,29 @@ class GameView extends View implements View.OnTouchListener {
         state = TouchState.NONE;
         liveCards = new ArrayList<Card>(12);
         animate_top_under = false;
+        smoothPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
 
         Bitmap cardBmp = DeckGraphics.getCardBack(res).getBitmap();
         nativeCardWidth = cardBmp.getWidth();
         nativeCardHeight = cardBmp.getHeight();
+    }
+
+    protected static Paint smoothPaint;
+
+    /**
+     * Draw the given bitmap on the given canvas in the given dest, using an
+     * anti-aliasing &amp; filtering (smooth-on-upscale) painter.
+     */
+    public static void drawBitmap(Canvas c, Bitmap bmp, Rect dest) {
+        c.drawBitmap(bmp, null, dest, smoothPaint);
+    }
+
+    public static void drawBitmap(Canvas c, BitmapDrawable bmp, Rect dest) {
+        drawBitmap(c, bmp.getBitmap(), dest);
+    }
+
+    public static void drawBitmap(Canvas c, BitmapDrawable bmp, RectF dest) {
+        c.drawBitmap(bmp.getBitmap(), null, dest, smoothPaint);
     }
 
     private int cachedCanvasX, cachedCanvasY;
@@ -97,7 +116,7 @@ class GameView extends View implements View.OnTouchListener {
         if (!stream.isFaceDownEmpty()) {
             BitmapDrawable cardBack = DeckGraphics.getCardBack(res);
             dest = getFaceDownStreamLocation();
-            canvas.drawBitmap(cardBack.getBitmap(), null, dest, null);
+            drawBitmap(canvas, cardBack, dest);
         }
 
         if (stream.isFaceUpEmpty() && stream.cardsTakenThisTimeThrough() == false) {
@@ -106,14 +125,14 @@ class GameView extends View implements View.OnTouchListener {
             dest.top = streamArea.top + areaHeight / 4;
             dest.right = dest.left + topUnder.getIntrinsicWidth();
             dest.bottom = dest.top + topUnder.getIntrinsicHeight();
-            canvas.drawBitmap(topUnder.getBitmap(), null, dest, null);
+            drawBitmap(canvas, topUnder, dest);
         }
 
         if (!stream.isFaceUpEmpty()) {
             BitmapDrawable drawable = stream.topCardImage(res);
             dest.left = streamArea.left + (areaWidth - cardWidth * 2) / 3;
             dest.right = dest.left + cardWidth;
-            canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
+            drawBitmap(canvas, drawable, dest);
         }
     }
 
@@ -146,7 +165,7 @@ class GameView extends View implements View.OnTouchListener {
                 centerY - cardHeight / 2,
                 centerX + cardWidth / 2,
                 centerY + cardHeight / 2);
-        canvas.drawBitmap(drawable.getBitmap(), null, dest, null);
+        drawBitmap(canvas, drawable, dest);
     }
 
     private int getRiverPileLeft(int pilenum) {
@@ -197,7 +216,7 @@ class GameView extends View implements View.OnTouchListener {
         dest.bottom = dest.top + cardHeight;
         for (Card card: faceup) {
             BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, card);
-            canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+            drawBitmap(canvas, bd, dest);
             dest.top += voffset;
             dest.bottom += voffset;
         }
@@ -254,7 +273,7 @@ class GameView extends View implements View.OnTouchListener {
 
         dest.right = dest.left + cardWidth;
         dest.bottom = dest.top + cardHeight;
-        canvas.drawBitmap(bmp.getBitmap(), null, dest, null);
+        drawBitmap(canvas, bmp, dest);
     }
 
     protected void drawLake(Canvas canvas) {
@@ -331,7 +350,7 @@ class GameView extends View implements View.OnTouchListener {
                     liveCardY - cardHeight / 8 * 7 + (offset * i),
                     liveCardX + cardWidth / 2,
                     liveCardY + cardHeight / 8 + (offset * i));
-            canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+            drawBitmap(canvas, bd, dest);
         }
     }
 
@@ -358,7 +377,7 @@ class GameView extends View implements View.OnTouchListener {
             dest.top = ypad + vsep * cardnum;
             dest.bottom = dest.top + cardHeight;
             BitmapDrawable bd = DeckGraphics.getBitmapDrawable(res, card);
-            canvas.drawBitmap(bd.getBitmap(), null, dest, null);
+            drawBitmap(canvas, bd.getBitmap(), dest);
             ++cardnum;
         }
     }
@@ -368,6 +387,7 @@ class GameView extends View implements View.OnTouchListener {
         if (staticTableBitmap == null || expandedPile != null) {
             staticTableBitmap = Bitmap.createBitmap(getWidth(),
                     getHeight(), Bitmap.Config.ARGB_8888);
+            staticTableBitmap.setDensity(canvas.getDensity());
             Canvas c = new Canvas(staticTableBitmap);
 
             c.drawColor(0xff669900);
@@ -388,6 +408,8 @@ class GameView extends View implements View.OnTouchListener {
             drawLake(c);
         }
         Rect fullDest = new Rect(0, 0, getWidth(), getHeight());
+        // Don't do any smoothing on this draw: the canvas & the
+        // staticTableBitmap should have matching size & density.
         canvas.drawBitmap(staticTableBitmap, null, fullDest, null);
         drawTopUnderAnimation(canvas);
         if (expandedPile != null) {
@@ -396,6 +418,7 @@ class GameView extends View implements View.OnTouchListener {
         } else {
             drawLiveCards(canvas);
         }
+        Log.d("Nertz", "Canvas density is " + canvas.getDensity());
     }
 
     protected enum TouchState {
@@ -747,12 +770,12 @@ class GameView extends View implements View.OnTouchListener {
 
         if (top_under_pos < 0) {
             // Draw it on top
-            canvas.drawBitmap(bmp, null, top_of_pile, null);
-            canvas.drawBitmap(bmp, null, dest, null);
+            drawBitmap(canvas, bmp, top_of_pile);
+            drawBitmap(canvas, bmp, dest);
         } else {
             // Draw on bottom
-            canvas.drawBitmap(bmp, null, dest, null);
-            canvas.drawBitmap(bmp, null, top_of_pile, null);
+            drawBitmap(canvas, bmp, dest);
+            drawBitmap(canvas, bmp, top_of_pile);
         }
     }
 }
