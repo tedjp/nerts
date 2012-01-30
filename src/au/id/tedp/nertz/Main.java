@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.widget.Toast;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class Main extends Activity
 {
@@ -14,7 +17,10 @@ public class Main extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.main);
+        newGame(savedInstanceState);
+    }
+
+    public void newGame(Bundle savedInstanceState) {
         try {
             game = new Game(this, savedInstanceState);
             setContentView(game.getHumanPlayer().getGameView());
@@ -31,5 +37,23 @@ public class Main extends Activity
         Log.d("Nertz", "Saving activity state");
         super.onSaveInstanceState(outState);
         game.saveState(outState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.new_game:
+            newGame(null);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
