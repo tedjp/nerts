@@ -418,7 +418,6 @@ class GameView extends View implements View.OnTouchListener {
         } else {
             drawLiveCards(canvas);
         }
-        Log.d("Nertz", "Canvas density is " + canvas.getDensity());
     }
 
     protected enum TouchState {
