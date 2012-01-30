@@ -10,7 +10,7 @@ Initial release requirements:
 [x] Display number of cards left in Nertz pile
 [ ] Display score (make first deal free or start above zero?)
 [x] Fix touch detection on expanded cards, especially in portrait
-[ ] Better card size on large (tablet) screens
+[x] Better card size on large (tablet) screens
 
 Future features:
 
