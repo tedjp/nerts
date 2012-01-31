@@ -216,7 +216,7 @@ public class Card implements Parcelable {
     }
 
     public void writeToParcel(Parcel p, int flags) {
-        p.writeInt(face.getValue());
+        p.writeString(face.toString());
         p.writeString(suit.toString());
         p.writeString(deck.getOwner().getName());
     }
@@ -225,6 +225,7 @@ public class Card implements Parcelable {
         this.face = Card.Face.fromString(p.readString());
         this.suit = Card.Suit.fromString(p.readString());
         // Ignoring the player name for now
+        p.readString();
     }
 
     public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
