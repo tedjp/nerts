@@ -14,6 +14,8 @@ Initial release requirements:
 
 Future features:
 
+[ ] Fix dropping onto an exact pile instead of snapping to the first
+    matching pile
 [ ] Show the three cards on the stream pile
 [ ] "How to play" guide
 [x] Better scaling of Nertz Pile counter, especially on standard &
