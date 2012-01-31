@@ -256,7 +256,7 @@ class GameView extends View implements View.OnTouchListener {
                     / (columns + 1);
 
             // Don't draw the leftmost card off the left of the screen
-            if (row == 0 && hsep < 0)
+            if (column == 0 && hsep < 0)
                 hsep = 0;
 
             dest.left = lakeArea.left + hsep / 2 + hsep * column + column * cardWidth;
