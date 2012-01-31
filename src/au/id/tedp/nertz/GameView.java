@@ -253,7 +253,7 @@ class GameView extends View implements View.OnTouchListener {
             int row = pilenum / columns;
             int vsep = (lakeArea.bottom - lakeArea.top - cardHeight * 2) / 3;
             int hsep = ((lakeArea.right - lakeArea.left) - cardWidth * columns)
-                    / (columns + 1);
+                    / columns;
 
             // Don't draw the leftmost card off the left of the screen
             if (column == 0 && hsep < 0)
