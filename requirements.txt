@@ -8,7 +8,7 @@ Initial release requirements:
 [ ] Win/lose display with new game option
 [x] App Icon
 [x] Display number of cards left in Nertz pile
-[ ] Display score (make first deal free or start above zero?)
+[ ] Display running scores
 [x] Fix touch detection on expanded cards, especially in portrait
 [x] Better card size on large (tablet) screens
 
