@@ -19,6 +19,13 @@ public class Pile implements Parcelable {
         this.faceup = new Stack<Card>();
     }
 
+    public Pile(Pile p) {
+        this.facedown = new Stack<Card>();
+        this.faceup = new Stack<Card>();
+        this.facedown.addAll(p.facedown);
+        this.faceup.addAll(p.faceup);
+    }
+
     public Pile(Collection<Card> facedown, Collection<Card> faceup) {
         this.facedown = new Stack<Card>();
         this.facedown.addAll(facedown);

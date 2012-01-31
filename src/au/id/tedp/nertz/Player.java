@@ -81,6 +81,7 @@ class Player {
         deck = b.getParcelable("deck");
         stream = b.getParcelable("stream");
         river = b.getParcelable("river");
-        nertzpile = b.getParcelable("nertzpile");
+        // The parcelable is a Pile, so copy-construct it into a NertzPile
+        nertzpile = new NertzPile((Pile) b.getParcelable("nertzpile"));
     }
 }

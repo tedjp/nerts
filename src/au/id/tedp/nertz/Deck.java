@@ -77,14 +77,16 @@ public class Deck implements Parcelable {
     public void writeToParcel(Parcel p, int flags) {
         p.writeTypedList(cards);
         p.writeInt(cardnum);
-        p.writeString(owner.getName());
+        // XXX: Not tracking the owner yet
+        //p.writeString(owner.getName());
     }
 
     protected Deck(Parcel p) {
         cards = new LinkedList<Card>();
         p.readTypedList(cards, Card.CREATOR);
         cardnum = p.readInt();
-        // XXX: Leaving the owner null
+        // XXX: Not tracking the owner yet
+        //p.readString();
     }
 
     public static final Parcelable.Creator<Deck> CREATOR = new Parcelable.Creator<Deck>() {

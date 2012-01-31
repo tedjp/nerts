@@ -218,14 +218,15 @@ public class Card implements Parcelable {
     public void writeToParcel(Parcel p, int flags) {
         p.writeString(face.toString());
         p.writeString(suit.toString());
-        p.writeString(deck.getOwner().getName());
+        // XXX: Deck owner is not restored yet
+        //p.writeString(deck.getOwner().getName());
     }
 
     private Card(Parcel p) {
         this.face = Card.Face.fromString(p.readString());
         this.suit = Card.Suit.fromString(p.readString());
         // Ignoring the player name for now
-        p.readString();
+        //p.readString();
     }
 
     public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
