@@ -75,11 +75,13 @@ public class Stream extends Pile implements Parcelable {
 
     public void writeToParcel(Parcel p, int flags) {
         super.writeToParcel(p, flags);
+        p.writeInt(cardsAtStart);
     }
 
     private Stream(Parcel p) {
         super(p);
         commonConstructor();
+        cardsAtStart = p.readInt();
     }
 
     public static final Parcelable.Creator<Stream> CREATOR = new Parcelable.Creator<Stream>() {
