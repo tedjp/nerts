@@ -22,10 +22,11 @@ class ScoreKeeper {
     public static int LAKE_CARD_POINTS = 1;
 
     public void newGame() {
-        this.humanScore = 0;
+        int initialScore = 0 - NertzPile.INITIAL_DEAL * NERTZ_CARD_POINTS;
+        this.humanScore = initialScore;
         this.cpuScores = new ArrayList<Integer>(2);
-        this.cpuScores.add(new Integer(0));
-        this.cpuScores.add(new Integer(0));
+        this.cpuScores.add(new Integer(initialScore));
+        this.cpuScores.add(new Integer(initialScore));
     }
 
     public void newRound(int nertzcards) {

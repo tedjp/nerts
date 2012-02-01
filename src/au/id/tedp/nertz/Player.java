@@ -22,7 +22,7 @@ class Player {
         if (state != null) {
             readFromBundle(state);
         } else {
-            nertzpile = new NertzPile(deck.dealCards(13));
+            nertzpile = new NertzPile(deck.dealCards(NertzPile.INITIAL_DEAL));
             nertzpile.flipTopCard();
 
             river = new River(deck.dealCards(River.NUM_PILES));
