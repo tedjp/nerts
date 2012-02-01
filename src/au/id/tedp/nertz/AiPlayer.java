@@ -11,79 +11,12 @@ class AiPlayer extends Player {
         this.game = game;
     }
 
-    private Move findMove() {
-        NertzPile np = getNertzPile();
-        Lake lake = getLake();
-        River river = getRiver();
-        TargetPile target;
-        Card nc = np.peek();
-
-        if (nc != null) {
-            // Nertz -> Lake
-            target = lake.findTargetPile(nc);
-            if (target != null)
-                return new Move(np, target);
-
-            // Nertz -> River
-            target = river.findTargetPile(nc);
-            if (target != null)
-                return new Move(np, target);
-        }
-
-        // River -> Lake
-        for (Pile riverPile: river.getPiles()) {
-            Card riverCard = riverPile.peek();
-            if (riverCard != null) {
-                target = lake.findTargetPile(riverCard);
-                if (target != null)
-                    return new Move(riverPile, target);
-            }
-        }
-
-        // Stream -> Lake
-        Stream stream = getStream();
-        Card sc = stream.peek();
-        if (sc != null) {
-            target = lake.findTargetPile(sc);
-            if (target != null)
-                return new Move(stream, target);
-
-            // Stream -> River
-            target = river.findTargetPile(sc);
-            if (target != null)
-                return new Move(stream, target);
-        }
-
-        // Try all cards in the river if the cards on top of it
-        // were moved to another pile
-        // TODO
-
-        return null;
-    }
-
     public void makeMove() {
         try {
-            Move ourmove = findMove();
+            GameMove ourmove = findMove();
             if (ourmove != null) {
-                Log.d("Nertz", "Found move: " + ourmove.getCard().toString()
-                        + " from " + ourmove.source.toString() + " to " +
-                        ourmove.dest.toString());
-                playMove(ourmove);
-            } else {
-                Stream stream = getStream();
-                if (stream.isFaceDownEmpty()) {
-                    Log.d("Nertz", "Restarting stream pile");
-                    stream.restartPile();
-                } else {
-                    if (stream.isFaceUpEmpty() &&
-                            stream.cardsTakenThisTimeThrough() == false) {
-                        Log.d("Nertz", "Putting top card under");
-                        stream.putTopUnder();
-                    } else {
-                        Log.d("Nertz", "Drawing cards");
-                        stream.flipThree();
-                    }
-                }
+                Log.d("Nertz", "Found move: " + ourmove.toString());
+                ourmove.execute();
             }
 
             // This should really be in the (ourmove != null) condition,
@@ -92,7 +25,7 @@ class AiPlayer extends Player {
             if (getNertzPile().isEmpty())
                 Log.d("Nertz", "AI Player " + this + " calls Nertz!");
         }
-        catch (Exception e) {
+        catch (InvalidMoveException e) {
             Log.e("Nertz", "Failed to play AI move: " + e.getMessage());
         }
     }
