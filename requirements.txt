@@ -11,6 +11,7 @@ Initial release requirements:
 [x] Display running scores
 [x] Fix touch detection on expanded cards, especially in portrait
 [x] Better card size on large (tablet) screens
+[ ] Speed up card pickup
 
 Future features:
 
