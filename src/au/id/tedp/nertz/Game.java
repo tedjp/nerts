@@ -87,7 +87,15 @@ class Game {
 
     public void onPlayerMove() {
         for (AiPlayer cpu: cpus) {
-            cpu.makeMove();
+            GameMove move = cpu.findMove();
+            if (move != null) {
+                try {
+                    move.execute();
+                }
+                catch (InvalidMoveException e) {
+                    android.util.Log.e("Nertz", "Invalid Move Exception: " + e.getMessage());
+                }
+            }
         }
     }
 

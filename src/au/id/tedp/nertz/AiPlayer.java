@@ -11,15 +11,17 @@ class AiPlayer extends Player {
         this.game = game;
     }
 
-    public void makeMove() {
+    public void makeMove(GameMove move) {
+        if (move == null)
+            return;
+
         try {
-            GameMove ourmove = findMove();
-            if (ourmove != null) {
-                Log.d("Nertz", "Found move: " + ourmove.toString());
-                ourmove.execute();
+            if (move != null) {
+                Log.d("Nertz", "Executing move: " + move.toString());
+                move.execute();
             }
 
-            // This should really be in the (ourmove != null) condition,
+            // This should really be in the (move != null) condition,
             // but putting it here makes it more visible by logging it
             // on every turn.
             if (getNertzPile().isEmpty())
