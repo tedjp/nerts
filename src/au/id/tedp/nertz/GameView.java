@@ -378,6 +378,24 @@ class GameView extends View implements View.OnTouchListener {
         }
     }
 
+    protected void drawOppArea(Canvas c) {
+        int width = oppArea.right - oppArea.left;
+        int height = oppArea.bottom - oppArea.top;
+        float textSize = height / 3.0f;
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+        paint.setTextSize(textSize);
+
+        // Hard coding score area size to 3 players. Should probably just use
+        // real Android layouts & views instead of cooking our own here anyway.
+        c.drawText(String.format("Score: %d", game.getPlayerScore()),
+                oppArea.left + width / 6,
+                oppArea.centerY() + textSize / 2,
+                paint);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         if (staticTableBitmap == null || expandedPile != null) {
@@ -398,6 +416,7 @@ class GameView extends View implements View.OnTouchListener {
             c.drawRect(lakeArea, paint);
             c.drawRect(oppArea, paint);
 
+            drawOppArea(c);
             drawNertzPile(c);
             drawRiver(c, expandedPile);
             drawStream(c, player.getStream());
@@ -661,6 +680,8 @@ class GameView extends View implements View.OnTouchListener {
                     try {
                         LiveMove livemove = new LiveMove(fromPile, toPile, liveCards);
                         livemove.execute();
+                        ScoreKeeper scorer = game.getScoreKeeper();
+                        scorer.registerMove(fromPile, toPile, liveCards.get(0));
 
                         try {
                             // Nertz Pile needs the top card flipped

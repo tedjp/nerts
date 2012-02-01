@@ -10,6 +10,7 @@ class Game {
     private ArrayList<AiPlayer> cpus;
     private Lake lake;
     private ArrayList<Deck> decks;
+    private ScoreKeeper scoreKeeper;
 
     public static final int AI_PLAYERS = 2;
 
@@ -46,6 +47,13 @@ class Game {
             cpus.add(new AiPlayer(this, lake, decks.get(i + 1), ai_player_bundle));
         }
 
+        scoreKeeper = new ScoreKeeper(decks, human, cpus);
+        if (saved != null) {
+            int humanScore = saved.getInt("PlayerScore");
+            ArrayList<Integer> aiScores = saved.getIntegerArrayList("AiScores");
+            scoreKeeper.assignScores(humanScore, aiScores);
+        }
+
         if (saved == null) {
             human.start();
             for (AiPlayer cpu: cpus)
@@ -72,6 +80,9 @@ class Game {
         }
 
         b.putParcelableArrayList("AiPlayers", aiBundles);
+
+        b.putInt("PlayerScore", scoreKeeper.getHumanScore());
+        b.putIntegerArrayList("AiScores", scoreKeeper.getAiScoreList());
     }
 
     public void onPlayerMove() {
@@ -86,5 +97,17 @@ class Game {
 
     public HumanPlayer getHumanPlayer() {
         return human;
+    }
+
+    public int getPlayerScore() {
+        return scoreKeeper.getHumanScore();
+    }
+
+    public int[] getAiScores() {
+        return scoreKeeper.getAiScores();
+    }
+
+    public ScoreKeeper getScoreKeeper() {
+        return scoreKeeper;
     }
 }
