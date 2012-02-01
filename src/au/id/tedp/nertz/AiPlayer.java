@@ -58,6 +58,21 @@ class AiPlayer extends Player {
         // were moved to another pile
         // TODO
 
+        return findStreamMove();
+    }
+
+    protected StreamMove findStreamMove() {
+        Stream stream = getStream();
+
+        if (stream.isFaceDownEmpty())
+            return new StreamMove(stream, StreamMove.Type.RESTART_PILE);
+
+        if (stream.isFaceUpEmpty() && !stream.cardsTakenThisTimeThrough())
+            return new StreamMove(stream, StreamMove.Type.TOP_UNDER);
+
+        if (!stream.isFaceDownEmpty())
+            return new StreamMove(stream, StreamMove.Type.FLIP_THREE);
+
         return null;
     }
 
@@ -67,21 +82,6 @@ class AiPlayer extends Player {
             if (ourmove != null) {
                 Log.d("Nertz", "Found move: " + ourmove.toString());
                 ourmove.execute();
-            } else {
-                Stream stream = getStream();
-                if (stream.isFaceDownEmpty()) {
-                    Log.d("Nertz", "Restarting stream pile");
-                    stream.restartPile();
-                } else {
-                    if (stream.isFaceUpEmpty() &&
-                            stream.cardsTakenThisTimeThrough() == false) {
-                        Log.d("Nertz", "Putting top card under");
-                        stream.putTopUnder();
-                    } else {
-                        Log.d("Nertz", "Drawing cards");
-                        stream.flipThree();
-                    }
-                }
             }
 
             // This should really be in the (ourmove != null) condition,
@@ -90,7 +90,7 @@ class AiPlayer extends Player {
             if (getNertzPile().isEmpty())
                 Log.d("Nertz", "AI Player " + this + " calls Nertz!");
         }
-        catch (Exception e) {
+        catch (InvalidMoveException e) {
             Log.e("Nertz", "Failed to play AI move: " + e.getMessage());
         }
     }
