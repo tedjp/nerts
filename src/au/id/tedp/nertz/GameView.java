@@ -294,28 +294,24 @@ class GameView extends View implements View.OnTouchListener {
         calculateCardSize(w, h);
     }
 
-    protected void calculateCardSize(int w, int h) {
-        int idealWidth, idealHeight;
+    protected void calculateCardSize(int viewWidth, int viewHeight) {
+        float width, height;
 
-        if (w > h) {
-            idealWidth = w / 11;
-            idealHeight = h / 4;
+        if (viewWidth > viewHeight) {
+            width = viewWidth / 11;
+            height = viewHeight / 4;
         } else {
-            idealWidth = w / 7;
-            idealHeight = h / 7;
+            width = viewWidth / 7;
+            height = viewHeight / 7;
         }
 
-        if (nativeCardHeight > idealHeight * 0.8f &&
-            nativeCardHeight < idealHeight * 1.2f &&
-            nativeCardWidth > idealWidth * 0.8f &&
-            nativeCardWidth < idealWidth * 1.2f)
-        {
-            cardWidth = nativeCardWidth;
-            cardHeight = nativeCardHeight;
-        } else {
-            cardWidth = idealWidth;
-            cardHeight = idealHeight;
-        }
+        if (height / width > 1.4)
+            height = width * 1.4f;
+        else
+            width = height * 0.72f;
+
+        cardHeight = (int) height;
+        cardWidth = (int) width;
     }
 
     protected void calculateAreas(int width, int height) {
