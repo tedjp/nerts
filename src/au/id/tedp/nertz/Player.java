@@ -75,4 +75,67 @@ class Player {
         // The parcelable is a Pile, so copy-construct it into a NertzPile
         nertzpile = new NertzPile((Pile) b.getParcelable("nertzpile"));
     }
+
+    public GameMove findMove() {
+        NertzPile np = getNertzPile();
+        Lake lake = getLake();
+        River river = getRiver();
+        TargetPile target;
+        Card nc = np.peek();
+
+        if (nc != null) {
+            // Nertz -> Lake
+            target = lake.findTargetPile(nc);
+            if (target != null)
+                return new CardMove(np, target);
+
+            // Nertz -> River
+            target = river.findTargetPile(nc);
+            if (target != null)
+                return new CardMove(np, target);
+        }
+
+        // River -> Lake
+        for (Pile riverPile: river.getPiles()) {
+            Card riverCard = riverPile.peek();
+            if (riverCard != null) {
+                target = lake.findTargetPile(riverCard);
+                if (target != null)
+                    return new CardMove(riverPile, target);
+            }
+        }
+
+        // Stream -> Lake
+        Stream stream = getStream();
+        Card sc = stream.peek();
+        if (sc != null) {
+            target = lake.findTargetPile(sc);
+            if (target != null)
+                return new CardMove(stream, target);
+
+            // Stream -> River
+            target = river.findTargetPile(sc);
+            if (target != null)
+                return new CardMove(stream, target);
+        }
+
+        // Try all cards in the river if the cards on top of it
+        // were moved to another pile
+        // TODO
+
+        return findStreamMove();
+    }
+
+    protected StreamMove findStreamMove() {
+        if (stream.isFaceDownEmpty())
+            return new StreamMove(stream, StreamMove.Type.RESTART_PILE);
+
+        if (stream.isFaceUpEmpty() && !stream.cardsTakenThisTimeThrough())
+            return new StreamMove(stream, StreamMove.Type.TOP_UNDER);
+
+        if (!stream.isFaceDownEmpty())
+            return new StreamMove(stream, StreamMove.Type.FLIP_THREE);
+
+        return null;
+    }
 }
