@@ -11,7 +11,8 @@ Initial release requirements:
 [x] Display running scores
 [x] Fix touch detection on expanded cards, especially in portrait
 [x] Better card size on large (tablet) screens
-[ ] Speed up card pickup
+[ ] Speed up card pickup by keeping Card Bitmaps in memory
+[ ] Fix mysterious crash in GameView drawing Lake Pile
 
 Future features:
 
