@@ -699,8 +699,8 @@ class GameView extends View implements View.OnTouchListener {
                         fromPile = null;
                         game.onPlayerMove();
                     }
-                    catch (CardSequenceException e) {
-                        Log.e("Nertz", "Failed to push live card onto destination pile");
+                    catch (InvalidMoveException e) {
+                        Log.e("Nertz", "Failed to execute move: " + e.getMessage());
                         returnLiveCards();
                     }
                 } else {

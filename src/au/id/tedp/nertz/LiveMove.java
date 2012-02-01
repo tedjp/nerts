@@ -2,7 +2,7 @@ package au.id.tedp.nertz;
 
 import java.util.ArrayList;
 
-class LiveMove extends Move {
+class LiveMove extends CardMove {
     private ArrayList<Card> cards;
 
     public LiveMove(Pile from, TargetPile to, ArrayList<Card> liveCards) {
@@ -11,9 +11,13 @@ class LiveMove extends Move {
     }
 
     @Override
-    public void execute() throws CardSequenceException {
-        for (Card card: cards)
-            dest.push(card);
+    public void execute() throws InvalidMoveException {
+        try {
+            for (Card card: cards)
+                dest.push(card);
+        } catch (CardSequenceException e) {
+            throw new InvalidMoveException(e.getMessage());
+        }
     }
 
     /**

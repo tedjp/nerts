@@ -11,7 +11,7 @@ class AiPlayer extends Player {
         this.game = game;
     }
 
-    private Move findMove() {
+    private GameMove findMove() {
         NertzPile np = getNertzPile();
         Lake lake = getLake();
         River river = getRiver();
@@ -22,12 +22,12 @@ class AiPlayer extends Player {
             // Nertz -> Lake
             target = lake.findTargetPile(nc);
             if (target != null)
-                return new Move(np, target);
+                return new CardMove(np, target);
 
             // Nertz -> River
             target = river.findTargetPile(nc);
             if (target != null)
-                return new Move(np, target);
+                return new CardMove(np, target);
         }
 
         // River -> Lake
@@ -36,7 +36,7 @@ class AiPlayer extends Player {
             if (riverCard != null) {
                 target = lake.findTargetPile(riverCard);
                 if (target != null)
-                    return new Move(riverPile, target);
+                    return new CardMove(riverPile, target);
             }
         }
 
@@ -46,12 +46,12 @@ class AiPlayer extends Player {
         if (sc != null) {
             target = lake.findTargetPile(sc);
             if (target != null)
-                return new Move(stream, target);
+                return new CardMove(stream, target);
 
             // Stream -> River
             target = river.findTargetPile(sc);
             if (target != null)
-                return new Move(stream, target);
+                return new CardMove(stream, target);
         }
 
         // Try all cards in the river if the cards on top of it
@@ -63,12 +63,10 @@ class AiPlayer extends Player {
 
     public void makeMove() {
         try {
-            Move ourmove = findMove();
+            GameMove ourmove = findMove();
             if (ourmove != null) {
-                Log.d("Nertz", "Found move: " + ourmove.getCard().toString()
-                        + " from " + ourmove.source.toString() + " to " +
-                        ourmove.dest.toString());
-                playMove(ourmove);
+                Log.d("Nertz", "Found move: " + ourmove.toString());
+                ourmove.execute();
             } else {
                 Stream stream = getStream();
                 if (stream.isFaceDownEmpty()) {

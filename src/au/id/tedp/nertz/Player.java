@@ -61,11 +61,6 @@ class Player {
         return lake;
     }
 
-    public void playMove(Move move) throws EmptyPileException, CardSequenceException {
-        Card card = move.source.pop();
-        move.dest.push(card);
-    }
-
     public void writeToBundle(Bundle b) {
         b.putString("name", name);
         b.putParcelable("stream", stream);
