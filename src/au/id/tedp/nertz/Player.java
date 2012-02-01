@@ -12,18 +12,16 @@ class Player {
     private NertzPile nertzpile;
     private Lake lake;
 
-    public Player(String name, Lake lake, Bundle state) throws EmptyPileException {
+    public Player(String name, Lake lake, Deck deck, Bundle state) throws EmptyPileException {
         this.name = name;
         this.lake = lake;
+        this.deck = deck;
 
         android.util.Log.d("Nertz", "Player saved bundle " + (state == null ? "is null" : "is not null"));
 
         if (state != null) {
             readFromBundle(state);
         } else {
-            deck = new Deck(this);
-            deck.shuffle();
-
             nertzpile = new NertzPile(deck.dealCards(13));
             nertzpile.flipTopCard();
 
@@ -70,7 +68,6 @@ class Player {
 
     public void writeToBundle(Bundle b) {
         b.putString("name", name);
-        b.putParcelable("deck", deck);
         b.putParcelable("stream", stream);
         b.putParcelable("river", river);
         b.putParcelable("nertzpile", nertzpile);
@@ -78,7 +75,6 @@ class Player {
 
     protected void readFromBundle(Bundle b) {
         name = b.getString("name");
-        deck = b.getParcelable("deck");
         stream = b.getParcelable("stream");
         river = b.getParcelable("river");
         // The parcelable is a Pile, so copy-construct it into a NertzPile

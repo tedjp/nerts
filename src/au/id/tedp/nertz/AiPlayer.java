@@ -6,8 +6,8 @@ import android.util.Log;
 class AiPlayer extends Player {
     private Game game;
 
-    public AiPlayer(Game game, Lake lake, Bundle state) throws EmptyPileException {
-        super("CPU", lake, state);
+    public AiPlayer(Game game, Lake lake, Deck deck, Bundle state) throws EmptyPileException {
+        super("CPU", lake, deck, state);
         this.game = game;
     }
 

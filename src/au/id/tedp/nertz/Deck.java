@@ -13,10 +13,8 @@ import java.util.Iterator;
 public class Deck implements Parcelable {
     private List<Card> cards;
     private int cardnum;
-    private Player owner;
 
-    public Deck(Player owner) {
-        this.owner = owner;
+    public Deck() {
         cards = new LinkedList<Card>();
         for (Card.Suit suit: Card.Suit.values()) {
             for (Card.Face face: Card.Face.values()) {
@@ -66,10 +64,6 @@ public class Deck implements Parcelable {
         return deal;
     }
 
-    public Player getOwner() {
-        return owner;
-    }
-
     public int describeContents() {
         return 0;
     }
@@ -77,16 +71,12 @@ public class Deck implements Parcelable {
     public void writeToParcel(Parcel p, int flags) {
         p.writeTypedList(cards);
         p.writeInt(cardnum);
-        // XXX: Not tracking the owner yet
-        //p.writeString(owner.getName());
     }
 
     protected Deck(Parcel p) {
         cards = new LinkedList<Card>();
         p.readTypedList(cards, Card.CREATOR);
         cardnum = p.readInt();
-        // XXX: Not tracking the owner yet
-        //p.readString();
     }
 
     public static final Parcelable.Creator<Deck> CREATOR = new Parcelable.Creator<Deck>() {
