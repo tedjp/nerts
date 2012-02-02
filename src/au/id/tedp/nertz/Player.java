@@ -85,9 +85,9 @@ class Player {
 
         if (nc != null) {
             // Nertz -> Lake
-            target = lake.findTargetPile(nc);
-            if (target != null)
-                return new CardMove(np, target);
+            GameMove move = lake.findMoveToLake(nc, np);
+            if (move != null)
+                return move;
 
             // Nertz -> River
             target = river.findTargetPile(nc);
@@ -99,9 +99,9 @@ class Player {
         for (Pile riverPile: river.getPiles()) {
             Card riverCard = riverPile.peek();
             if (riverCard != null) {
-                target = lake.findTargetPile(riverCard);
-                if (target != null)
-                    return new CardMove(riverPile, target);
+                GameMove move = lake.findMoveToLake(riverCard, riverPile);
+                if (move != null)
+                    return move;
             }
         }
 
@@ -109,9 +109,9 @@ class Player {
         Stream stream = getStream();
         Card sc = stream.peek();
         if (sc != null) {
-            target = lake.findTargetPile(sc);
-            if (target != null)
-                return new CardMove(stream, target);
+            GameMove move = lake.findMoveToLake(sc, stream);
+            if (move != null)
+                return move;
 
             // Stream -> River
             target = river.findTargetPile(sc);

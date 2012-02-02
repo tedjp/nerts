@@ -222,6 +222,9 @@ class GameView extends View implements View.OnTouchListener {
     public final int LAKE_PILES = 8;
 
     protected void drawLakePile(Canvas canvas, Pile pile, int pilenum) {
+        if (pile == null || pile.isEmpty())
+            return;
+
         Card topCard = pile.peek();
         int pile_spots = Math.max(LAKE_PILES, player.getLake().size());
         Rect dest = new Rect();
@@ -637,7 +640,7 @@ class GameView extends View implements View.OnTouchListener {
                         break;
                     case LAKE:
                         if (liveCards.size() == 1)
-                            toPile = player.getLake().findTargetPile(liveCards.get(0));
+                            toPile = player.getLake().findTargetPileOrCreateNew(liveCards.get(0));
                         break;
                     case RIVER:
                         if (!liveCards.isEmpty()) {

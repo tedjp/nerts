@@ -40,17 +40,37 @@ public class Lake extends TargetArea implements Parcelable {
 
     /** Given a particular card, return the appropriate Lake Pile for it.
      * Returns null if there is no appropriate pile.
-     * If an Ace is passed, a new pile will be created.
      */
     @Override
     public TargetPile findTargetPile(Card c) {
         TargetPile pile = super.findTargetPile(c);
         if (pile != null)
             return pile;
+        return null;
+    }
 
+    /**
+     * Find a suitable pile for the card.
+     * If the card is an Ace, a new pile will be created.
+     * If no pile is found, null is returned.
+     * DO NOT CALL THIS FROM A NON-UI THREAD since it modifies the Lake
+     * by adding a new, empty pile.
+     */
+    public TargetPile findTargetPileOrCreateNew(Card c) {
+        TargetPile pile = findTargetPile(c);
+        if (pile != null)
+            return pile;
         if (c.getFace() == Card.Face.ACE)
             return createEmptyPile();
+        return null;
+    }
 
+    public GameMove findMoveToLake(Card c, Pile fromPile) {
+        TargetPile target = findTargetPile(c);
+        if (target != null)
+            return new CardMove(fromPile, target);
+        if (c.getFace() == Card.Face.ACE)
+            return new LakeNewPileMove(this, fromPile);
         return null;
     }
 

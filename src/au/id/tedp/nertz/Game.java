@@ -1,7 +1,9 @@
 package au.id.tedp.nertz;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ class Game {
     private Lake lake;
     private ArrayList<Deck> decks;
     private ScoreKeeper scoreKeeper;
+    private GameMove[] pendingAiMoves;
 
     public static final int AI_PLAYERS = 2;
 
@@ -59,6 +62,8 @@ class Game {
             for (AiPlayer cpu: cpus)
                 cpu.start();
         }
+
+        findAiMoves();
     }
 
     public void saveState(Bundle b) {
@@ -85,18 +90,52 @@ class Game {
         b.putIntegerArrayList("AiScores", scoreKeeper.getAiScoreList());
     }
 
-    public void onPlayerMove() {
-        for (AiPlayer cpu: cpus) {
-            GameMove move = cpu.findMove();
-            if (move != null) {
-                try {
-                    move.execute();
+    private class AiMoveTask extends AsyncTask<AiPlayer, Void, GameMove[]> {
+        private AiPlayer ai;
+
+        @Override
+        protected GameMove[] doInBackground(AiPlayer... players) {
+            GameMove[] moves = new GameMove[players.length];
+            for (int i = 0; i < players.length; ++i) {
+                AiPlayer player = players[i];
+                GameMove move = player.findMove();
+                if (move != null) {
+                    moves[i] = move;
+                    Log.d("Nertz", "Player " + player.toString() + " found move " +
+                            move.toString());
                 }
-                catch (InvalidMoveException e) {
-                    android.util.Log.e("Nertz", "Invalid Move Exception: " + e.getMessage());
+            }
+
+            return moves;
+        }
+
+        @Override
+        protected void onPostExecute(GameMove moves[]) {
+            pendingAiMoves = moves;
+        }
+    }
+
+    private void findAiMoves() {
+        new AiMoveTask().execute(cpus.toArray(new AiPlayer[cpus.size()]));
+    }
+
+    public void onPlayerMove() {
+        if (pendingAiMoves != null) {
+            for (int i = 0; i < pendingAiMoves.length; ++i) {
+                GameMove move = pendingAiMoves[i];
+                if (move != null) {
+                    try {
+                        move.execute();
+                    }
+                    catch (InvalidMoveException e) {
+                        // This is a normal condition, when the AI was planning a
+                        // move that was blocked by the user.
+                        android.util.Log.d("Nertz", "Failed to execute AI move: " + e.getMessage());
+                    }
                 }
             }
         }
+        findAiMoves();
     }
 
     public void onAiMove() {
