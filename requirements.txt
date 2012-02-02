@@ -12,7 +12,7 @@ Initial release requirements:
 [x] Fix touch detection on expanded cards, especially in portrait
 [x] Better card size on large (tablet) screens
 [x] Speed up card pickup by keeping Card Bitmaps in memory
-[ ] Prompt before exiting on Back button
+[x] Prompt before exiting on Back button
 
 Future features:
 
