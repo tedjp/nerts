@@ -77,4 +77,16 @@ public class Main extends Activity
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        game.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        game.onResume();
+    }
 }

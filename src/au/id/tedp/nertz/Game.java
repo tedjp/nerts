@@ -14,6 +14,7 @@ class Game {
     private ArrayList<Deck> decks;
     private ScoreKeeper scoreKeeper;
     private GameMove[] pendingAiMoves;
+    private AiMoveTask aiMoveTask;
 
     public static final int AI_PLAYERS = 2;
 
@@ -62,8 +63,15 @@ class Game {
             for (AiPlayer cpu: cpus)
                 cpu.start();
         }
+    }
 
+    public void onResume() {
         findAiMoves();
+    }
+
+    public void onPause() {
+        if (aiMoveTask != null)
+            aiMoveTask.cancel(true);
     }
 
     public void saveState(Bundle b) {
@@ -97,6 +105,9 @@ class Game {
         protected GameMove[] doInBackground(AiPlayer... players) {
             GameMove[] moves = new GameMove[players.length];
             for (int i = 0; i < players.length; ++i) {
+                if (isCancelled())
+                    return moves;
+
                 AiPlayer player = players[i];
                 GameMove move = player.findMove();
                 if (move != null) {
@@ -112,11 +123,28 @@ class Game {
         @Override
         protected void onPostExecute(GameMove moves[]) {
             pendingAiMoves = moves;
+            aiMoveTask = null;
+        }
+
+        @Override
+        protected void onCancelled(GameMove[] moves) {
+            pendingAiMoves = moves;
+            aiMoveTask = null;
         }
     }
 
     private void findAiMoves() {
-        new AiMoveTask().execute(cpus.toArray(new AiPlayer[cpus.size()]));
+        // Only start a new finder task if there isn't already running.
+        // Leave the existing one running to give it the best chance of
+        // actually finding a move, even if its move is too late to be
+        // executed. It's better than thrashing move-finder tasks that
+        // never complete.
+        if (aiMoveTask == null) {
+            aiMoveTask = new AiMoveTask();
+            aiMoveTask.execute(cpus.toArray(new AiPlayer[cpus.size()]));
+        } else {
+            Log.d("Nertz", "AiMoveTask is still running, letting it finish");
+        }
     }
 
     public void onPlayerMove() {
