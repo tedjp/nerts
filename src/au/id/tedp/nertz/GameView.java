@@ -31,19 +31,16 @@ class GameView extends View implements View.OnTouchListener {
         state = TouchState.NONE;
         liveCards = new ArrayList<Card>(12);
         animate_top_under = false;
-        smoothPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         imgsrc = new ImageSource(getResources());
     }
 
     private ImageSource imgsrc;
-    protected static Paint smoothPaint;
 
     /**
-     * Draw the given bitmap on the given canvas in the given dest, using an
-     * anti-aliasing &amp; filtering (smooth-on-upscale) painter.
+     * Draw the given bitmap on the given canvas in the given dest.
      */
     public static void drawBitmap(Canvas c, Bitmap bmp, Rect dest) {
-        c.drawBitmap(bmp, null, dest, smoothPaint);
+        c.drawBitmap(bmp, null, dest, null);
     }
 
     protected void drawCard(Canvas canvas, Card card, Rect dest) {
@@ -331,7 +328,7 @@ class GameView extends View implements View.OnTouchListener {
             Card card = liveCards.get(i);
             float left = liveCardX - cardWidth / 2;
             float top = liveCardY - cardHeight * 7.0f / 8.0f + offset * i;
-            canvas.drawBitmap(imgsrc.getCardFace(card), left, top, smoothPaint);
+            canvas.drawBitmap(imgsrc.getCardFace(card), left, top, null);
         }
     }
 
