@@ -40,7 +40,7 @@ class GameView extends View implements View.OnTouchListener {
      * Draw the given bitmap on the given canvas in the given dest.
      */
     public static void drawBitmap(Canvas c, Bitmap bmp, Rect dest) {
-        c.drawBitmap(bmp, null, dest, null);
+        c.drawBitmap(bmp, dest.left, dest.top, null);
     }
 
     protected void drawCard(Canvas canvas, Card card, Rect dest) {
