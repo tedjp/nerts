@@ -15,6 +15,7 @@ Initial release requirements:
 
 Future features:
 
+[ ] Fix disappearing pile closing expanded pile
 [x] Support "Move to SD Card"
 [ ] Fix dropping onto an exact pile instead of snapping to the first
     matching pile
