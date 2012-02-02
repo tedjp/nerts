@@ -36,10 +36,6 @@ class GameView extends View implements View.OnTouchListener {
         liveCards = new ArrayList<Card>(12);
         animate_top_under = false;
         smoothPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-
-        Bitmap cardBmp = DeckGraphics.getCardBack(res).getBitmap();
-        nativeCardWidth = cardBmp.getWidth();
-        nativeCardHeight = cardBmp.getHeight();
     }
 
     protected static Paint smoothPaint;
@@ -68,7 +64,6 @@ class GameView extends View implements View.OnTouchListener {
 
     private Resources res;
 
-    private int nativeCardWidth, nativeCardHeight;
     private int cardHeight, cardWidth;
 
     /**
