@@ -3,20 +3,92 @@ package au.id.tedp.nertz;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import java.util.Map;
+import java.util.EnumMap;
 
-public class DeckGraphics {
-    public static BitmapDrawable getCardBack(Resources res) {
-        return (BitmapDrawable) res.getDrawable(R.drawable.bb);
+class ImageSource {
+    private EnumMap<Card.Suit,EnumMap<Card.Face,Bitmap>> cardFaceImages;
+    private Bitmap cardBackImage, topUnderImage;
+    private Resources res;
+    private int cardWidth, cardHeight;
+
+    public ImageSource(Resources res) {
+        this.res = res;
+        // Arbitrary default; the caller probably doesn't know the correct
+        // size yet, so just pick something.
+        cardWidth = 63;
+        cardHeight = 88;
+        cardFaceImages = new EnumMap<Card.Suit,EnumMap<Card.Face,Bitmap>>(Card.Suit.class);
     }
 
-    public static BitmapDrawable getBitmapDrawable(Resources res, Card c) {
-        int v = c.getFace().getValue();
-        Card.Suit s = c.getSuit();
+    public void setCardDimensions(int width, int height) {
+        if (cardWidth == width && cardHeight == height)
+            return;
+
+        cardWidth = width;
+        cardHeight = height;
+
+        /* Image size changed, drop all images */
+        cardFaceImages.clear();
+        cardBackImage = null;
+        topUnderImage = null;
+    }
+
+    public Bitmap getCardFace(Card c) {
+        Card.Suit suit = c.getSuit();
+        Card.Face face = c.getFace();
+
+        EnumMap<Card.Face,Bitmap> faces = cardFaceImages.get(suit);
+        if (faces == null) {
+            faces = new EnumMap<Card.Face,Bitmap>(Card.Face.class);
+            cardFaceImages.put(suit, faces);
+        }
+
+        Bitmap image = faces.get(face);
+        if (image != null)
+            return image;
+
+        image = load(suit, face);
+        faces.put(face, image);
+        return image;
+    }
+
+    public Bitmap getCardBack() {
+        if (cardBackImage == null) {
+            BitmapDrawable orig = (BitmapDrawable) res.getDrawable(R.drawable.bb);
+            cardBackImage = cardSizedBitmap(orig);
+        }
+
+        return cardBackImage;
+    }
+
+    /**
+     * Return the top-card-under bitmap, scaled to the size of a card.
+     */
+    public Bitmap getTopUnder() {
+        if (topUnderImage == null) {
+            BitmapDrawable topUnder = (BitmapDrawable) res.getDrawable(R.drawable.top_under);
+            topUnderImage = cardSizedBitmap(topUnder);
+        }
+        return topUnderImage;
+    }
+
+    private Bitmap cardSizedBitmap(BitmapDrawable drawable) {
+        return Bitmap.createScaledBitmap(drawable.getBitmap(), cardWidth, cardHeight, true);
+    }
+
+    private Bitmap load(Card.Suit suit, Card.Face face) {
+        BitmapDrawable orig = getBitmapDrawable(suit, face);
+        if (orig == null)
+            return null;
+
+        return cardSizedBitmap(orig);
+    }
+
+    private BitmapDrawable getBitmapDrawable(Card.Suit suit, Card.Face face) {
+        int v = face.getValue();
 
         // This is a pretty bad way to do it, but it works.
-
-        if (s == Card.Suit.HEARTS) {
+        if (suit == Card.Suit.HEARTS) {
             switch (v) {
                 case 1:
                     return (BitmapDrawable) res.getDrawable(R.drawable.h1);
@@ -45,7 +117,7 @@ public class DeckGraphics {
                 case 13:
                     return (BitmapDrawable) res.getDrawable(R.drawable.hk);
             }
-        } else if (s == Card.Suit.DIAMONDS) {
+        } else if (suit == Card.Suit.DIAMONDS) {
             switch (v) {
                 case 1:
                     return (BitmapDrawable) res.getDrawable(R.drawable.d1);
@@ -74,7 +146,7 @@ public class DeckGraphics {
                 case 13:
                     return (BitmapDrawable) res.getDrawable(R.drawable.dk);
             }
-        } else if (s == Card.Suit.CLUBS) {
+        } else if (suit == Card.Suit.CLUBS) {
             switch (v) {
                 case 1:
                     return (BitmapDrawable) res.getDrawable(R.drawable.c1);
@@ -133,7 +205,6 @@ public class DeckGraphics {
                     return (BitmapDrawable) res.getDrawable(R.drawable.sk);
             }
         }
-        // XXX: throw exception
         return null;
     }
 }

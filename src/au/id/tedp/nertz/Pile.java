@@ -1,7 +1,5 @@
 package au.id.tedp.nertz;
 
-import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.EmptyStackException;
@@ -66,17 +64,6 @@ public class Pile implements Parcelable {
             throw new EmptyPileException("Cannot flip top card: top card is already face-up");
 
         faceup.push(facedown.pop());
-    }
-
-    public BitmapDrawable topCardImage(Resources res) {
-        if (!faceup.isEmpty()) {
-            Card topCard = faceup.peek();
-            return DeckGraphics.getBitmapDrawable(res, topCard);
-        }
-        if (!facedown.isEmpty()) {
-            return DeckGraphics.getCardBack(res);
-        }
-        return null;
     }
 
     public Card pop() throws EmptyPileException {
