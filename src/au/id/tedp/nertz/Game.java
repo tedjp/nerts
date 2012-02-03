@@ -11,7 +11,6 @@ class Game {
     private HumanPlayer human;
     private ArrayList<AiPlayer> cpus;
     private Lake lake;
-    private ArrayList<Deck> decks;
     private ScoreKeeper scoreKeeper;
     private GameMove[] pendingAiMoves;
     private AiMoveTask aiMoveTask;
@@ -20,38 +19,42 @@ class Game {
 
     public Game(Context ctx, Bundle saved) throws EmptyPileException {
         android.util.Log.d("Nertz", "Game saved bundle " + (saved == null ? "is null" : "is not null"));
+        // Only used on initial deal, not on resume
+        ArrayList<Deck> decks = null;
 
-        if (saved != null)
-            decks = saved.getParcelableArrayList("Decks");
-        else {
+        if (saved == null) {
             decks = new ArrayList<Deck>(AI_PLAYERS + 1);
             for (int i = 0; i < AI_PLAYERS + 1; ++i) {
-                Deck d = new Deck();
+                Deck d = new Deck(i);
                 d.shuffle();
                 decks.add(d);
             }
         }
 
-        if (saved != null)
-            lake = saved.getParcelable("Lake");
-        if (lake == null)
-            lake = new Lake();
-        human = new HumanPlayer(ctx, this, lake, decks.get(0),
-                saved != null ? saved.getBundle("HumanPlayer") : null);
-
+        // Only used on resume, not initial deal
         ArrayList<Bundle> aiBundles = null;
-        if (saved != null)
+
+        if (saved != null) {
+            lake = saved.getParcelable("Lake");
+            human = new HumanPlayer(ctx, this, lake, saved.getBundle("HumanPlayer"));
             aiBundles = saved.getParcelableArrayList("AiPlayers");
+        } else {
+            lake = new Lake();
+            human = new HumanPlayer(ctx, this, lake, decks.get(0));
+        }
 
         cpus = new ArrayList<AiPlayer>(AI_PLAYERS);
         for (int i = 0; i < AI_PLAYERS; ++i) {
             Bundle ai_player_bundle = null;
-            if (aiBundles != null)
+            if (aiBundles != null) {
                 ai_player_bundle = aiBundles.get(i);
-            cpus.add(new AiPlayer(this, lake, decks.get(i + 1), ai_player_bundle));
+                cpus.add(new AiPlayer(this, lake, ai_player_bundle));
+            } else {
+                cpus.add(new AiPlayer(this, lake, decks.get(i + 1)));
+            }
         }
 
-        scoreKeeper = new ScoreKeeper(decks, human, cpus);
+        scoreKeeper = new ScoreKeeper(human, cpus);
         if (saved != null) {
             int humanScore = saved.getInt("PlayerScore");
             ArrayList<Integer> aiScores = saved.getIntegerArrayList("AiScores");
@@ -77,8 +80,6 @@ class Game {
 
     public void saveState(Bundle b) {
         android.util.Log.d("Nertz", "Saving Game state");
-
-        b.putParcelableArrayList("Decks", decks);
 
         b.putParcelable("Lake", lake);
 

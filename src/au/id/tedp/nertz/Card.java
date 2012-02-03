@@ -154,12 +154,12 @@ public class Card implements Parcelable {
         }
     };
 
-    private Deck deck;
+    private int decknum;
     private Suit suit;
     private Face face;
 
-    public Card(Deck deck, Suit suit, Face face) {
-        this.deck = deck;
+    public Card(int decknum, Suit suit, Face face) {
+        this.decknum = decknum;
         this.suit = suit;
         this.face = face;
     }
@@ -186,8 +186,8 @@ public class Card implements Parcelable {
         return face.getValue();
     }
 
-    public Deck getDeck() {
-        return deck;
+    public int getDeckNum() {
+        return decknum;
     }
 
     @Override
@@ -218,15 +218,13 @@ public class Card implements Parcelable {
     public void writeToParcel(Parcel p, int flags) {
         p.writeString(face.toString());
         p.writeString(suit.toString());
-        // XXX: Deck owner is not restored yet
-        //p.writeString(deck.getOwner().getName());
+        p.writeInt(decknum);
     }
 
     private Card(Parcel p) {
         this.face = Card.Face.fromString(p.readString());
         this.suit = Card.Suit.fromString(p.readString());
-        // Ignoring the player name for now
-        //p.readString();
+        this.decknum = p.readInt();
     }
 
     public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {

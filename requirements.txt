@@ -13,8 +13,7 @@ Initial release requirements:
 [x] Better card size on large (tablet) screens
 [x] Speed up card pickup by keeping Card Bitmaps in memory
 [x] Prompt before exiting on Back button
-[ ] Fix scoring failure after resume
-    Observed Nertz Pile card -> Lake scored zero.
+[x] Fix scoring failure after resume
 
 Future features:
 

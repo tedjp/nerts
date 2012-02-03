@@ -10,15 +10,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Iterator;
 
-public class Deck implements Parcelable {
+public class Deck {
     private List<Card> cards;
     private int cardnum;
 
-    public Deck() {
+    public Deck(int num) {
         cards = new LinkedList<Card>();
         for (Card.Suit suit: Card.Suit.values()) {
             for (Card.Face face: Card.Face.values()) {
-                cards.add(new Card(this, suit, face));
+                cards.add(new Card(num, suit, face));
             }
         }
 
@@ -63,29 +63,4 @@ public class Deck implements Parcelable {
         Collection<Card> deal = cards.subList(cardnum, cards.size());
         return deal;
     }
-
-    public int describeContents() {
-        return 0;
-    }
-
-    public void writeToParcel(Parcel p, int flags) {
-        p.writeTypedList(cards);
-        p.writeInt(cardnum);
-    }
-
-    protected Deck(Parcel p) {
-        cards = new LinkedList<Card>();
-        p.readTypedList(cards, Card.CREATOR);
-        cardnum = p.readInt();
-    }
-
-    public static final Parcelable.Creator<Deck> CREATOR = new Parcelable.Creator<Deck>() {
-        public Deck createFromParcel(Parcel in) {
-            return new Deck(in);
-        }
-
-        public Deck[] newArray(int size) {
-            return new Deck[size];
-        }
-    };
 }

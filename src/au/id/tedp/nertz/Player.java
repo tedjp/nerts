@@ -6,29 +6,25 @@ import java.util.ArrayList;
 
 class Player {
     private String name;
-    private Deck deck;
     private Stream stream;
     private River river;
     private NertzPile nertzpile;
     private Lake lake;
 
-    public Player(String name, Lake lake, Deck deck, Bundle state) throws EmptyPileException {
+    public Player(String name, Lake lake, Deck deck) throws EmptyPileException {
         this.name = name;
         this.lake = lake;
-        this.deck = deck;
+        nertzpile = new NertzPile(deck.dealCards(NertzPile.INITIAL_DEAL));
+        nertzpile.flipTopCard();
+        river = new River(deck.dealCards(River.NUM_PILES));
+        stream = new Stream(deck.dealRemaining());
+    }
 
-        android.util.Log.d("Nertz", "Player saved bundle " + (state == null ? "is null" : "is not null"));
+    public Player(String name, Lake lake, Bundle state) {
+        this.name = name;
+        this.lake = lake;
 
-        if (state != null) {
-            readFromBundle(state);
-        } else {
-            nertzpile = new NertzPile(deck.dealCards(NertzPile.INITIAL_DEAL));
-            nertzpile.flipTopCard();
-
-            river = new River(deck.dealCards(River.NUM_PILES));
-
-            stream = new Stream(deck.dealRemaining());
-        }
+        readFromBundle(state);
     }
 
     public String getName() {

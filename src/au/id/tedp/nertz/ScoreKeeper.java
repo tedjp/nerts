@@ -5,15 +5,13 @@ import java.util.ArrayList;
 
 class ScoreKeeper {
     private HumanPlayer human;
-    private ArrayList<Deck> decks;
     private ArrayList<AiPlayer> cpus;
 
     private int humanScore;
     private ArrayList<Integer> cpuScores;
 
-    public ScoreKeeper(ArrayList<Deck> decks, HumanPlayer human, ArrayList<AiPlayer> cpus) {
+    public ScoreKeeper(HumanPlayer human, ArrayList<AiPlayer> cpus) {
         this.human = human;
-        this.decks = decks;
         this.cpus = cpus;
         newGame();
     }
@@ -52,16 +50,11 @@ class ScoreKeeper {
         return scores;
     }
 
-    protected Player getPlayerForDeck(Deck d) {
-        if (d == decks.get(0))
+    protected Player getPlayerForDeckNum(int decknum) {
+        if (decknum == 0)
             return human;
 
-        for (int ai = 0; ai < cpus.size(); ++ai) {
-            if (d == decks.get(ai + 1))
-                return cpus.get(ai);
-        }
-        // XXX: Throw exception
-        return null;
+        return cpus.get(decknum - 1);
     }
 
     private void score(Player p, int score) {
@@ -79,7 +72,7 @@ class ScoreKeeper {
     }
 
     public void cardRemovedFromNertzPile(Card c) {
-        Player p = getPlayerForDeck(c.getDeck());
+        Player p = getPlayerForDeckNum(c.getDeckNum());
         if (p == null)
             return;
 
@@ -88,7 +81,7 @@ class ScoreKeeper {
     }
 
     public void cardMovedToLake(Card c) {
-        Player p = getPlayerForDeck(c.getDeck());
+        Player p = getPlayerForDeckNum(c.getDeckNum());
         if (p == null)
             return;
 
