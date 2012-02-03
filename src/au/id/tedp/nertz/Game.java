@@ -66,6 +66,7 @@ class Game {
     }
 
     public void onResume() {
+        aiMoveTask = null;
         findAiMoves();
     }
 
