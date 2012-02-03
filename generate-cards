@@ -4,7 +4,7 @@ set -e
 HDPI_WIDTH=140
 HDPI_HEIGHT=200
 
-rsvg --width=$(($HDPI_WIDTH * 13)) --height=$(($HDPI_HEIGHT * 5)) graphics/paris.svg paris.png
+rsvg --width=$(($HDPI_WIDTH * 13)) --height=$(($HDPI_HEIGHT * 5)) img/paris.svg paris.png
 convert -crop ${HDPI_WIDTH}x${HDPI_HEIGHT} paris.png card%d.png
 
 mkdir -p res/drawable-hdpi
