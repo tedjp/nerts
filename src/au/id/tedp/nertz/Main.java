@@ -78,6 +78,20 @@ public class Main extends Activity
         alert.show();
     }
 
+    public void declareWinner(Player winner) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(String.format("%s won!", winner.getName()))
+            // XXX: Show scores
+            .setCancelable(false)
+            .setPositiveButton("Next Round", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Main.this.newGame(null);
+                }
+            });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     @Override
     public void onPause() {
         super.onPause();

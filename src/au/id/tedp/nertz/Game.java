@@ -1,5 +1,6 @@
 package au.id.tedp.nertz;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,10 +15,13 @@ class Game {
     private ScoreKeeper scoreKeeper;
     private GameMove[] pendingAiMoves;
     private AiMoveTask aiMoveTask;
+    private Main activity;
 
     public static final int AI_PLAYERS = 2;
 
-    public Game(Context ctx, Bundle saved) throws EmptyPileException {
+    public Game(Main activity, Bundle saved) throws EmptyPileException {
+        this.activity = activity;
+        Context ctx = activity;
         android.util.Log.d("Nertz", "Game saved bundle " + (saved == null ? "is null" : "is not null"));
         // Only used on initial deal, not on resume
         ArrayList<Deck> decks = null;
@@ -149,13 +153,38 @@ class Game {
         }
     }
 
+    public void declareWinner(Player winner) {
+        activity.declareWinner(winner);
+    }
+
+    public boolean checkForWinner() {
+        if (human.getNertzPile().isEmpty()) {
+            declareWinner(human);
+            return true;
+        }
+        for (AiPlayer ai: cpus) {
+            if (ai.getNertzPile().isEmpty()) {
+                declareWinner(ai);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void onPlayerMove() {
+        if (checkForWinner())
+            return;
+
         if (pendingAiMoves != null) {
             for (int i = 0; i < pendingAiMoves.length; ++i) {
                 GameMove move = pendingAiMoves[i];
                 if (move != null) {
                     try {
                         move.execute();
+                        if (checkForWinner()) {
+                            human.getGameView().invalidate();
+                            return;
+                        }
                     }
                     catch (InvalidMoveException e) {
                         // This is a normal condition, when the AI was planning a
