@@ -17,6 +17,9 @@ Initial release requirements:
 
 Future features:
 
+[ ] Large card art
+    Could start by just zooming the top-left quadrant of the card and
+    making that the entire size of the card.
 [ ] Fix disappearing pile closing expanded pile
 [x] Support "Move to SD Card"
 [ ] Fix dropping onto an exact pile instead of snapping to the first
