@@ -20,7 +20,7 @@ class ScoreKeeper {
     public static int LAKE_CARD_POINTS = 1;
 
     public void newGame() {
-        int initialScore = 0 - NertzPile.INITIAL_DEAL * NERTZ_CARD_POINTS;
+        int initialScore = 0;
         this.humanScore = initialScore;
         this.cpuScores = new ArrayList<Integer>(2);
         this.cpuScores.add(new Integer(initialScore));
@@ -86,6 +86,10 @@ class ScoreKeeper {
             return;
 
         score(p, LAKE_CARD_POINTS);
+    }
+
+    public void assignHumanScore(int humanScore) {
+        this.humanScore = humanScore;
     }
 
     public void assignScores(int humanScore, ArrayList<Integer> aiScores) {

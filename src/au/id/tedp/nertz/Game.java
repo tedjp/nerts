@@ -19,7 +19,7 @@ class Game {
 
     public static final int AI_PLAYERS = 2;
 
-    public Game(Main activity, Bundle saved) throws EmptyPileException {
+    public Game(Main activity, Bundle saved, int savedPlayerScore) throws EmptyPileException {
         this.activity = activity;
         Context ctx = activity;
         android.util.Log.d("Nertz", "Game saved bundle " + (saved == null ? "is null" : "is not null"));
@@ -63,7 +63,11 @@ class Game {
             int humanScore = saved.getInt("PlayerScore");
             ArrayList<Integer> aiScores = saved.getIntegerArrayList("AiScores");
             scoreKeeper.assignScores(humanScore, aiScores);
+        } else {
+            scoreKeeper.assignHumanScore(savedPlayerScore);
         }
+
+        scoreKeeper.newRound(NertzPile.INITIAL_DEAL);
 
         if (saved == null) {
             human.start();

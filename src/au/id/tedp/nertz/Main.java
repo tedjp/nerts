@@ -24,7 +24,10 @@ public class Main extends Activity
 
     public void newGame(Bundle savedInstanceState) {
         try {
-            game = new Game(this, savedInstanceState);
+            int humanScore = 0;
+            if (game != null)
+                humanScore = game.getScoreKeeper().getHumanScore();
+            game = new Game(this, savedInstanceState, humanScore);
             setContentView(game.getHumanPlayer().getGameView());
         } catch (EmptyPileException e) {
             String failMsg = "Failed to start game: " + e.getMessage();
