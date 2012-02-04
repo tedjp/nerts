@@ -7,6 +7,9 @@ abstract class TargetArea {
 
     public TargetPile findTargetPile(Card card) {
         for (TargetPile p: getPiles()) {
+            if (p == null)
+                continue;
+
             if (p.isValidMove(card))
                 return p;
         }

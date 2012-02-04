@@ -20,6 +20,13 @@ class River extends TargetArea implements Parcelable {
             piles.add(new TableauPile(card));
     }
 
+    public void removePile(TableauPile pile) {
+        for (int i = 0; i < piles.size(); ++i) {
+            if (piles.get(i) == pile)
+                piles.set(i, null);
+        }
+    }
+
     public List<TableauPile> getPiles() {
         return piles;
     }
@@ -30,6 +37,25 @@ class River extends TargetArea implements Parcelable {
 
     public int size() {
         return piles.size();
+    }
+
+    public GameMove findStackMove() {
+        for (TableauPile tps: piles) {
+            if (tps == null)
+                continue;
+            for (TableauPile tpd: piles) {
+                if (tpd == null)
+                    continue;
+                // Don't even bother trying to move a pile onto itself
+                // Although it would never be a valid move, it's a waste of
+                // time to consider it.
+                if (tps == tpd)
+                    continue;
+                if (tpd.isValidMove(tps.getFaceUpCards().firstElement()))
+                    return new StackMove(this, tps, tpd);
+            }
+        }
+        return null;
     }
 
     public int describeContents() {

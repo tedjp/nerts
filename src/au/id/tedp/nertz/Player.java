@@ -94,6 +94,9 @@ class Player {
 
         // River -> Lake
         for (Pile riverPile: river.getPiles()) {
+            if (riverPile == null)
+                continue;
+
             Card riverCard = riverPile.peek();
             if (riverCard != null) {
                 GameMove move = lake.findMoveToLake(riverCard, riverPile);
@@ -109,7 +112,14 @@ class Player {
             GameMove move = lake.findMoveToLake(sc, stream);
             if (move != null)
                 return move;
+        }
 
+        // River -> River
+        GameMove riverMove = river.findStackMove();
+        if (riverMove != null)
+            return riverMove;
+
+        if (sc != null) {
             // Stream -> River
             target = river.findTargetPile(sc);
             if (target != null)
