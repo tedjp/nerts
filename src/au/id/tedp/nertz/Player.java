@@ -1,6 +1,7 @@
 package au.id.tedp.nertz;
 
 import android.os.Bundle;
+import android.util.Log;
 import java.lang.String;
 import java.util.ArrayList;
 
