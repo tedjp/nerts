@@ -14,9 +14,13 @@ Initial release requirements:
 [x] Speed up card pickup by keeping Card Bitmaps in memory
 [x] Prompt before exiting on Back button
 [x] Fix scoring failure after resume
+[ ] Improve layout of Lake piles in portrait when adding more columns
 
 Future features:
 
+[ ] Ads
+[ ] Calculate alternative move, or try playing on the pile the previous
+    player (human or AI) played on.
 [ ] Large card art
     Could start by just zooming the top-left quadrant of the card and
     making that the entire size of the card.
