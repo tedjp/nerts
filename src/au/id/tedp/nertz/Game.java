@@ -65,9 +65,8 @@ class Game {
             scoreKeeper.assignScores(humanScore, aiScores);
         } else {
             scoreKeeper.assignHumanScore(savedPlayerScore);
+            scoreKeeper.newRound(NertzPile.INITIAL_DEAL);
         }
-
-        scoreKeeper.newRound(NertzPile.INITIAL_DEAL);
 
         if (saved == null) {
             human.start();
