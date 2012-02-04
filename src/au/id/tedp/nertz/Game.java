@@ -54,7 +54,7 @@ class Game {
                 ai_player_bundle = aiBundles.get(i);
                 cpus.add(new AiPlayer(this, lake, ai_player_bundle));
             } else {
-                cpus.add(new AiPlayer(this, lake, decks.get(i + 1)));
+                cpus.add(new AiPlayer(String.format("CPU %d", i), this, lake, decks.get(i + 1)));
             }
         }
 

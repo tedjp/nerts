@@ -6,13 +6,13 @@ import android.util.Log;
 class AiPlayer extends Player {
     private Game game;
 
-    public AiPlayer(Game game, Lake lake, Deck deck) throws EmptyPileException {
-        super("CPU", lake, deck);
+    public AiPlayer(String name, Game game, Lake lake, Deck deck) throws EmptyPileException {
+        super(name, lake, deck);
         this.game = game;
     }
 
     public AiPlayer(Game game, Lake lake, Bundle state) {
-        super("CPU", lake, state);
+        super(lake, state);
         this.game = game;
     }
 }

@@ -21,10 +21,8 @@ class Player {
         stream = new Stream(deck.dealRemaining());
     }
 
-    public Player(String name, Lake lake, Bundle state) {
-        this.name = name;
+    public Player(Lake lake, Bundle state) {
         this.lake = lake;
-
         readFromBundle(state);
     }
 

@@ -13,7 +13,7 @@ class HumanPlayer extends Player {
     }
 
     HumanPlayer(Context ctx, Game game, Lake lake, Bundle state) {
-        super("Player", lake, state);
+        super(lake, state);
         gameview = new GameView(ctx, this, game);
     }
 
