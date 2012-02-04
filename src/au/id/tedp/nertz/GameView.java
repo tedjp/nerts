@@ -777,4 +777,10 @@ class GameView extends View implements View.OnTouchListener {
             drawCardBack(canvas, top_of_pile);
         }
     }
+
+    @Override
+    public void invalidate() {
+        staticTableBitmap = null;
+        super.invalidate();
+    }
 }
