@@ -18,6 +18,8 @@ Initial release requirements:
 
 Future features:
 
+[ ] Better visibility of Clubs vs. Spades on mdpi screens,
+    eg. big card suit on the top right.
 [ ] Fun opponent names: randomly pick a famous duo, eg. Ernie & Bert,
     Bonnie & Clyde, Jekyll & Hyde, Donnie & Marie, Sherlock & Watson,
     John & Yoko, Starsky & Hutch, Tom & Jerry, Scooby & Shaggy,
