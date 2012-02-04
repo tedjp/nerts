@@ -18,7 +18,8 @@ public class LakeNewPileMove implements GameMove {
             card = fromPile.pop();
             if (fromPile instanceof NertzPile) {
                 // XXX: Not sure if this will go back face-up, but not a huge deal if it does.
-                fromPile.flipTopCard();
+                if (!fromPile.isFaceDownEmpty() && fromPile.isFaceUpEmpty())
+                    fromPile.flipTopCard();
             }
             try {
                 lake.createPile(card);

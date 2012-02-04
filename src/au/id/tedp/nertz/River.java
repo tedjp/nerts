@@ -20,13 +20,6 @@ class River extends TargetArea implements Parcelable {
             piles.add(new TableauPile(card));
     }
 
-    public void removePile(TableauPile pile) {
-        for (int i = 0; i < piles.size(); ++i) {
-            if (piles.get(i) == pile)
-                piles.set(i, null);
-        }
-    }
-
     public List<TableauPile> getPiles() {
         return piles;
     }
@@ -39,6 +32,10 @@ class River extends TargetArea implements Parcelable {
         return piles.size();
     }
 
+    /**
+     * Finds a move that moves an entire TableauPile onto another TableauPile
+     * which opens up an empty place.
+     */
     public GameMove findStackMove() {
         for (TableauPile tps: piles) {
             if (tps == null)
@@ -51,7 +48,8 @@ class River extends TargetArea implements Parcelable {
                 // time to consider it.
                 if (tps == tpd)
                     continue;
-                if (tpd.isValidMove(tps.getFaceUpCards().firstElement()))
+                Card bottomCard = tps.getFaceUpCards().firstElement();
+                if (bottomCard != null && tpd.isValidMove(bottomCard))
                     return new StackMove(this, tps, tpd);
             }
         }

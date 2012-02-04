@@ -11,7 +11,14 @@ class CardMove implements GameMove {
 
     public void execute() throws InvalidMoveException {
         try {
-            dest.push(source.pop());
+            Card card = source.pop();
+            if (source instanceof NertzPile && !source.isFaceDownEmpty()) {
+                try {
+                    // XXX: If the push fails then the pop and this flip need to be undone
+                    source.flipTopCard();
+                } catch (EmptyPileException e) {}
+            }
+            dest.push(card);
         }
         catch (EmptyPileException e) {
             throw new InvalidMoveException(e.getMessage());
