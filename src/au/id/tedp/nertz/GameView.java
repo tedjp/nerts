@@ -213,7 +213,7 @@ class GameView extends View implements View.OnTouchListener {
 
         int pilenum = 0;
         for (TableauPile pile : river.getPiles()) {
-            if (!pile.isEmpty() && pile != skipPile)
+            if (pile != null && !pile.isEmpty() && pile != skipPile)
                 drawRiverPile(canvas, pile, pilenum);
             ++pilenum;
         }
