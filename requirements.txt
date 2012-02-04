@@ -18,6 +18,10 @@ Initial release requirements:
 
 Future features:
 
+[ ] Fun opponent names: randomly pick a famous duo, eg. Ernie & Bert,
+    Bonnie & Clyde, Jekyll & Hyde, Donnie & Marie, Sherlock & Watson,
+    John & Yoko, Starsky & Hutch, Tom & Jerry, Scooby & Shaggy,
+    Simon & Garfunkel, Romeo & Juliet, Shawn & Gus.
 [ ] Ads
 [ ] Calculate alternative move, or try playing on the pile the previous
     player (human or AI) played on.
