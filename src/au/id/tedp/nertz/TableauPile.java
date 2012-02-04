@@ -54,4 +54,8 @@ public class TableauPile extends TargetPile implements Parcelable {
             return new TableauPile[size];
         }
     };
+
+    public String toString() {
+        return "TableauPile";
+    }
 }

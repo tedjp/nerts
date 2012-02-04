@@ -12,4 +12,8 @@ public class NertzPile extends Pile {
     public NertzPile(Pile p) {
         super(p);
     }
+
+    public String toString() {
+        return "Nertz Pile";
+    }
 }

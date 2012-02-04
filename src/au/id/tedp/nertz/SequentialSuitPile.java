@@ -69,4 +69,9 @@ public class SequentialSuitPile extends TargetPile implements Parcelable {
             return new SequentialSuitPile[size];
         }
     };
+
+    public String toString() {
+        return String.format("SequentialSuitPile with %s on top",
+                faceup.isEmpty() ? "nothing" : faceup.peek().toString());
+    }
 }

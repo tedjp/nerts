@@ -24,4 +24,9 @@ class CardMove implements GameMove {
     public Card getCard() {
         return source.peek();
     }
+
+    public String toString() {
+        return String.format("Move card %s from %s to %s",
+                source.peek().toString(), source.toString(), dest.toString());
+    }
 }

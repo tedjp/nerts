@@ -155,4 +155,8 @@ class Player {
             Log.e("Nertz", "Failed to play AI move: " + e.getMessage());
         }
     }
+
+    public String toString() {
+        return getName();
+    }
 }

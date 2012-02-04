@@ -97,4 +97,8 @@ public class Stream extends Pile implements Parcelable {
     public boolean cardsTakenThisTimeThrough() {
         return size() < cardsAtStart;
     }
+
+    public String toString() {
+        return "Stream";
+    }
 }

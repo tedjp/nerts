@@ -33,4 +33,9 @@ public class LakeNewPileMove implements GameMove {
             throw new InvalidMoveException("Tried to move card from empty pile");
         }
     }
+
+    public String toString() {
+        return String.format("Move %s from top of %s to new Lake pile",
+                fromPile.isEmpty() ? "nothing" : fromPile.peek().toString(), fromPile.toString());
+    }
 }
