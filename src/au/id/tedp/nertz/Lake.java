@@ -38,17 +38,6 @@ public class Lake extends TargetArea implements Parcelable {
         return pile;
     }
 
-    /** Given a particular card, return the appropriate Lake Pile for it.
-     * Returns null if there is no appropriate pile.
-     */
-    @Override
-    public TargetPile findTargetPile(Card c) {
-        TargetPile pile = super.findTargetPile(c);
-        if (pile != null)
-            return pile;
-        return null;
-    }
-
     /**
      * Find a suitable pile for the card.
      * If the card is an Ace, a new pile will be created.
