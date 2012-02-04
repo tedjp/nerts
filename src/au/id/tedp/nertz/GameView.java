@@ -278,6 +278,7 @@ class GameView extends View implements View.OnTouchListener {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         calculateAreas(w, h);
         calculateCardSize(w, h);
+        invalidate();
     }
 
     protected void calculateCardSize(int viewWidth, int viewHeight) {
