@@ -10,6 +10,9 @@ public class LakeNewPileMove implements GameMove {
     }
 
     public void execute() throws InvalidMoveException {
+        if (fromPile == null || fromPile.isEmpty())
+            throw new InvalidMoveException("FromPile is no longer valid");
+
         if (fromPile.peek().getFace() != Card.Face.ACE)
             throw new InvalidMoveException("New Lake pile must start with an Ace");
 
