@@ -18,7 +18,8 @@ final class OpponentNames {
         new Pair<String,String>("Tom", "Jerry"),
         new Pair<String,String>("Scooby", "Shaggy"),
         new Pair<String,String>("Romeo", "Juliet"),
-        new Pair<String,String>("Simon", "Garfunkel")
+        new Pair<String,String>("Simon", "Garfunkel"),
+        new Pair<String,String>("Booth", "Bones")
     );
 
     public static Pair<String,String> getPair() {
