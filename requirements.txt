@@ -21,9 +21,11 @@ Initial release requirements:
     Simon & Garfunkel, Romeo & Juliet, Shawn & Gus.
 [x] Fix win detection when resuming game that already has a winner.
 [x] Fix double win screen
+[ ] Fix opponent names not retained on new game
 
 Future features:
 
+[ ] Better top-card-under animation (higher framerate)
 [ ] Better visibility of Clubs vs. Spades on mdpi screens,
     eg. big card suit on the top right.
 [ ] Ads
