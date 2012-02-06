@@ -13,6 +13,7 @@ import android.view.MenuItem;
 public class Main extends Activity
 {
     private Game game;
+    AlertDialog winnerDialog;
 
     /** Called when the activity is first created. */
     @Override
@@ -23,6 +24,7 @@ public class Main extends Activity
     }
 
     public void newGame(Bundle savedInstanceState) {
+        winnerDialog = null;
         try {
             int humanScore = 0;
             if (game != null)
@@ -82,6 +84,11 @@ public class Main extends Activity
     }
 
     public void declareWinner(Player winner) {
+        if (winnerDialog != null) {
+            // Don't stack another one
+            return;
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(String.format("%s won!", winner.getName()))
             // XXX: Show scores
@@ -91,8 +98,8 @@ public class Main extends Activity
                     Main.this.newGame(null);
                 }
             });
-        AlertDialog alert = builder.create();
-        alert.show();
+        winnerDialog = builder.create();
+        winnerDialog.show();
     }
 
     @Override

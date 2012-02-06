@@ -16,6 +16,8 @@ class Game {
     private ScoreKeeper scoreKeeper;
     private AiMoveTask aiMoveTask;
     private Main activity;
+    // Whether cards may be played
+    private boolean isInProgress = false;
 
     public static final int AI_PLAYERS = 2;
 
@@ -80,6 +82,8 @@ class Game {
             for (AiPlayer cpu: cpus)
                 cpu.start();
         }
+
+        isInProgress = true;
     }
 
     public void onResume() {
@@ -159,6 +163,8 @@ class Game {
     }
 
     public void playMove(Player player, GameMove move) throws InvalidMoveException {
+        if (!isInProgress)
+            return;
         move.execute();
         scoreKeeper.registerMove(player, move);
         Game.this.human.getGameView().fullInvalidate();
@@ -184,6 +190,7 @@ class Game {
 
     public boolean checkIfPlayerWon(Player player) {
         if (player.getNertzPile().isEmpty()) {
+            isInProgress = false;
             declareWinner(player);
             return true;
         }
@@ -210,5 +217,9 @@ class Game {
 
     public ScoreKeeper getScoreKeeper() {
         return scoreKeeper;
+    }
+
+    public boolean isGameInProgress() {
+        return isInProgress;
     }
 }
