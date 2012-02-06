@@ -21,7 +21,25 @@
         android:targetSdkVersion="14"
         />
     <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false"
+        />
+    <uses-feature
         android:name="android.hardware.screen.landscape"
-        android:required="true"
+        android:required="false"
+        />
+    <!-- faketouch is the crappiest level of touch screen, with a minimum
+         of click down, click up & drag. This indicates that controlling
+         the app without any kind of touch (eg. *just* a D-Pad) is not
+         possible. -->
+    <uses-feature
+        android:name="android.hardware.faketouch"
+        />
+    <!-- A touchscreen is the minimum required by default, but Nertz
+         works with faketouch devices too, so we must declare that a
+         real touchscreen is not required.  -->
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false"
         />
 </manifest>
