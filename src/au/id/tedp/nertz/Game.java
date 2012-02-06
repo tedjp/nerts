@@ -182,7 +182,13 @@ class Game {
             return;
         move.execute();
         scoreKeeper.registerMove(player, move);
-        Game.this.human.getGameView().fullInvalidate();
+        // Only redraw if the player was human or, if the player was AI,
+        // the Lake changed.
+        if (player == human || (move instanceof LakeNewPileMove) ||
+                (move instanceof CardMove &&
+                 ((CardMove)move).dest instanceof SequentialSuitPile)) {
+            Game.this.human.getGameView().fullInvalidate();
+        }
     }
 
     private void findAiMoves() {
