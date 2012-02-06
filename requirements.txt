@@ -15,15 +15,15 @@ Initial release requirements:
 [x] Prompt before exiting on Back button
 [x] Fix scoring failure after resume
 [ ] Improve layout of Lake piles in portrait when adding more columns
+[x] Fun opponent names: randomly pick a famous duo, eg. Ernie & Bert,
+    Bonnie & Clyde, Jekyll & Hyde, Donnie & Marie, Sherlock & Watson,
+    John & Yoko, Starsky & Hutch, Tom & Jerry, Scooby & Shaggy,
+    Simon & Garfunkel, Romeo & Juliet, Shawn & Gus.
 
 Future features:
 
 [ ] Better visibility of Clubs vs. Spades on mdpi screens,
     eg. big card suit on the top right.
-[ ] Fun opponent names: randomly pick a famous duo, eg. Ernie & Bert,
-    Bonnie & Clyde, Jekyll & Hyde, Donnie & Marie, Sherlock & Watson,
-    John & Yoko, Starsky & Hutch, Tom & Jerry, Scooby & Shaggy,
-    Simon & Garfunkel, Romeo & Juliet, Shawn & Gus.
 [ ] Ads
 [ ] Calculate alternative move, or try playing on the pile the previous
     player (human or AI) played on.

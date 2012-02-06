@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,12 @@ class Game {
             human = new HumanPlayer(ctx, this, lake, decks.get(0));
         }
 
+        Pair<String,String> names = OpponentNames.getPair();
+        if (saved != null) {
+            String nameArray[] = saved.getStringArray("AiNames");
+            names = new Pair<String,String>(nameArray[0], nameArray[1]);
+        }
+
         cpus = new ArrayList<AiPlayer>(AI_PLAYERS);
         for (int i = 0; i < AI_PLAYERS; ++i) {
             Bundle ai_player_bundle = null;
@@ -54,7 +61,8 @@ class Game {
                 ai_player_bundle = aiBundles.get(i);
                 cpus.add(new AiPlayer(this, lake, ai_player_bundle));
             } else {
-                cpus.add(new AiPlayer(String.format("CPU %d", i + 1), this, lake, decks.get(i + 1)));
+                cpus.add(new AiPlayer(i == 0 ? names.first : names.second,
+                            this, lake, decks.get(i + 1)));
             }
         }
 
@@ -105,6 +113,10 @@ class Game {
 
         b.putInt("PlayerScore", scoreKeeper.getHumanScore());
         b.putIntegerArrayList("AiScores", scoreKeeper.getAiScoreList());
+        String aiNameArray[] = new String[cpus.size()];
+        for (int i = 0; i < cpus.size(); ++i)
+            aiNameArray[i] = cpus.get(i).getName();
+        b.putStringArray("AiNames", aiNameArray);
     }
 
     private class AiMoveTask extends AsyncTask<AiPlayer, Void, GameMove[]> {
