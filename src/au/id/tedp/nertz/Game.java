@@ -21,7 +21,7 @@ class Game {
 
     public static final int AI_PLAYERS = 2;
 
-    public Game(Main activity, Bundle saved, int savedPlayerScore) throws EmptyPileException {
+    public Game(Main activity, Bundle saved, int savedPlayerScore, Pair<String,String> opponentNames) throws EmptyPileException {
         this.activity = activity;
         Context ctx = activity;
         android.util.Log.d("Nertz", "Game saved bundle " + (saved == null ? "is null" : "is not null"));
@@ -49,10 +49,12 @@ class Game {
             human = new HumanPlayer(ctx, this, lake, decks.get(0));
         }
 
-        Pair<String,String> names = OpponentNames.getPair();
+        if (opponentNames == null)
+            opponentNames = OpponentNames.getPair();
+
         if (saved != null) {
             String nameArray[] = saved.getStringArray("AiNames");
-            names = new Pair<String,String>(nameArray[0], nameArray[1]);
+            opponentNames = new Pair<String,String>(nameArray[0], nameArray[1]);
         }
 
         cpus = new ArrayList<AiPlayer>(AI_PLAYERS);
@@ -62,7 +64,7 @@ class Game {
                 ai_player_bundle = aiBundles.get(i);
                 cpus.add(new AiPlayer(this, lake, ai_player_bundle));
             } else {
-                cpus.add(new AiPlayer(i == 0 ? names.first : names.second,
+                cpus.add(new AiPlayer(i == 0 ? opponentNames.first : opponentNames.second,
                             this, lake, decks.get(i + 1)));
             }
         }
@@ -234,5 +236,9 @@ class Game {
 
     public boolean isGameInProgress() {
         return isInProgress;
+    }
+
+    public Pair<String,String> getOpponentNames() {
+        return new Pair<String,String>(cpus.get(0).getName(), cpus.get(1).getName());
     }
 }

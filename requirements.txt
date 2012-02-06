@@ -21,7 +21,7 @@ Initial release requirements:
     Simon & Garfunkel, Romeo & Juliet, Shawn & Gus.
 [x] Fix win detection when resuming game that already has a winner.
 [x] Fix double win screen
-[ ] Fix opponent names not retained on new game
+[x] Fix opponent names not retained on new game
 
 Future features:
 

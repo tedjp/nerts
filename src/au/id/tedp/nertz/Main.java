@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,9 +28,12 @@ public class Main extends Activity
         winnerDialog = null;
         try {
             int humanScore = 0;
-            if (game != null)
+            Pair<String,String> opponentNames = null;
+            if (game != null) {
                 humanScore = game.getScoreKeeper().getHumanScore();
-            game = new Game(this, savedInstanceState, humanScore);
+                opponentNames = game.getOpponentNames();
+            }
+            game = new Game(this, savedInstanceState, humanScore, opponentNames);
             setContentView(game.getHumanPlayer().getGameView());
         } catch (EmptyPileException e) {
             String failMsg = "Failed to start game: " + e.getMessage();
