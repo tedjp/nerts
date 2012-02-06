@@ -230,10 +230,20 @@ class GameView extends View implements View.OnTouchListener {
         Rect dest = new Rect();
 
         if (getWidth() < getHeight()) {
-            // Portrait layout
-            int columns = Math.round((float)pile_spots / 2.0f);
-            int column = pilenum % columns;
-            int row = pilenum / columns;
+            // Portrait layout, 2 rows
+            final int ROWS = 2;
+            int columns = Math.round((float)pile_spots / (float)ROWS);
+            int column, row;
+            if (pilenum < LAKE_PILES) {
+                // First LAKE_PILES cards grow left-to-right
+                column = pilenum % (LAKE_PILES / ROWS);
+                row = pilenum / (LAKE_PILES / ROWS);
+            } else {
+                // Remaining cards grow top-to-bottom
+                row = pilenum % ROWS;
+                column = pilenum / ROWS;
+            }
+
             int vsep = (lakeArea.bottom - lakeArea.top - cardHeight * 2) / 3;
             int hsep = ((lakeArea.right - lakeArea.left) - cardWidth * columns)
                     / columns;

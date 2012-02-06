@@ -14,7 +14,7 @@ Initial release requirements:
 [x] Speed up card pickup by keeping Card Bitmaps in memory
 [x] Prompt before exiting on Back button
 [x] Fix scoring failure after resume
-[ ] Improve layout of Lake piles in portrait when adding more columns
+[x] Improve layout of Lake piles in portrait when adding more columns
 [x] Fun opponent names: randomly pick a famous duo, eg. Ernie & Bert,
     Bonnie & Clyde, Jekyll & Hyde, Donnie & Marie, Sherlock & Watson,
     John & Yoko, Starsky & Hutch, Tom & Jerry, Scooby & Shaggy,
