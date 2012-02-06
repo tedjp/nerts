@@ -319,7 +319,7 @@ class GameView extends View implements View.OnTouchListener {
             nertzPileArea = new Rect(0, height / 4 * 3, width / 2, height);
             streamArea = new Rect(width / 2, height / 4 * 3, width, height);
             riverArea = new Rect(0, height / 5 * 2, width, height / 4 * 3);
-            lakeArea = new Rect(0, height / 10, width, riverArea.top);
+            lakeArea = new Rect(0, height / 12, width, riverArea.top);
             oppArea = new Rect(0, 0, width, lakeArea.top);
         } else {
             // Landscape
@@ -327,7 +327,7 @@ class GameView extends View implements View.OnTouchListener {
             nertzPileArea = new Rect(0, hs, width / 6, height);
             riverArea = new Rect(nertzPileArea.right, hs, width / 4 * 3, height);
             streamArea = new Rect(riverArea.right, hs, width, height);
-            lakeArea = new Rect(0, height / 6, width, hs);
+            lakeArea = new Rect(0, height / 7, width, hs);
             oppArea = new Rect(0, 0, width, lakeArea.top);
         }
     }
@@ -376,7 +376,7 @@ class GameView extends View implements View.OnTouchListener {
     protected void drawOppArea(Canvas c) {
         int width = oppArea.right - oppArea.left;
         int height = oppArea.bottom - oppArea.top;
-        float textSize = height / 3.0f;
+        float textSize = height / 2.5f;
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
         paint.setTextAlign(Paint.Align.CENTER);
