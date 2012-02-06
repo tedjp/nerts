@@ -278,7 +278,7 @@ class GameView extends View implements View.OnTouchListener {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         calculateAreas(w, h);
         calculateCardSize(w, h);
-        invalidate();
+        fullInvalidate();
     }
 
     protected void calculateCardSize(int viewWidth, int viewHeight) {
@@ -712,7 +712,7 @@ class GameView extends View implements View.OnTouchListener {
                 break;
         }
 
-        invalidate();
+        liveInvalidate();
 
         return true;
     }
@@ -746,7 +746,7 @@ class GameView extends View implements View.OnTouchListener {
             } else {
                 topUnderHandler.removeCallbacks(topUnderAnimator);
             }
-            invalidate();
+            fullInvalidate();
         }
 
         public int getTopUnderPos() {
@@ -779,9 +779,12 @@ class GameView extends View implements View.OnTouchListener {
         }
     }
 
-    @Override
-    public void invalidate() {
+    public void fullInvalidate() {
         staticTableBitmap = null;
+        super.invalidate();
+    }
+
+    public void liveInvalidate() {
         super.invalidate();
     }
 }
