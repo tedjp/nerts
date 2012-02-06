@@ -19,7 +19,11 @@ final class OpponentNames {
         new Pair<String,String>("Scooby", "Shaggy"),
         new Pair<String,String>("Romeo", "Juliet"),
         new Pair<String,String>("Simon", "Garfunkel"),
-        new Pair<String,String>("Booth", "Bones")
+        new Pair<String,String>("Booth", "Bones"),
+        new Pair<String,String>("Phineas", "Ferb"),
+        new Pair<String,String>("Milo", "Otis"),
+        new Pair<String,String>("Cheech", "Chong"),
+        new Pair<String,String>("Ren", "Stimpy")
     );
 
     public static Pair<String,String> getPair() {
