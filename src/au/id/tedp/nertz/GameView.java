@@ -753,7 +753,6 @@ class GameView extends View implements View.OnTouchListener {
             } else {
                 topUnderHandler.removeCallbacks(topUnderAnimator);
             }
-            fullInvalidate();
         }
 
         public int getTopUnderPos() {
@@ -779,10 +778,15 @@ class GameView extends View implements View.OnTouchListener {
             // Draw it on top
             drawCardBack(canvas, top_of_pile);
             drawCardBack(canvas, dest);
+            // Only a partial invalidate is necessary since the top card is not
+            // uncovering whitespace, it's only uncovering the deck which is
+            // being drawn here too.
+            liveInvalidate();
         } else {
             // Draw on bottom
             drawCardBack(canvas, dest);
             drawCardBack(canvas, top_of_pile);
+            fullInvalidate();
         }
     }
 
