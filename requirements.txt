@@ -25,6 +25,7 @@ Initial release requirements:
 
 Future features:
 
+[ ] Rotation preference
 [ ] Better top-card-under animation (higher framerate)
 [ ] Better visibility of Clubs vs. Spades on mdpi screens,
     eg. big card suit on the top right.
