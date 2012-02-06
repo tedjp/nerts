@@ -14,7 +14,6 @@ class Game {
     private ArrayList<AiPlayer> cpus;
     private Lake lake;
     private ScoreKeeper scoreKeeper;
-    private GameMove[] pendingAiMoves;
     private AiMoveTask aiMoveTask;
     private Main activity;
 
@@ -85,7 +84,7 @@ class Game {
 
     public void onResume() {
         aiMoveTask = null;
-        findAiMoves();
+        //findAiMoves();
     }
 
     public void onPause() {
@@ -119,37 +118,39 @@ class Game {
         b.putStringArray("AiNames", aiNameArray);
     }
 
-    private class AiMoveTask extends AsyncTask<AiPlayer, Void, GameMove[]> {
-        private AiPlayer ai;
+    private class AiMoveTask extends AsyncTask<Integer, Void, GameMove> {
+        private AiPlayer aiPlayer;
 
         @Override
-        protected GameMove[] doInBackground(AiPlayer... players) {
-            GameMove[] moves = new GameMove[players.length];
-            for (int i = 0; i < players.length; ++i) {
-                if (isCancelled())
-                    return moves;
+        protected GameMove doInBackground(Integer... playernums) {
+            if (playernums.length == 0)
+                return null;
 
-                AiPlayer player = players[i];
-                GameMove move = player.findMove();
-                if (move != null) {
-                    moves[i] = move;
-                    Log.d("Nertz", "Player " + player.toString() + " found move " +
-                            move.toString());
-                }
+            aiPlayer = Game.this.cpus.get(playernums[0].intValue());
+            return aiPlayer.findMove();
+        }
+
+        @Override
+        protected void onPostExecute(GameMove move) {
+            try {
+                move.execute();
+                Game.this.human.getGameView().fullInvalidate();
+            }
+            catch (InvalidMoveException e) {
+                Log.e("Nertz", "Failed to play AI move " + move.toString());
             }
 
-            return moves;
+            if (aiPlayer == cpus.get(cpus.size() - 1))
+                aiMoveTask = null;
+            else {
+                aiMoveTask = new AiMoveTask();
+                aiMoveTask.execute(cpus.indexOf(aiPlayer) + 1);
+            }
         }
 
         @Override
-        protected void onPostExecute(GameMove moves[]) {
-            pendingAiMoves = moves;
-            aiMoveTask = null;
-        }
-
-        @Override
-        protected void onCancelled(GameMove[] moves) {
-            pendingAiMoves = moves;
+        protected void onCancelled(GameMove move) {
+            // XXX: save calculated move
             aiMoveTask = null;
         }
     }
@@ -162,7 +163,7 @@ class Game {
         // never complete.
         if (aiMoveTask == null) {
             aiMoveTask = new AiMoveTask();
-            aiMoveTask.execute(cpus.toArray(new AiPlayer[cpus.size()]));
+            aiMoveTask.execute(new Integer(0));
         } else {
             Log.d("Nertz", "AiMoveTask is still running, letting it finish");
         }
@@ -190,6 +191,7 @@ class Game {
         if (checkForWinner())
             return;
 
+        /*
         if (pendingAiMoves != null) {
             for (int i = 0; i < pendingAiMoves.length; ++i) {
                 GameMove move = pendingAiMoves[i];
@@ -209,6 +211,7 @@ class Game {
                 }
             }
         }
+        */
         findAiMoves();
     }
 

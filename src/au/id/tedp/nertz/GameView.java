@@ -784,6 +784,11 @@ class GameView extends View implements View.OnTouchListener {
         super.invalidate();
     }
 
+    @Override
+    public void invalidate() {
+        fullInvalidate();
+    }
+
     public void liveInvalidate() {
         super.invalidate();
     }
