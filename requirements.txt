@@ -4,7 +4,7 @@ Initial release requirements:
 [x] Legally distributable card images
 [x] Top-card-under when no cards played
 [x] Create top-card-under graphic
-[ ] Delayed opponent moves
+[x] Delayed opponent moves
 [x] Win/lose display with new game option
 [x] App Icon
 [x] Display number of cards left in Nertz pile
