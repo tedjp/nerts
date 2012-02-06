@@ -19,7 +19,7 @@ Initial release requirements:
     Bonnie & Clyde, Jekyll & Hyde, Donnie & Marie, Sherlock & Watson,
     John & Yoko, Starsky & Hutch, Tom & Jerry, Scooby & Shaggy,
     Simon & Garfunkel, Romeo & Juliet, Shawn & Gus.
-[ ] Fix win detection when resuming game that already has a winner.
+[x] Fix win detection when resuming game that already has a winner.
 [x] Fix double win screen
 
 Future features:

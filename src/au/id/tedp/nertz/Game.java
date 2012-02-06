@@ -84,6 +84,9 @@ class Game {
         }
 
         isInProgress = true;
+
+        if (saved != null)
+            checkForWinner();
     }
 
     public void onResume() {
@@ -159,6 +162,16 @@ class Game {
         protected void onCancelled(GameMove move) {
             // XXX: save calculated move
             aiMoveTask = null;
+        }
+    }
+
+    private void checkForWinner() {
+        if (checkIfPlayerWon(human))
+            return;
+
+        for (AiPlayer cpu: cpus) {
+            if (checkIfPlayerWon(cpu))
+                return;
         }
     }
 
