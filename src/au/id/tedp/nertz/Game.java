@@ -190,28 +190,6 @@ class Game {
     public void onPlayerMove() {
         if (checkForWinner())
             return;
-
-        /*
-        if (pendingAiMoves != null) {
-            for (int i = 0; i < pendingAiMoves.length; ++i) {
-                GameMove move = pendingAiMoves[i];
-                if (move != null) {
-                    try {
-                        move.execute();
-                        if (checkForWinner()) {
-                            human.getGameView().invalidate();
-                            return;
-                        }
-                    }
-                    catch (InvalidMoveException e) {
-                        // This is a normal condition, when the AI was planning a
-                        // move that was blocked by the user.
-                        android.util.Log.d("Nertz", "Failed to execute AI move: " + e.getMessage());
-                    }
-                }
-            }
-        }
-        */
         findAiMoves();
     }
 
