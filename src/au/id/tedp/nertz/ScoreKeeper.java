@@ -97,6 +97,25 @@ class ScoreKeeper {
         this.cpuScores = aiScores;
     }
 
+    public void registerMove(Player player, GameMove move) {
+        int change = 0;
+        if (move instanceof LakeNewPileMove) {
+            change += LAKE_CARD_POINTS;
+            if (((LakeNewPileMove)move).getFromPile() instanceof NertzPile)
+                change += NERTZ_CARD_POINTS;
+        } else if (move instanceof CardMove) {
+            CardMove cardMove = (CardMove) move;
+            if (cardMove.source instanceof NertzPile)
+                change += NERTZ_CARD_POINTS;
+            if (cardMove.dest instanceof SequentialSuitPile)
+                change += LAKE_CARD_POINTS;
+        }
+        // StreamMoves & StackMoves don't count for scores
+
+        android.util.Log.d("Nertz", String.format("Adding score %d to %s", change, player.getName()));
+        score(player, change);
+    }
+
     public void registerMove(Pile from, Pile to, Card c) {
         if (from instanceof NertzPile)
             cardRemovedFromNertzPile(c);

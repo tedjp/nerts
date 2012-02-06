@@ -46,4 +46,8 @@ public class LakeNewPileMove implements GameMove {
         return String.format("Move %s from top of %s to new Lake pile",
                 fromPile.isEmpty() ? "nothing" : fromPile.peek().toString(), fromPile.toString());
     }
+
+    public Pile getFromPile() {
+        return fromPile;
+    }
 }

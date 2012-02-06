@@ -133,11 +133,14 @@ class Game {
         @Override
         protected void onPostExecute(GameMove move) {
             try {
-                move.execute();
-                Game.this.human.getGameView().fullInvalidate();
+                playMove(aiPlayer, move);
+                if (checkIfPlayerWon(aiPlayer)) {
+                    aiMoveTask = null;
+                    return;
+                }
             }
             catch (InvalidMoveException e) {
-                Log.e("Nertz", "Failed to play AI move " + move.toString());
+                Log.e("Nertz", aiPlayer.getName() + " failed to play " + move.toString());
             }
 
             if (aiPlayer == cpus.get(cpus.size() - 1))
@@ -153,6 +156,12 @@ class Game {
             // XXX: save calculated move
             aiMoveTask = null;
         }
+    }
+
+    public void playMove(Player player, GameMove move) throws InvalidMoveException {
+        move.execute();
+        scoreKeeper.registerMove(player, move);
+        Game.this.human.getGameView().fullInvalidate();
     }
 
     private void findAiMoves() {
@@ -173,28 +182,18 @@ class Game {
         activity.declareWinner(winner);
     }
 
-    public boolean checkForWinner() {
-        if (human.getNertzPile().isEmpty()) {
-            declareWinner(human);
+    public boolean checkIfPlayerWon(Player player) {
+        if (player.getNertzPile().isEmpty()) {
+            declareWinner(player);
             return true;
-        }
-        for (AiPlayer ai: cpus) {
-            if (ai.getNertzPile().isEmpty()) {
-                declareWinner(ai);
-                return true;
-            }
         }
         return false;
     }
 
     public void onPlayerMove() {
-        if (checkForWinner())
+        if (checkIfPlayerWon(human))
             return;
         findAiMoves();
-    }
-
-    public void onAiMove() {
-        human.onAiMove();
     }
 
     public HumanPlayer getHumanPlayer() {

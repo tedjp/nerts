@@ -664,10 +664,9 @@ class GameView extends View implements View.OnTouchListener {
                 if (toPile != null) {
                     try {
                         LiveMove livemove = new LiveMove(fromPile, toPile, liveCards);
-                        livemove.execute();
-                        ScoreKeeper scorer = game.getScoreKeeper();
-                        scorer.registerMove(fromPile, toPile, liveCards.get(0));
-
+                        game.playMove(player, livemove);
+                        if (game.checkIfPlayerWon(player))
+                            return true;
                         try {
                             // Nertz Pile needs the top card flipped
                             // after successfully moving the live card
