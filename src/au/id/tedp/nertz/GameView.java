@@ -478,7 +478,6 @@ class GameView extends View implements View.OnTouchListener {
         River river = player.getRiver();
         float cardAreaWidth = riverArea.right - riverArea.left;
         int pileNum = (int) ((x - (float) riverArea.left) / (cardAreaWidth) * (float) river.size());
-        Log.d("Nertz", "getRiverPile returning pile " + pileNum);
         return river.get(pileNum);
     }
 
@@ -585,8 +584,6 @@ class GameView extends View implements View.OnTouchListener {
             cardnum = (int) (y / (float) (getHeight() - gap * 2) * cards.size());
         }
 
-        Log.d("Nertz", "Expanded Touch: Taking card " + cardnum);
-
         int end = cards.size();
         for (int i = cardnum; i < end; ++i)
             liveCards.add(cards.remove(cardnum));
@@ -637,7 +634,7 @@ class GameView extends View implements View.OnTouchListener {
                         if (!fromPile.isEmpty())
                             liveCards.add(fromPile.pop());
                     } catch (EmptyPileException e) {
-                        Log.d("Nertz", "Tried to pop from empty pile!");
+                        Log.e("Nertz", "Tried to pop from empty pile!");
                     }
                 }
                 break;

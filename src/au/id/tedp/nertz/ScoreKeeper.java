@@ -112,7 +112,6 @@ class ScoreKeeper {
         }
         // StreamMoves & StackMoves don't count for scores
 
-        android.util.Log.d("Nertz", String.format("Adding score %d to %s", change, player.getName()));
         score(player, change);
     }
 

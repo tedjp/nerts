@@ -24,7 +24,6 @@ class Game {
     public Game(Main activity, Bundle saved, int savedPlayerScore, Pair<String,String> opponentNames) throws EmptyPileException {
         this.activity = activity;
         Context ctx = activity;
-        android.util.Log.d("Nertz", "Game saved bundle " + (saved == null ? "is null" : "is not null"));
         // Only used on initial deal, not on resume
         ArrayList<Deck> decks = null;
 
@@ -102,8 +101,6 @@ class Game {
     }
 
     public void saveState(Bundle b) {
-        android.util.Log.d("Nertz", "Saving Game state");
-
         b.putParcelable("Lake", lake);
 
         Bundle humanBundle = new Bundle();
@@ -200,8 +197,6 @@ class Game {
         if (aiMoveTask == null) {
             aiMoveTask = new AiMoveTask();
             aiMoveTask.execute(new Integer(0));
-        } else {
-            Log.d("Nertz", "AiMoveTask is still running, letting it finish");
         }
     }
 

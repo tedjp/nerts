@@ -45,7 +45,6 @@ public class Main extends Activity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d("Nertz", "Saving activity state");
         super.onSaveInstanceState(outState);
         game.saveState(outState);
     }
