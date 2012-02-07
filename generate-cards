@@ -1,13 +1,13 @@
 #!/bin/sh
 set -e
 
-HDPI_WIDTH=140
-HDPI_HEIGHT=200
+HDPI_WIDTH=116
+HDPI_HEIGHT=160
 
 rsvg --width=$(($HDPI_WIDTH * 13)) --height=$(($HDPI_HEIGHT * 5)) img/paris.svg paris.png
 convert -crop ${HDPI_WIDTH}x${HDPI_HEIGHT} paris.png card%d.png
 
-mkdir -p res/drawable-hdpi
+mkdir -p res/drawable-mdpi
 rsvg --width=72 top-under.svg res/drawable-hdpi/top_under.png
 
 echo "0 c1
@@ -65,7 +65,7 @@ echo "0 c1
 52 jb
 53 jr
 54 bb" | while read NUM DEST; do
-    mv "card$NUM.png" "res/drawable-hdpi/$DEST.png"
+    mv "card$NUM.png" "res/drawable-mdpi/$DEST.png"
 done
 
 # Remove unused jokers
