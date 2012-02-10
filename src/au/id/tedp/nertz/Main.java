@@ -27,6 +27,10 @@ public class Main extends Activity
         newGame(savedInstanceState);
     }
 
+    private boolean isTimeForNewOpponents(int humanScore) {
+        return humanScore >= WIN_SCORE * level;
+    }
+
     public void newGame(Bundle savedInstanceState) {
         winnerDialog = null;
         try {
@@ -34,7 +38,7 @@ public class Main extends Activity
             Pair<String,String> opponentNames = null;
             if (game != null) {
                 humanScore = game.getScoreKeeper().getHumanScore();
-                if (humanScore >= WIN_SCORE * level) {
+                if (isTimeForNewOpponents(humanScore)) {
                     // Player beat these opponents. Pick new opponents.
                     ++level;
                     Pair<String,String> existingOppNames;
@@ -108,7 +112,7 @@ public class Main extends Activity
         }
 
         String buttonText;
-        if (game.getPlayerScore() >= WIN_SCORE)
+        if (isTimeForNewOpponents(game.getPlayerScore()))
             buttonText = "Next Opponents";
         else
             buttonText = "Next Round";
