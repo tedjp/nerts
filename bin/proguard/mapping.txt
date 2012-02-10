@@ -240,14 +240,17 @@ au.id.tedp.nertz.LiveMove -> au.id.tedp.nertz.al:
     java.util.ArrayList cards -> c
     void execute() -> a
 au.id.tedp.nertz.Main -> au.id.tedp.nertz.Main:
-    au.id.tedp.nertz.Game game -> b
-    android.app.AlertDialog winnerDialog -> a
+    au.id.tedp.nertz.Game game -> a
+    android.app.AlertDialog winnerDialog -> b
+    int level -> c
     void onCreate(android.os.Bundle) -> onCreate
+    boolean isTimeForNewOpponents(int) -> a
     void newGame(android.os.Bundle) -> a
     void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     void onBackPressed() -> onBackPressed
+    void declareWinner(au.id.tedp.nertz.Player) -> a
     void onPause() -> onPause
     void onResume() -> onResume
 au.id.tedp.nertz.Main$1 -> au.id.tedp.nertz.p:
