@@ -16,12 +16,14 @@ public class Main extends Activity
     private Game game;
     AlertDialog winnerDialog;
     private static final int WIN_SCORE = 100;
+    private int level;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        level = 1;
         newGame(savedInstanceState);
     }
 
@@ -32,9 +34,9 @@ public class Main extends Activity
             Pair<String,String> opponentNames = null;
             if (game != null) {
                 humanScore = game.getScoreKeeper().getHumanScore();
-                if (humanScore >= WIN_SCORE) {
+                if (humanScore >= WIN_SCORE * level) {
                     // Player beat these opponents. Pick new opponents.
-                    humanScore = 0;
+                    ++level;
                     Pair<String,String> existingOppNames;
                     existingOppNames = game.getOpponentNames();
                     do {
