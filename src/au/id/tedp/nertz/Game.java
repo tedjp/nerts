@@ -202,17 +202,13 @@ class Game {
         }
     }
 
-    public void declareWinner(Player winner) {
-        activity.declareWinner(winner);
-    }
-
     public boolean checkIfPlayerWon(Player player) {
         if (!isInProgress) // Somebody already won
             return false;
 
         if (player.getNertzPile().isEmpty()) {
             isInProgress = false;
-            declareWinner(player);
+            activity.declareWinner(player);
             return true;
         }
         return false;
