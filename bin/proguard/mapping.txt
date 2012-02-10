@@ -111,14 +111,14 @@ au.id.tedp.nertz.Game -> au.id.tedp.nertz.as:
     void onResume() -> a
     void onPause() -> b
     void saveState(android.os.Bundle) -> a
-    void checkForWinner() -> h
+    void checkForWinner() -> c
     void playMove(au.id.tedp.nertz.Player,au.id.tedp.nertz.GameMove) -> a
     boolean checkIfPlayerWon(au.id.tedp.nertz.Player) -> a
-    void onPlayerMove() -> c
-    au.id.tedp.nertz.HumanPlayer getHumanPlayer() -> d
-    int getPlayerScore() -> e
-    au.id.tedp.nertz.ScoreKeeper getScoreKeeper() -> f
-    android.util.Pair getOpponentNames() -> g
+    void onPlayerMove() -> d
+    au.id.tedp.nertz.HumanPlayer getHumanPlayer() -> e
+    int getPlayerScore() -> f
+    au.id.tedp.nertz.ScoreKeeper getScoreKeeper() -> g
+    android.util.Pair getOpponentNames() -> h
     java.util.ArrayList access$000(au.id.tedp.nertz.Game) -> a
     au.id.tedp.nertz.Game$AiMoveTask access$102(au.id.tedp.nertz.Game,au.id.tedp.nertz.Game$AiMoveTask) -> a
     au.id.tedp.nertz.Game$AiMoveTask access$100(au.id.tedp.nertz.Game) -> b
