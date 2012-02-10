@@ -21,6 +21,11 @@ class Game {
 
     public static final int AI_PLAYERS = 2;
 
+    /**
+     * If opponentNames is null, new opponents will be chosen.
+     * Otherwise the given opponent names will be used.
+     * In all cases if there is a Bundle of saved data, the saved names will be restored.
+     */
     public Game(Main activity, Bundle saved, int savedPlayerScore, Pair<String,String> opponentNames) throws EmptyPileException {
         this.activity = activity;
         Context ctx = activity;
