@@ -7,6 +7,8 @@ import java.util.Random;
 
 final class OpponentNames {
     private final static List<Pair<String,String>> names = Arrays.asList(
+        new Pair<String,String>("Hansel", "Gretel"),
+        new Pair<String,String>("Jack", "Jill"),
         new Pair<String,String>("Shawn", "Gus"),
         new Pair<String,String>("Bert", "Ernie"),
         new Pair<String,String>("Bonnie", "Clyde"),
