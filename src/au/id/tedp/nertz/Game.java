@@ -210,6 +210,9 @@ class Game {
     }
 
     public boolean checkIfPlayerWon(Player player) {
+        if (!isInProgress) // Somebody already won
+            return false;
+
         if (player.getNertzPile().isEmpty()) {
             isInProgress = false;
             declareWinner(player);
