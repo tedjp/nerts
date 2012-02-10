@@ -48,13 +48,13 @@ class Game {
             human = new HumanPlayer(ctx, this, lake, decks.get(0));
         }
 
-        if (opponentNames == null)
-            opponentNames = OpponentNames.getPair();
-
         if (saved != null) {
             String nameArray[] = saved.getStringArray("AiNames");
             opponentNames = new Pair<String,String>(nameArray[0], nameArray[1]);
         }
+
+        if (opponentNames == null)
+            opponentNames = OpponentNames.getPair();
 
         cpus = new ArrayList<AiPlayer>(AI_PLAYERS);
         for (int i = 0; i < AI_PLAYERS; ++i) {
