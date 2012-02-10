@@ -15,6 +15,7 @@ public class Main extends Activity
 {
     private Game game;
     AlertDialog winnerDialog;
+    private static final int WIN_SCORE = 100;
 
     /** Called when the activity is first created. */
     @Override
@@ -31,7 +32,20 @@ public class Main extends Activity
             Pair<String,String> opponentNames = null;
             if (game != null) {
                 humanScore = game.getScoreKeeper().getHumanScore();
-                opponentNames = game.getOpponentNames();
+                if (humanScore >= WIN_SCORE) {
+                    // Player beat these opponents. Pick new opponents.
+                    humanScore = 0;
+                    Pair<String,String> existingOppNames;
+                    existingOppNames = game.getOpponentNames();
+                    do {
+                        // Get new opponents and ensure they're not the same as
+                        // the previous opponents
+                        opponentNames = OpponentNames.getPair();
+                    } while (existingOppNames == opponentNames);
+                } else {
+                    // Keep existing opponents
+                    opponentNames = game.getOpponentNames();
+                }
             }
             game = new Game(this, savedInstanceState, humanScore, opponentNames);
             setContentView(game.getHumanPlayer().getGameView());
@@ -91,11 +105,17 @@ public class Main extends Activity
             return;
         }
 
+        String buttonText;
+        if (game.getPlayerScore() >= WIN_SCORE)
+            buttonText = "Next Opponents";
+        else
+            buttonText = "Next Round";
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(String.format("%s won!", winner.getName()))
             // XXX: Show scores
             .setCancelable(false)
-            .setPositiveButton("Next Round", new DialogInterface.OnClickListener() {
+            .setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Main.this.newGame(null);
                 }
