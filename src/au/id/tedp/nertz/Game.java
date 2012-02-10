@@ -90,9 +90,6 @@ class Game {
         }
 
         isInProgress = true;
-
-        if (saved != null)
-            checkForWinner();
     }
 
     public void onResume() {
@@ -169,7 +166,7 @@ class Game {
         }
     }
 
-    private void checkForWinner() {
+    public void checkForWinner() {
         if (checkIfPlayerWon(human))
             return;
 

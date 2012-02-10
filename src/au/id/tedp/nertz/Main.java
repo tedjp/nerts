@@ -55,6 +55,8 @@ public class Main extends Activity
             }
             game = new Game(this, savedInstanceState, humanScore, opponentNames);
             setContentView(game.getHumanPlayer().getGameView());
+            if (savedInstanceState != null)
+                game.checkForWinner();
         } catch (EmptyPileException e) {
             String failMsg = "Failed to start game: " + e.getMessage();
             Toast toast = Toast.makeText(this, failMsg, Toast.LENGTH_SHORT);
