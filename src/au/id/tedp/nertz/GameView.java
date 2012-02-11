@@ -219,7 +219,7 @@ class GameView extends View implements View.OnTouchListener {
         }
     }
 
-    public final int LAKE_PILES = 8;
+    public static final int LAKE_PILES = 8;
 
     protected void drawLakePile(Canvas canvas, Pile pile, int pilenum) {
         if (pile == null || pile.isEmpty())

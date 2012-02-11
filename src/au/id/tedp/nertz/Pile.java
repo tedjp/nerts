@@ -10,7 +10,7 @@ public class Pile implements Parcelable {
     protected Stack<Card> facedown, faceup;
     protected String name;
 
-    private final int DEFAULT_DECKSIZE = 13;
+    private static final int DEFAULT_DECKSIZE = 13;
 
     public Pile() {
         this.facedown = new Stack<Card>();
