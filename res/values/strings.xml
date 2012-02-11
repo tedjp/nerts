@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Nerts</string>
+    <string name="exit_dialog_title">Exit game?</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+    <string name="next_opponents">Next Opponents</string>
+    <string name="next_round">Next Round</string>
+    <string name="player_won">%s won!</string>
+    <string name="new_game">New Game</string>
 </resources>

@@ -92,13 +92,13 @@ public class Main extends Activity
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit game?")
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.exit_dialog_title))
+            .setPositiveButton(getString(R.string.button_yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Main.this.finish();
                 }
             })
-            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            .setNegativeButton(getString(R.string.button_no), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
@@ -115,12 +115,12 @@ public class Main extends Activity
 
         String buttonText;
         if (isTimeForNewOpponents(game.getPlayerScore()))
-            buttonText = "Next Opponents";
+            buttonText = getString(R.string.next_opponents);
         else
-            buttonText = "Next Round";
+            buttonText = getString(R.string.next_round);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(String.format("%s won!", winner.getName()))
+        builder.setTitle(String.format(getString(R.string.player_won), winner.getName()))
             // XXX: Show scores
             .setCancelable(false)
             .setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
