@@ -1,3 +1,8 @@
+Next release requirements:
+
+[ ] Save & restore level for correct opponent tracking on resume
+[ ] Keep score between games if score is above zero
+
 Initial release requirements:
 
 [x] Option to resume game on startup
