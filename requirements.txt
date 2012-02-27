@@ -1,6 +1,6 @@
 Next release requirements:
 
-[ ] Save & restore level for correct opponent tracking on resume
+[x] Save & restore level for correct opponent tracking on resume
 [ ] Keep score between games if score is above zero
 [ ] Change level-up to be more achievable
 

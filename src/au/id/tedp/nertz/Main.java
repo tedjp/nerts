@@ -16,6 +16,7 @@ public class Main extends Activity
     private Game game;
     AlertDialog winnerDialog;
     private static final int WIN_SCORE = 100;
+    private static final String BUNDLE_KEY_LEVEL = "level";
     private int level;
 
     /** Called when the activity is first created. */
@@ -23,8 +24,12 @@ public class Main extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        level = 1;
         newGame(savedInstanceState);
+
+        if (savedInstanceState != null)
+            level = savedInstanceState.getInt(BUNDLE_KEY_LEVEL);
+        if (level < 1)
+            level = 1;
     }
 
     private boolean isTimeForNewOpponents(int humanScore) {
@@ -69,6 +74,7 @@ public class Main extends Activity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         game.saveState(outState);
+        outState.putInt(BUNDLE_KEY_LEVEL, level);
     }
 
     @Override
