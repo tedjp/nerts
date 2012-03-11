@@ -19,7 +19,6 @@ final class OpponentNames {
         new Pair<String,String>("Jekyll", "Hyde"),
         new Pair<String,String>("Donnie", "Marie"),
         new Pair<String,String>("Sherlock", "Watson"),
-        new Pair<String,String>("John", "Yoko"),
         new Pair<String,String>("Starsky", "Hutch"),
         new Pair<String,String>("Tom", "Jerry"),
         new Pair<String,String>("Scooby", "Shaggy"),
