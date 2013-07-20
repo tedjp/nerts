@@ -52,7 +52,7 @@ public class Main extends Activity
                         // Get new opponents and ensure they're not the same as
                         // the previous opponents
                         opponentNames = OpponentNames.getPair();
-                    } while (existingOppNames == opponentNames);
+                    } while (existingOppNames.equals(opponentNames));
                 } else {
                     // Keep existing opponents
                     opponentNames = game.getOpponentNames();
